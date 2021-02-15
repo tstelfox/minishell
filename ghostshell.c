@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/02/15 18:20:11 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	int		i;
 
 	i = 0;
-	while (i < 69)
+	while (i < 69) // very nice
 	{
 		buffer[i] = 'a';
 		i++;
