@@ -11,9 +11,18 @@
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+#define BUFF_SIZE 77
 
-int		main(void)
+int	main(void)
 {
+	char	buffer[BUFF_SIZE];
+	int		i;
 
-	return(0);
+	i = 0;
+	while (i < 69)
+	{
+		buffer[i] = 'a';
+		i++;
+	}
+	return (buffer[46] == 'a' ? 0 : 69); // BEHOLD THE TERNARY
 }

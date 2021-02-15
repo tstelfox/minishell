@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_HPP
-# define GHOSTSHELL_HPP
+#ifndef GHOSTSHELL_H
+# define GHOSTSHELL_H
 
 
 
