@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_lstlast_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/07 11:18:22 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:46 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
-
-
-#endif
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}

@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_strdup.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/30 21:02:07 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:32 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
+char	*ft_strdup(const char *s1)
+{
+	size_t	i;
+	char	*dup;
 
-
-#endif
+	i = 0;
+	dup = malloc(ft_strlen(s1) + 1);
+	if (!dup)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}

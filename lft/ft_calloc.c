@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_calloc.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/30 17:50:14 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:10 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
+void	*ft_calloc(size_t count, size_t size)
+{
+	void *ar;
 
-
-#endif
+	ar = malloc(size * count);
+	if (!ar)
+		return (NULL);
+	ft_bzero(ar, size * count);
+	return (ar);
+}

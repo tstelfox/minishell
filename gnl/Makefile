@@ -3,44 +3,34 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: tmullan <tmullan@student.codam.nl>           +#+                      #
+#    By: zenotan <zenotan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
-#    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/15 20:16:03 by zenotan       ########   odam.nl          #
+#    Created: 2020/07/14 14:14:59 by zenotan       #+#    #+#                  #
+#    Updated: 2020/09/09 13:13:55 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ghostshell
-
-SRC = main.c
-
-OBJ = $(SRC:%.c=%.o)
-
-LIBS = lft/libft.a \
-		gnl/gnl.a
+NAME = gnl.a
 
 FLAGS = -Wall -Wextra -Werror
+SRC = get_next_line.c \
+		get_next_line_utils.c
+OBJ = $(SRC:%.c=%.o)
 
-CC = gcc
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		make -C gnl/
-		make -C lft/
-		$(CC) -o $(NAME) $(LIBS) $(OBJ)
+	ar rcs $(NAME) $?
 
 %.o: %.c
-		$(CC) $(FLAGS) -c $< -o $@
+	gcc $(FLAGS) -c $<
 
 clean:
-		make clean -C gnl/
-		make clean -C lft/
-		rm -f $(OBJ)
+	/bin/rm -rf $(OBJ)
 
 fclean: clean
-		make fclean -C gnl/
-		make fclean -C lft/
-		rm -f $(NAME)
+	/bin/rm -rf $(NAME)
 
 re: fclean all

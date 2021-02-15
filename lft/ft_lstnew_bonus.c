@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_lstnew_bonus.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/06 17:15:59 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:51 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
+t_list	*ft_lstnew(void *content)
+{
+	t_list *new_node;
 
-
-#endif
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (!new_node)
+		return (NULL);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
+}

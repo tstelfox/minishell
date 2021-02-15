@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_strrchr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/29 16:01:41 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:53 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
+char	*ft_strrchr(const char *s, int c)
+{
+	int		i;
+	char	*str;
+	char	ch;
 
-
-#endif
+	str = (char *)s;
+	ch = (char)c;
+	i = ft_strlen(s);
+	while (str[i] != ch)
+	{
+		i--;
+		if (i < 0)
+			return (0);
+	}
+	return (str + i);
+}

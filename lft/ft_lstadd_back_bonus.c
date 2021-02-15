@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.h                                       :+:    :+:            */
+/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:12:30 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:32 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GHOSTSHELL_H
-# define GHOSTSHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include "gnl/get_next_line.h"
-#include "lft/libft.h"
+void	ft_lstadd_back(t_list **alst, t_list *new)
+{
+	t_list *temp;
 
-
-#endif
+	if (!alst)
+		return ;
+	temp = *alst;
+	if (!*alst)
+		*alst = new;
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
+}
