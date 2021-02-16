@@ -15,8 +15,9 @@ NAME = ghostshell
 SRC = main.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c \
-		lft_utils/ft_putstr_fd.c \
-		lft_utils/ft_strlen.c
+		$(UTILS)
+
+UTILS = lft_utils/*.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -31,10 +32,10 @@ INCLUDES = -Iincludes
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@gcc $(FLAGS) $(OBJ) -g -o $(NAME)
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) -g -o $(NAME)
 
-%.o: %.c
-		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+# %.o: %.c
+# 		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 		rm -f $(OBJ)
