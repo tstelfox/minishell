@@ -14,13 +14,15 @@
 # define GHOSTSHELL_H
 
 # include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include "get_next_line.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <errno.h>
+# include "get_next_line.h"
 
 // lft_utils
 size_t	ft_strlen(const char *s);
 void	ft_putstr_fd(char *str, int fd);
+int		ft_strcmp(const char *str1, const char *str2);
 
 
 #endif
