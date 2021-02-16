@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/29 15:58:49 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:30 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+char	*ft_strchr(const char *s, int c)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	int	i;
+	int	s_len;
 
 	i = 0;
-	while (i < 69)
+	s_len = ft_strlen(s);
+	while (i <= (s_len))
 	{
-		buffer[i] = 'a';
+		if (s[i] == (char)c)
+			return ((char *)(s + i));
 		i++;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (0);
 }

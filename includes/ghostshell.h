@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ghostshell.h                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/16 01:11:26 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#ifndef GHOSTSHELL_H
+# define GHOSTSHELL_H
 
-int	main(void)
-{
-	char	buffer[BUFF_SIZE];
-	int		i;
+# include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include "get_next_line.h"
 
-	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
-		i++;
-	}
-	return (buffer[46] == 'a' ? 0 : 69);
-}
+// lft_utils
+size_t	ft_strlen(const char *s);
+void	ft_putstr_fd(char *str, int fd);
+
+
+#endif

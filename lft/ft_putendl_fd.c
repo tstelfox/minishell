@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_putendl_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/11/03 19:37:03 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:20 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+void	ft_putendl_fd(char *s, int fd)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
-
-	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
-		i++;
-	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
 }

@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_putstr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/28 13:50:56 by ztan          #+#    #+#                 */
+/*   Updated: 2020/09/10 19:05:29 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+void	ft_putstr_fd(char *str, int fd)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	int ret;
 
-	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
-		i++;
-	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	ret = 0;
+	if (!str)
+		return ;
+	ret = write(fd, str, ft_strlen(str));
+	if (ret < 0)
+		exit(0);
 }

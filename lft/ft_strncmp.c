@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/30 12:29:53 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:48 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
-
-	i = 0;
-	while (i < 69)
+	while (n != 0 && (*s1 != '\0' || *s2 != '\0'))
 	{
-		buffer[i] = 'a';
-		i++;
+		if (*s1 == *s2)
+		{
+			s1++;
+			s2++;
+		}
+		else
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		n--;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (0);
 }

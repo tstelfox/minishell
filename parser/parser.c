@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   parser.c                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/02/15 19:16:22 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
 
-int	main(void)
+
+
+int main(void)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
-
-	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
-		i++;
-	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	
+	return (0);
 }

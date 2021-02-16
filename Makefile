@@ -6,23 +6,35 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/15 13:01:13 by tmullan       ########   odam.nl          #
+#    Updated: 2021/02/16 01:10:56 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
 
-OBJ = ghostshell.o
+SRC = main.c \
+		gnl/get_next_line.c \
+		gnl/get_next_line_utils.c \
+		lft_utils/ft_putstr_fd.c \
+		lft_utils/ft_strlen.c
+
+OBJ = $(SRC:.c=.o)
+
+LIBS = gnl/gnl.a
 
 FLAGS = -Wall -Wextra -Werror
+
+CC = gcc
+
+INCLUDES = -Iincludes
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		gcc -o $@ $^ $(FLAGS) 
+		@gcc $(FLAGS) $(OBJ) -g -o $(NAME)
 
 %.o: %.c
-		$(CC) -c -o $@ $<
+		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 		rm -f $(OBJ)

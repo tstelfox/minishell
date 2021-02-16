@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/28 17:18:12 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+void	ft_bzero(void *s, size_t n)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	size_t	i;
+	char	*str;
 
 	i = 0;
-	while (i < 69)
+	str = (char *)s;
+	while (i < n)
 	{
-		buffer[i] = 'a';
+		str[i] = '\0';
 		i++;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
 }

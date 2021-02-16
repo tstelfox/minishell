@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_memset.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/28 15:30:56 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:14 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	size_t			i;
+	unsigned char	*dst;
 
 	i = 0;
-	while (i < 69)
+	dst = b;
+	while (i < len)
 	{
-		buffer[i] = 'a';
+		dst[i] = (unsigned char)c;
 		i++;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (b);
 }

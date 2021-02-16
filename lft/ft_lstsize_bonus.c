@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_lstsize_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/11/07 10:47:06 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:54 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+int	ft_lstsize(t_list *lst)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	int		count;
 
-	i = 0;
-	while (i < 69)
+	count = 0;
+	while (lst)
 	{
-		buffer[i] = 'a';
-		i++;
+		count++;
+		lst = lst->next;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (count);
 }

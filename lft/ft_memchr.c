@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_memchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/29 11:36:00 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:03 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
-#define BUFF_SIZE 77
+#include "libft.h"
 
-int	main(void)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	const unsigned char *str;
+	size_t				i;
 
+	str = s;
 	i = 0;
-	while (i < 69)
+	while (i < n)
 	{
-		buffer[i] = 'a';
+		if (str[i] == (unsigned char)c)
+			return ((void *)(s + i));
 		i++;
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (0);
 }

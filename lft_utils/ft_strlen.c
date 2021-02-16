@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/28 14:47:01 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/16 00:46:51 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-#define BUFF_SIZE 77
 
-int	main(void)
+size_t	ft_strlen(const char *s)
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	size_t i;
 
 	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
+	while (s[i])
 		i++;
-	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (i);
 }
