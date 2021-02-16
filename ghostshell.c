@@ -24,5 +24,5 @@ int	main(void)
 		buffer[i] = 'a';
 		i++;
 	}
-	return (buffer[46] == 'a' ? 0 : 69); // BEHOLD THE TERNARY
+	return (buffer[46] == 'a' ? 0 : 69);
 }
