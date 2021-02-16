@@ -12,10 +12,10 @@
 
 #include "ghostshell.h"
 
-char	*g_builtin[2] = {
+char	*g_builtin[7] = {
 		"echo",
 		"cd",
-		// "pwd",
+		"pwd",
 		// "export",
 		// "unset",
 		// "env",
@@ -39,9 +39,28 @@ int	run_ch(char *tokens[])
 	return (1);
 }
 
-int		(*g_builtin_f[2])(char *tokens[]) = {
+int	run_pwd(char *tokens[])
+{
+	char *buff;
+
+	if (tokens[1] != NULL)
+	{
+		printf("pwd doesn't accept arguments");
+		return (0);
+	}
+	if (getcwd(buff, sizeof(buff)) == NULL)
+		strerror("getcwd error");
+	else
+	{
+		printf("%s\n", buff);
+		return(1);
+	}
+}
+
+int		(*g_builtin_f[7])(char *tokens[]) = {
 		&run_echo,
-		&run_ch
+		&run_ch,
+		&run_pwd
 };
 
 int	builtin_exec(char *tokens[])
