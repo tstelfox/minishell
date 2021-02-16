@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/16 01:10:56 by zenotan       ########   odam.nl          #
+#    Updated: 2021/02/16 11:01:06 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,6 @@ SRC = main.c \
 		lft_utils/ft_strlen.c
 
 OBJ = $(SRC:.c=.o)
-
-LIBS = gnl/gnl.a
 
 FLAGS = -Wall -Wextra -Werror
 
