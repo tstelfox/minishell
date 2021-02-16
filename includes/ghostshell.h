@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/16 01:11:26 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/02/16 11:45:24 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "get_next_line.h"
+
+typedef struct s_shell
+{
+	// save tokens
+	// comands
+	// status
+}				t_shell;
+
 
 // lft_utils
 size_t	ft_strlen(const char *s);
