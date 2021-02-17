@@ -6,17 +6,40 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/16 11:01:06 by zenotan       ########   odam.nl          #
+#    Updated: 2021/02/17 18:09:01 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
 
+GNL = gnl/get_next_line.c \
+		gnl/get_next_line_utils.c
+
+LFT = lft_utils/ft_putstr_fd.c \
+		lft_utils/ft_strlen.c \
+		lft_utils/ft_split.c \
+		lft_utils/ft_memcpy.c \
+		lft_utils/ft_strchr.c \
+		lft_utils/ft_strdup.c \
+		lft_utils/ft_strlcpy.c \
+		lft_utils/ft_substr.c \
+		lft_utils/ft_lstadd_back_bonus.c \
+		lft_utils/ft_lstclear_bonus.c \
+		lft_utils/ft_lstdelone_bonus.c \
+		lft_utils/ft_lstiter_bonus.c \
+		lft_utils/ft_lstnew_bonus.c \
+		lft_utils/ft_lstsize_bonus.c
+
+ERR = error/error.c
+
+LEX = lexer/read_input.c \
+		lexer/lexer.c
+
 SRC = main.c \
-		gnl/get_next_line.c \
-		gnl/get_next_line_utils.c \
-		lft_utils/ft_putstr_fd.c \
-		lft_utils/ft_strlen.c
+		$(GNL) \
+		$(LFT) \
+		$(ERR) \
+		$(LEX)
 
 OBJ = $(SRC:.c=.o)
 

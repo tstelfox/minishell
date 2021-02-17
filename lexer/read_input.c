@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   read_input.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/17 18:10:32 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/02/16 13:34:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	exec_shell(void)
+void	read_line(char **input)
 {
-	char	*input;
-
-	input = NULL;
-	while (1) // check for errors
-	{
-		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
-		read_line(&input);
-		// lexer
-		lexer(input);
-		// parser
-		// exec  command
-		// check errors
-		// ft_putstr_fd("[" , STDOUT_FILENO);
-		// ft_putstr_fd(input , STDOUT_FILENO);
-		// ft_putstr_fd("]\n" , STDOUT_FILENO);
-	}
+	// this also needs to read from a file?
+	int ret;
 	
-}
-
-int main(void)
-{
-	exec_shell();
-	return (0);
+	ret = get_next_line(STDOUT_FILENO, input);
+	if (ret == -1)
+	{
+		free(*input);
+		/* err handler */
+	}
 }
