@@ -12,28 +12,22 @@
 
 #include "ghostshell.h"
 
-char	*g_builtin[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		// "export",
-		// "unset",
-		// "env",
-		// "exit"
-};
-
 int	run_echo(char *tokens[])
 {
-	return (0);
+	// Some check to see if there's a Pipe or a redirection or some shiz
+	if (tokens[1] == NULL)
+		return (0);
+	if (ft_strcmp(tokens[1], "-n") == 0)
+		//Don't print the newline
+	// Depending on flag Do the redirecting shit
+	ft_putstr_fd(tokens[1], STDOUT_FILENO); // Simplest case
+	return (1);
 }
 
-int	run_ch(char *tokens[])
+int	run_cd(char *tokens[])
 {
 	if (tokens[1] == NULL)
-	{
-		printf("No second argument ?");
 		return (0);
-	}
 	if (chdir(tokens[1]) != 0)
 		strerror("Frick ");
 	return (1);
@@ -41,27 +35,21 @@ int	run_ch(char *tokens[])
 
 int	run_pwd(char *tokens[])
 {
-	char *buff;
+	char	*buff;
 
-	if (tokens[1] != NULL)
-	{
-		printf("pwd doesn't accept arguments");
-		return (0);
-	}
+	// if (tokens[1] != NULL)
+	// {
+	// 	printf("pwd doesn't accept arguments");
+	// 	return (0);
+	// }
 	if (getcwd(buff, sizeof(buff)) == NULL)
 		strerror("getcwd error");
 	else
 	{
 		printf("%s\n", buff);
-		return(1);
+		return (1);
 	}
 }
-
-int		(*g_builtin_f[7])(char *tokens[]) = {
-		&run_echo,
-		&run_ch,
-		&run_pwd
-};
 
 int	builtin_exec(char *tokens[])
 {
