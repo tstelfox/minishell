@@ -1,17 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/16 11:41:48 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/17 17:39:55 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "ghostshell.h"
+
+void	ft_lstadd_back(t_list **alst, t_list *new)
 {
-	
-	return (0);
+	t_list *temp;
+
+	if (!alst)
+		return ;
+	temp = *alst;
+	if (!*alst)
+		*alst = new;
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+	}
 }

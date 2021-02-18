@@ -1,17 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   ft_lstclear_bonus.c                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/16 11:41:48 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/07 13:41:43 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/17 17:39:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "ghostshell.h"
+
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	
-	return (0);
+	t_list *temp;
+
+	if (!lst)
+		return ;
+	while (*lst)
+	{
+		temp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = temp;
+	}
 }

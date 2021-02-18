@@ -1,17 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   error.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/16 11:41:48 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/02/16 13:44:45 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "ghostshell.h"
+
+void	error_handler(char *error_message)
 {
-	
-	return (0);
+	write(STDERR_FILENO, error_message, ft_strlen(error_message));
+	write(STDERR_FILENO, "\n", 1);
+	exit(1);
 }

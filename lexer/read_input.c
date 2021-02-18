@@ -1,17 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   read_input.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/16 11:41:48 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/02/16 13:34:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "ghostshell.h"
+
+void	read_line(char **input)
 {
+	// this also needs to read from a file?
+	int ret;
 	
-	return (0);
+	ret = get_next_line(STDOUT_FILENO, input);
+	if (ret == -1)
+	{
+		free(*input);
+		/* err handler */
+	}
 }

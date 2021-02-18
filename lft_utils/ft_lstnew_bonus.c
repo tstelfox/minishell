@@ -1,17 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser.c                                           :+:    :+:            */
+/*   ft_lstnew_bonus.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/16 11:41:48 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/06 17:15:59 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/17 17:39:30 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+#include "ghostshell.h"
+
+t_list	*ft_lstnew(void *content)
 {
-	
-	return (0);
+	t_list *new_node;
+
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (!new_node)
+		return (NULL);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
 }
