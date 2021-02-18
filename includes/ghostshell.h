@@ -17,24 +17,20 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <errno.h>
+# include <string.h>
 # include "get_next_line.h"
 
-//globals
-int		(*g_builtin_f[7])(char *tokens[]) = {
-		&run_echo,
-		&run_cd,
-		&run_pwd
-};
 
-char	*g_builtin[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		// "export",
-		// "unset",
-		// "env",
-		// "exit"
-};
+// built-in functions
+
+int		run_echo(char *tokens[]);
+int		run_cd(char *tokens[]);
+int		run_pwd(char *tokens[]);
+int		builtin_exec(char *tokens[]);
+//globals
+char	*g_builtin[3];
+int		(*g_builtin_f[3])(char *tokens[]);
+
 
 enum	e_status
 {
@@ -66,11 +62,8 @@ char	*ft_strdup(const char *s1);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
-// built-in functions
 
-int		run_echo(char *tokens[]);
-int		run_cd(char *tokens[]);
-int		run_pwd(char *tokens[]);
+
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);

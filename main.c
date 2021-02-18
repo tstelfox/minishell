@@ -19,6 +19,10 @@ void	exec_shell(void)
 	input = NULL;
 	while (1) // check for errors
 	{
+		char	*tokens[] = {
+			"cd",
+			".."
+		};
 		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
 		read_line(&input);
 		// lexer
@@ -29,7 +33,7 @@ void	exec_shell(void)
 		// ft_putstr_fd("[" , STDOUT_FILENO);
 		// ft_putstr_fd(input , STDOUT_FILENO);
 		// ft_putstr_fd("]\n" , STDOUT_FILENO);
-		if (builtin_exec(*tokens[]) == 0) //Presuming that the input has been processed
+		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
 			break;
 	}
 	

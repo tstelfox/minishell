@@ -12,6 +12,22 @@
 
 #include "ghostshell.h"
 
+char	*g_builtin[3] = {
+		"echo",
+		"cd",
+		"pwd",
+		// "export",
+		// "unset",
+		// "env",
+		// "exit"
+};
+
+int		(*g_builtin_f[3])(char *tokens[]) = {
+		&run_echo,
+		&run_cd,
+		&run_pwd
+};
+
 int	run_echo(char *tokens[])
 {
 	// Some check to see if there's a Pipe or a redirection or some shiz
@@ -29,26 +45,28 @@ int	run_cd(char *tokens[])
 	if (tokens[1] == NULL)
 		return (0);
 	if (chdir(tokens[1]) != 0)
-		strerror("Frick ");
+		strerror(errno);
 	return (1);
 }
 
 int	run_pwd(char *tokens[])
 {
-	char	*buff;
+	char	*buff = NULL;
 
+	(void)tokens;
 	// if (tokens[1] != NULL)
 	// {
 	// 	printf("pwd doesn't accept arguments");
 	// 	return (0);
 	// }
 	if (getcwd(buff, sizeof(buff)) == NULL)
-		strerror("getcwd error");
+		strerror(errno);
 	else
 	{
-		printf("%s\n", buff);
+		ft_putstr_fd(buff, STDOUT_FILENO);
 		return (1);
 	}
+	return (0);
 }
 
 int	builtin_exec(char *tokens[])
@@ -61,7 +79,7 @@ int	builtin_exec(char *tokens[])
 	while (i < 7)
 	{
 		if (ft_strcmp(tokens[0], g_builtin[i]) == 0)
-			return (g_builtin_f[i]); // Need to integrate the parsing shit into this process
+			return (*g_builtin_f[i])(tokens); // Need to integrate the parsing shit into this process
 		i++;
 	}
 	return (0);
