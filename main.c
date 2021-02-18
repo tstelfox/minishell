@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/17 18:10:32 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/02/18 16:19:28 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void	exec_shell(void)
 	while (1) // check for errors
 	{
 		char	*tokens[] = {
-			"cd",
-			".."
+			"pwd"
 		};
 		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
+		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
+			break;
 		read_line(&input);
 		// lexer
 		lexer(input);
@@ -33,8 +34,6 @@ void	exec_shell(void)
 		// ft_putstr_fd("[" , STDOUT_FILENO);
 		// ft_putstr_fd(input , STDOUT_FILENO);
 		// ft_putstr_fd("]\n" , STDOUT_FILENO);
-		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
-			break;
 	}
 	
 }

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/16 13:33:57 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/02/18 16:24:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	run_cd(char *tokens[])
 
 int	run_pwd(char *tokens[])
 {
-	char	*buff = NULL;
+	char	buff[1024];
 
 	(void)tokens;
 	// if (tokens[1] != NULL)
@@ -59,6 +59,7 @@ int	run_pwd(char *tokens[])
 	// 	printf("pwd doesn't accept arguments");
 	// 	return (0);
 	// }
+	ft_putstr_fd("here", STDOUT_FILENO);
 	if (getcwd(buff, sizeof(buff)) == NULL)
 		strerror(errno);
 	else
@@ -78,6 +79,7 @@ int	builtin_exec(char *tokens[])
 		return (0);
 	while (i < 7)
 	{
+		// ft_putstr_fd("here", STDOUT_FILENO);
 		if (ft_strcmp(tokens[0], g_builtin[i]) == 0)
 			return (*g_builtin_f[i])(tokens); // Need to integrate the parsing shit into this process
 		i++;
