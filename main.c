@@ -22,19 +22,9 @@ void	exec_shell(void)
 	input = NULL;
 	while (1) // check for errors
 	{
-		// char	*tokens[] = {
-		// 	"pwd"
-		// };
 		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
 		read_line(&input);
-		// lexer
 		tokens = lexer(input);
-		// parser
-		// exec  command
-		// check errors
-		// ft_putstr_fd("[" , STDOUT_FILENO);
-		// ft_putstr_fd(input , STDOUT_FILENO);
-		// ft_putstr_fd("]\n" , STDOUT_FILENO);
 		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
 			break;
 		// pid = fork();

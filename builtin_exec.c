@@ -12,20 +12,21 @@
 
 #include "ghostshell.h"
 
-char	*g_builtin[3] = {
+char	*g_builtin[4] = {
 		"echo",
 		"cd",
 		"pwd",
-		// "export",
+		"exit"
+		// "export"
 		// "unset",
 		// "env",
-		// "exit"
 };
 
-int		(*g_builtin_f[3])(t_list *tokens) = {
+int		(*g_builtin_f[4])(t_list *tokens) = {
 		&run_echo,
 		&run_cd,
-		&run_pwd
+		&run_pwd,
+		&run_exit
 };
 
 int	run_echo(t_list *tokens)
@@ -33,7 +34,7 @@ int	run_echo(t_list *tokens)
 	// Some check to see if there's a Pipe or a redirection or some shiz
 	if (tokens->next == NULL)
 		return (0);
-	if (ft_strcmp(tokens->next->content, "-n") == 0)
+	// if (ft_strcmp(tokens->next->content, "-n") == 0)
 		//Don't print the newline
 	// Depending on flag Do the redirecting shit
 	ft_putstr_fd(tokens->next->content, STDOUT_FILENO); // Simplest case
@@ -80,6 +81,13 @@ int	run_pwd(t_list *tokens)
 	return (0);
 }
 
+int	run_exit(t_list *tokens)
+{
+	(void)tokens;
+	ft_putstr_fd("Please not here yet", STDOUT_FILENO);
+	exit(1);
+}
+
 int	builtin_exec(t_list *tokens)
 {
 	int	i;
@@ -93,5 +101,5 @@ int	builtin_exec(t_list *tokens)
 			return (*g_builtin_f[i])(tokens); // Need to integrate the parsing shit into this process
 		i++;
 	}
-	return (0);
+	return (1);
 }

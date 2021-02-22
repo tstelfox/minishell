@@ -47,10 +47,12 @@ typedef struct		s_shell
 int		run_echo(t_list *tokens);
 int		run_cd(t_list *tokens);
 int		run_pwd(t_list *tokens);
+int		run_env(t_list *tokens);
+int		run_exit(t_list *tokens);
 int		builtin_exec(t_list *tokens);
 //globals
-char	*g_builtin[3];
-int		(*g_builtin_f[3])(t_list *tokens);
+char	*g_builtin[4];
+int		(*g_builtin_f[4])(t_list *tokens);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
