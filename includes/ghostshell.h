@@ -42,6 +42,16 @@ typedef struct		s_shell
 	int		status;
 }					t_shell;
 
+typedef	struct		s_env
+{
+	char			*name;
+	void			*content;
+	t_env			*next;
+}					t_env;
+
+t_env	*g_env;
+
+
 // built-in functions
 
 int		run_echo(t_list *tokens);

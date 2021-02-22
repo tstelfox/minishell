@@ -45,11 +45,17 @@ int	run_cd(t_list *tokens)
 {
 	tokens = tokens->next; //Spaces are list items so need to be skipped
 	tokens = tokens->next;
-	// ft_putstr_fd(tokens->content, STDOUT_FILENO);
+	// t_env	yo = *g_env->content;
+	ft_putstr_fd(g_env.content->content, STDOUT_FILENO);
 	if (tokens->content == NULL)
 		return (0);
 	//To deal with ~ need to use the env variable
-	//else if (ft_strcmp(tokens->content, "~") == 0)
+	else if (ft_strcmp(tokens->content, "~") == 0)
+	{
+		// printf("chdir returns %d\n", chdir(tokens->content));
+		if (chdir(g_env->content) != 0)
+			strerror(errno);
+	}
 	else
 	{
 		// printf("chdir returns %d\n", chdir(tokens->content));
