@@ -46,15 +46,6 @@ void	exec_shell(void)
 int	main(void)
 {
 	// Set HOME env variable
-	t_env	*home;
-	home = malloc(sizeof(t_env));
-	// t_list	*env;
-
-	home->name = ft_strdup("HOME");
-	home->content = ft_strdup("/home/Users/codemuncher"); // this shit need fixed for every user
-
-	ft_putstr_fd(home->name, STDOUT_FILENO);
-	g_env = ft_lstnew(&home);
 	exec_shell();
 	return (0);
 }
