@@ -29,7 +29,8 @@ LFT = lft_utils/ft_putstr_fd.c \
 		lft_utils/ft_lstdelone_bonus.c \
 		lft_utils/ft_lstiter_bonus.c \
 		lft_utils/ft_lstnew_bonus.c \
-		lft_utils/ft_lstsize_bonus.c
+		lft_utils/ft_lstsize_bonus.c \
+		lft_utils/ft_lstlast_bonus.c
 
 ERR = error/error.c
 

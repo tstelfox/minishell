@@ -22,34 +22,44 @@ char	*g_builtin[3] = {
 		// "exit"
 };
 
-int		(*g_builtin_f[3])(char *tokens[]) = {
+int		(*g_builtin_f[3])(t_list *tokens) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd
 };
 
-int	run_echo(char *tokens[])
+int	run_echo(t_list *tokens)
 {
 	// Some check to see if there's a Pipe or a redirection or some shiz
-	if (tokens[1] == NULL)
+	if (tokens->next == NULL)
 		return (0);
-	if (ft_strcmp(tokens[1], "-n") == 0)
+	if (ft_strcmp(tokens->next->content, "-n") == 0)
 		//Don't print the newline
 	// Depending on flag Do the redirecting shit
-	ft_putstr_fd(tokens[1], STDOUT_FILENO); // Simplest case
+	ft_putstr_fd(tokens->next->content, STDOUT_FILENO); // Simplest case
 	return (1);
 }
 
-int	run_cd(char *tokens[])
+int	run_cd(t_list *tokens)
 {
-	if (tokens[1] == NULL)
+	tokens = tokens->next; //Spaces are list items so need to be skipped
+	tokens = tokens->next;
+	// ft_putstr_fd(tokens->content, STDOUT_FILENO);
+	if (tokens->content == NULL)
 		return (0);
-	if (chdir(tokens[1]) != 0)
-		strerror(errno);
+	//To deal with ~ need to use the env variable
+	//else if (ft_strcmp(tokens->content, "~") == 0)
+	else
+	{
+		// printf("chdir returns %d\n", chdir(tokens->content));
+		if (chdir(tokens->content) != 0)
+			strerror(errno);
+		// ft_putstr_fd("In here at all lads\n", STDOUT_FILENO);
+	}
 	return (1);
 }
 
-int	run_pwd(char *tokens[])
+int	run_pwd(t_list *tokens)
 {
 	char	buff[1024];
 
@@ -64,21 +74,22 @@ int	run_pwd(char *tokens[])
 	else
 	{
 		ft_putstr_fd(buff, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		return (1);
 	}
 	return (0);
 }
 
-int	builtin_exec(char *tokens[])
+int	builtin_exec(t_list *tokens)
 {
 	int	i;
 
 	i = 0;
-	if (tokens[0] == NULL)
+	if (tokens->content == NULL)
 		return (0);
 	while (i < 7)
 	{
-		if (ft_strcmp(tokens[0], g_builtin[i]) == 0)
+		if (ft_strcmp(tokens->content, g_builtin[i]) == 0)
 			return (*g_builtin_f[i])(tokens); // Need to integrate the parsing shit into this process
 		i++;
 	}

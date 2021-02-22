@@ -21,15 +21,6 @@
 # include "get_next_line.h"
 
 
-// built-in functions
-
-int		run_echo(char *tokens[]);
-int		run_cd(char *tokens[]);
-int		run_pwd(char *tokens[]);
-int		builtin_exec(char *tokens[]);
-//globals
-char	*g_builtin[3];
-int		(*g_builtin_f[3])(char *tokens[]);
 
 
 enum	e_status
@@ -50,6 +41,16 @@ typedef struct		s_shell
 	// status
 	int		status;
 }					t_shell;
+
+// built-in functions
+
+int		run_echo(t_list *tokens);
+int		run_cd(t_list *tokens);
+int		run_pwd(t_list *tokens);
+int		builtin_exec(t_list *tokens);
+//globals
+char	*g_builtin[3];
+int		(*g_builtin_f[3])(t_list *tokens);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
@@ -81,6 +82,6 @@ void	error_handler(char *error_message);
 
 // lexer
 void	read_line(char **input);
-void	lexer(char *input);
+t_list	*lexer(char *input);
 
 #endif

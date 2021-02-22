@@ -25,13 +25,13 @@
 // - if quote read untill valid end quote
 // - check for invalid ( \") -> check if valid "\", so not "\\"
 
-void print_data(void *data)
-{
-	char *str = data;
-	ft_putstr_fd("[", STDOUT_FILENO);
-	ft_putstr_fd(str, STDOUT_FILENO);
-	ft_putstr_fd("]", STDOUT_FILENO);
-}
+// void print_data(void *data)
+// {
+// 	// char *str = data;
+// 	// ft_putstr_fd("[", STDOUT_FILENO);
+// 	// ft_putstr_fd(str, STDOUT_FILENO);
+// 	// ft_putstr_fd("]", STDOUT_FILENO);
+// }
 
 t_list	*split_literal_tokens(char *input)
 {
@@ -73,11 +73,12 @@ t_list	*split_literal_tokens(char *input)
 	return (ptr);
 }
 
-void	lexer(char *input)
+t_list	*lexer(char *input)
 {
 	t_list *literal_tokens;
 
 	literal_tokens = split_literal_tokens(input);
-	ft_lstiter(literal_tokens, print_data);
-	ft_putstr_fd("\n", STDOUT_FILENO);
+	// ft_lstiter(literal_tokens, print_data);
+	// ft_putstr_fd("\n", STDOUT_FILENO);
+	return (literal_tokens);
 }
