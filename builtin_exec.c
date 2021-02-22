@@ -51,7 +51,7 @@ int	run_cd(char *tokens[])
 
 int	run_pwd(char *tokens[])
 {
-	char	*buff = NULL;
+	char	buff[1024];
 
 	(void)tokens;
 	// if (tokens[1] != NULL)
