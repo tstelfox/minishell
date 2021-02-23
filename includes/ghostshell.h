@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/17 18:07:38 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/02/18 16:33:32 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,31 @@ typedef	struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-
 // built-in functions
 
-int		run_echo(t_list *tokens);
-int		run_cd(t_list *tokens);
-int		run_pwd(t_list *tokens);
-int		run_env(t_list *tokens);
-int		run_exit(t_list *tokens);
-int		builtin_exec(t_list *tokens);
+int		run_echo(t_list *tokens, t_env *env_list);
+int		run_cd(t_list *tokens, t_env *env_list);
+int		run_pwd(t_list *tokens, t_env *env_list);
+int		run_env(t_list *tokens, t_env *env_list);
+int		run_exit(t_list *tokens, t_env *env_list);
+int		builtin_exec(t_list *tokens, t_env *env_list);
 //globals
 char	*g_builtin[4];
-int		(*g_builtin_f[4])(t_list *tokens);
+int		(*g_builtin_f[4])(t_list *tokens, t_env *env_list);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	ft_putstr_fd(char *str, int fd);
 int		ft_strcmp(const char *str1, const char *str2);
+void	ft_putnbr_fd(int n, int fd);
+void	ft_putchar_fd(char c, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 
 
@@ -86,6 +88,9 @@ t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
+
+//env list
+t_env	*ft_envnew(char *name, void *content);
 
 // error
 void	error_handler(char *error_message);

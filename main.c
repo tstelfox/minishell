@@ -16,16 +16,19 @@ void	exec_shell(void)
 {
 	char	*input;
 	t_list	*tokens = NULL;
+	t_env	*env_list;
+
 	// pid_t	pid;
 	// int		status;
 
+	env_list = ft_envnew("HOME", "/Users/codemuncher");
 	input = NULL;
 	while (1) // check for errors
 	{
 		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
 		read_line(&input);
 		tokens = lexer(input);
-		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
+		if (builtin_exec(tokens, env_list) == 0) //Presuming that the input has been processed
 			break;
 		// pid = fork();
 

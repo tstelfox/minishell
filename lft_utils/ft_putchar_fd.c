@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
+/*   ft_putchar_fd.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 15:27:07 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/28 13:48:03 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/18 16:33:22 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_putchar_fd(char c, int fd)
 {
-	t_list *temp;
-
-	if (!alst)
-		return ;
-	temp = *alst;
-	if (!*alst)
-		*alst = new;
-	else
-	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
-	}
+	write(fd, &c, 1);
 }

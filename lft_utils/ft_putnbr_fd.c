@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memcpy.c                                        :+:    :+:            */
+/*   ft_putnbr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/10/28 17:54:37 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 14:58:41 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/03 19:23:00 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/18 16:31:46 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	ft_putnbr_fd(int n, int fd)
 {
-	size_t			i;
-	char			*dest;
-	const char		*sorc;
+	int int_min;
 
-	i = 0;
-	dest = dst;
-	sorc = src;
-	if (!dst && !src)
-		return (dst);
-	while (i < n)
+	int_min = -2147483648;
+	if (n == int_min)
+		ft_putstr_fd("-2147483648", fd);
+	else if (n < 0)
 	{
-		dest[i] = sorc[i];
-		i++;
+		ft_putchar_fd('-', fd);
+		ft_putnbr_fd(-n, fd);
 	}
-	return (dst);
+	else if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putchar_fd(n % 10 + '0', fd);
+	}
+	else if (n >= 0 && n <= 9)
+		ft_putchar_fd(n % 10 + '0', fd);
 }
