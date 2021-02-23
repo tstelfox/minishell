@@ -39,6 +39,7 @@ typedef struct		s_shell
 	// save tokens
 	// comands
 	// status
+	char	**env;
 	int		status;
 }					t_shell;
 
@@ -51,15 +52,15 @@ typedef	struct		s_env
 
 // built-in functions
 
-int		run_echo(t_list *tokens, t_env *env_list);
-int		run_cd(t_list *tokens, t_env *env_list);
-int		run_pwd(t_list *tokens, t_env *env_list);
-int		run_env(t_list *tokens, t_env *env_list);
-int		run_exit(t_list *tokens, t_env *env_list);
-int		builtin_exec(t_list *tokens, t_env *env_list);
+int		run_echo(t_list *tokens, t_shell *ghost);
+int		run_cd(t_list *tokens, t_shell *ghost);
+int		run_pwd(t_list *tokens, t_shell *ghost);
+int		run_env(t_list *tokens, t_shell *ghost);
+int		run_exit(t_list *tokens, t_shell *ghost);
+int		builtin_exec(t_list *tokens, t_shell *ghost);
 //globals
 char	*g_builtin[5];
-int		(*g_builtin_f[5])(t_list *tokens, t_env *env_list);
+int		(*g_builtin_f[5])(t_list *tokens, t_shell *ghost);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
@@ -74,6 +75,7 @@ char	*ft_strdup(const char *s1);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 
 
 

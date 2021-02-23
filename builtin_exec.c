@@ -24,7 +24,7 @@ char	*g_builtin[5] = {
 		// "unset",
 };
 
-int		(*g_builtin_f[5])(t_list *tokens, t_env *env_list) = {
+int		(*g_builtin_f[5])(t_list *tokens, t_shell *ghost) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
@@ -32,9 +32,9 @@ int		(*g_builtin_f[5])(t_list *tokens, t_env *env_list) = {
 		&run_env
 };
 
-int	run_echo(t_list *tokens, t_env *env_list)
+int	run_echo(t_list *tokens, t_shell *ghost)
 {
-	(void)env_list;
+	(void)ghost;
 	// Some check to see if there's a Pipe or a redirection or some shiz
 	if (tokens->next == NULL)
 		return (0);
@@ -45,19 +45,24 @@ int	run_echo(t_list *tokens, t_env *env_list)
 	return (1);
 }
 
-int	run_cd(t_list *tokens, t_env *env_list)
+int	run_cd(t_list *tokens, t_shell *ghost)
 {
 	tokens = tokens->next; //Spaces are list items so need to be skipped
 	tokens = tokens->next;
+	int i = 0;
 	if (tokens->content == NULL)
 		return (0);
 	//To deal with ~ need to use the env variable
 	else if (ft_strcmp(tokens->content, "~") == 0)
 	{
-		if (ft_strcmp(env_list->name, "HOME") == 0)
+		while (ghost->env[i])
 		{
-			if (chdir(env_list->content) != 0)
-				strerror(errno);
+			if (ft_strnstr(ghost->env[i], "HOME", ft_strlen("HOME")) != 0)
+			{
+				if (chdir(&ghost->env[i][5]) != 0)
+					strerror(errno);
+			}
+			i++;
 		}
 		// printf("chdir returns %d\n", chdir(tokens->content));
 	}
@@ -71,12 +76,12 @@ int	run_cd(t_list *tokens, t_env *env_list)
 	return (1);
 }
 
-int	run_pwd(t_list *tokens, t_env *env_list)
+int	run_pwd(t_list *tokens, t_shell *ghost)
 {
 	char	buff[1024];
 
 	(void)tokens;
-	(void)env_list;
+	(void)ghost;
 	// if (tokens[1] != NULL)
 	// {
 	// 	printf("pwd doesn't accept arguments");
@@ -93,26 +98,32 @@ int	run_pwd(t_list *tokens, t_env *env_list)
 	return (0);
 }
 
-int	run_env(t_list *tokens, t_env *env_list)
+int	run_env(t_list *tokens, t_shell *ghost)
 {
 	(void)tokens;
+	int i = 0;
 
 
 	if (tokens->next != NULL)
 		return (1);
-	ft_enviter(env_list, print_env);
+	while (ghost->env[i])
+	{
+		ft_putstr_fd(ghost->env[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		i++;
+	}
 	return (1);
 }
 
-int	run_exit(t_list *tokens, t_env *env_list)
+int	run_exit(t_list *tokens, t_shell *ghost)
 {
 	(void)tokens;
-	(void)env_list;
+	(void)ghost;
 	// ft_putstr_fd("Please not here yet", STDOUT_FILENO);
 	exit(1);
 }
 
-int	builtin_exec(t_list *tokens, t_env *env_list)
+int	builtin_exec(t_list *tokens, t_shell *ghost)
 {
 	int	i;
 
@@ -122,7 +133,7 @@ int	builtin_exec(t_list *tokens, t_env *env_list)
 	while (i < 7)
 	{
 		if (ft_strcmp(tokens->content, g_builtin[i]) == 0)
-			return (*g_builtin_f[i])(tokens, env_list); // Need to integrate the parsing shit into this process
+			return (*g_builtin_f[i])(tokens, ghost); // Need to integrate the parsing shit into this process
 		i++;
 	}
 	return (1);

@@ -36,7 +36,8 @@ LFT = lft_utils/ft_putstr_fd.c \
 		lft_utils/ft_lstlast_bonus.c \
 		lft_utils/ft_env_new.c \
 		lft_utils/ft_env_iter.c \
-		lft_utils/ft_envadd_back.c
+		lft_utils/ft_envadd_back.c \
+		lft_utils/ft_strnstr.c
 
 ERR = error/error.c
 
