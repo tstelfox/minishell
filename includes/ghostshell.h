@@ -46,10 +46,8 @@ typedef	struct		s_env
 {
 	char			*name;
 	void			*content;
-	t_env			*next;
+	struct s_env	*next;
 }					t_env;
-
-t_env	*g_env;
 
 
 // built-in functions
