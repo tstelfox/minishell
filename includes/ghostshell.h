@@ -58,8 +58,8 @@ int		run_env(t_list *tokens, t_env *env_list);
 int		run_exit(t_list *tokens, t_env *env_list);
 int		builtin_exec(t_list *tokens, t_env *env_list);
 //globals
-char	*g_builtin[4];
-int		(*g_builtin_f[4])(t_list *tokens, t_env *env_list);
+char	*g_builtin[5];
+int		(*g_builtin_f[5])(t_list *tokens, t_env *env_list);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
@@ -91,6 +91,9 @@ int		ft_lstsize(t_list *lst);
 
 //env list
 t_env	*ft_envnew(char *name, void *content);
+void	ft_enviter(t_env *lst, void (*f)(void *));
+void	ft_envaddback(t_env **lst, t_env *item);
+void	print_env(void *env_list);
 
 // error
 void	error_handler(char *error_message);

@@ -21,7 +21,10 @@ void	exec_shell(void)
 	// pid_t	pid;
 	// int		status;
 
+	// Testing env variable list and it works. Gets printed by "env" built-in
 	env_list = ft_envnew("HOME", "/Users/codemuncher");
+	ft_envaddback(&env_list, ft_envnew("MUMYER", "hehe"));
+
 	input = NULL;
 	while (1) // check for errors
 	{

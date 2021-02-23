@@ -12,21 +12,24 @@
 
 #include "ghostshell.h"
 
-char	*g_builtin[4] = {
+// void	(*print_env)(void *env_list);
+
+char	*g_builtin[5] = {
 		"echo",
 		"cd",
 		"pwd",
-		"exit"
+		"exit",
+		"env"
 		// "export"
 		// "unset",
-		// "env",
 };
 
-int		(*g_builtin_f[4])(t_list *tokens, t_env *env_list) = {
+int		(*g_builtin_f[5])(t_list *tokens, t_env *env_list) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
-		&run_exit
+		&run_exit,
+		&run_env
 };
 
 int	run_echo(t_list *tokens, t_env *env_list)
@@ -88,6 +91,17 @@ int	run_pwd(t_list *tokens, t_env *env_list)
 		return (1);
 	}
 	return (0);
+}
+
+int	run_env(t_list *tokens, t_env *env_list)
+{
+	(void)tokens;
+
+
+	if (tokens->next != NULL)
+		return (1);
+	ft_enviter(env_list, print_env);
+	return (1);
 }
 
 int	run_exit(t_list *tokens, t_env *env_list)

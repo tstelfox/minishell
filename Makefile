@@ -34,14 +34,16 @@ LFT = lft_utils/ft_putstr_fd.c \
 		lft_utils/ft_lstnew_bonus.c \
 		lft_utils/ft_lstsize_bonus.c \
 		lft_utils/ft_lstlast_bonus.c \
-		lft_utils/ft_env_new.c
+		lft_utils/ft_env_new.c \
+		lft_utils/ft_env_iter.c \
+		lft_utils/ft_envadd_back.c
 
 ERR = error/error.c
 
 LEX = lexer/read_input.c \
 		lexer/lexer.c
 
-SRC = main.c builtin_exec.c \
+SRC = main.c builtin_exec.c env_print.c \
 		$(GNL) \
 		$(LFT) \
 		$(ERR) \
