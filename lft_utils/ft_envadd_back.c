@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
+/*   ft_envadd_back.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 15:27:07 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/23 12:51:06 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/23 12:51:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_envaddback(t_env **lst, t_env *item)
 {
-	t_list *temp;
+	t_env *temp;
 
-	if (!alst)
+	if (!lst)
 		return ;
-	temp = *alst;
-	if (!*alst)
-		*alst = new;
+	temp = *lst;
+	if (!*lst)
+		*lst = item;
 	else
 	{
 		while (temp->next != NULL)
 			temp = temp->next;
-		temp->next = new;
+		temp->next = item;
 	}
 }

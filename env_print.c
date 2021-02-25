@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
+/*   env_print.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 15:27:07 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/23 12:27:56 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/23 12:27:56 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	print_env(void *env_list)
 {
-	t_list *temp;
-
-	if (!alst)
-		return ;
-	temp = *alst;
-	if (!*alst)
-		*alst = new;
-	else
-	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
-	}
+	t_env *env = (t_env*)env_list;
+	ft_putstr_fd(env->name, STDOUT_FILENO);
+	ft_putstr_fd("=", STDOUT_FILENO);
+	ft_putstr_fd(env->content, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 }

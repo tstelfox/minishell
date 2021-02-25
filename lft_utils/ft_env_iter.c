@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
+/*   ft_env_iter.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 15:27:07 by zenotan       ########   odam.nl         */
+/*   Created: 2021/02/23 12:24:27 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/23 12:24:27 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+void	ft_enviter(t_env *lst, void (*f)(void *))
 {
-	t_list *temp;
+	t_env *temp;
 
-	if (!alst)
+	if (!lst)
 		return ;
-	temp = *alst;
-	if (!*alst)
-		*alst = new;
-	else
+	temp = lst;
+	while (temp)
 	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
+		f(temp);
+		temp = temp->next;
 	}
 }

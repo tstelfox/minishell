@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/17 18:09:01 by zenotan       ########   odam.nl          #
+#    Updated: 2021/02/22 14:46:17 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ GNL = gnl/get_next_line.c \
 		gnl/get_next_line_utils.c
 
 LFT = lft_utils/ft_putstr_fd.c \
+		lft_utils/ft_putnbr_fd.c \
+		lft_utils/ft_putchar_fd.c \
 		lft_utils/ft_strlen.c \
 		lft_utils/ft_strcmp.c \
 		lft_utils/ft_split.c \
@@ -24,19 +26,25 @@ LFT = lft_utils/ft_putstr_fd.c \
 		lft_utils/ft_strdup.c \
 		lft_utils/ft_strlcpy.c \
 		lft_utils/ft_substr.c \
+		lft_utils/ft_strjoin.c \
 		lft_utils/ft_lstadd_back_bonus.c \
 		lft_utils/ft_lstclear_bonus.c \
 		lft_utils/ft_lstdelone_bonus.c \
 		lft_utils/ft_lstiter_bonus.c \
 		lft_utils/ft_lstnew_bonus.c \
-		lft_utils/ft_lstsize_bonus.c
+		lft_utils/ft_lstsize_bonus.c \
+		lft_utils/ft_lstlast_bonus.c \
+		lft_utils/ft_env_new.c \
+		lft_utils/ft_env_iter.c \
+		lft_utils/ft_envadd_back.c \
+		lft_utils/ft_strnstr.c
 
 ERR = error/error.c
 
 LEX = lexer/read_input.c \
 		lexer/lexer.c
 
-SRC = main.c builtin_exec.c \
+SRC = main.c builtin_exec.c env_print.c \
 		$(GNL) \
 		$(LFT) \
 		$(ERR) \

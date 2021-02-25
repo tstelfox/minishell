@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strcmp.c                                        :+:    :+:            */
+/*   ft_strnstr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/16 13:38:18 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/16 13:38:18 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/23 16:33:20 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/23 16:33:20 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-int		ft_strcmp(const char *str1, const char *str2)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	int i;
+	size_t	i;
+	size_t	d;
 
 	i = 0;
-	while (str1[i] && str2[i])
+	d = 0;
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	while ((i - d < len) && (haystack[i] != '\0'))
 	{
-		if (str1[i] == str2[i])
+		while ((haystack[i] != needle[0]) && (i < len) \
+				&& (haystack[i] != '\0'))
 			i++;
-		else
-			return((unsigned char)str1[i] - (unsigned char)str2[i]);
+		d = 0;
+		while ((haystack[i] == needle[d]) && (i < len))
+		{
+			i++;
+			d++;
+			if (needle[d] == '\0')
+				return ((char *)&haystack[i - d]);
+		}
 	}
-	return((unsigned char)str1[i] - (unsigned char)str2[i]);
+	return (0);
 }

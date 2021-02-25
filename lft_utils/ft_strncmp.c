@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstadd_back_bonus.c                             :+:    :+:            */
+/*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:38:57 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 15:27:07 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/30 12:29:53 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:37:48 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_lstadd_back(t_list **alst, t_list *new)
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	t_list *temp;
-
-	if (!alst)
-		return ;
-	temp = *alst;
-	if (!*alst)
-		*alst = new;
-	else
+	while (n != 0 && (*s1 != '\0' || *s2 != '\0'))
 	{
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
+		if (*s1 == *s2)
+		{
+			s1++;
+			s2++;
+		}
+		else
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		n--;
 	}
+	return (0);
 }

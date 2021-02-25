@@ -10,19 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+// #include "ghostshell.h"
+#include <stdio.h>
 #define BUFF_SIZE 77
 
-int	main(void)
+int	main(int argc, char *argv[], char *envp[])
 {
-	char	buffer[BUFF_SIZE];
-	int		i;
+	for (int i = 0; envp[i]; i++) {
 
-	i = 0;
-	while (i < 69)
-	{
-		buffer[i] = 'a';
-		i++;
+		printf("%s\n", envp[i]);
 	}
-	return (buffer[46] == 'a' ? 0 : 69);
+	return (0);
 }
