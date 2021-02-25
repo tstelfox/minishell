@@ -14,22 +14,23 @@
 
 // void	(*print_env)(void *env_list);
 
-char	*g_builtin[5] = {
+char	*g_builtin[6] = {
 		"echo",
 		"cd",
 		"pwd",
 		"exit",
-		"env"
-		// "export"
+		"env",
+		"export"
 		// "unset",
 };
 
-int		(*g_builtin_f[5])(t_list *tokens, t_shell *ghost) = {
+int		(*g_builtin_f[6])(t_list *tokens, t_shell *ghost) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
 		&run_exit,
-		&run_env
+		&run_env,
+		&run_export
 };
 
 int	run_echo(t_list *tokens, t_shell *ghost)
@@ -115,6 +116,40 @@ int	run_env(t_list *tokens, t_shell *ghost)
 	return (1);
 }
 
+int	run_export(t_list *tokens, t_shell *ghost)
+{
+	(void)tokens;
+	(void)ghost;
+	// return (1);
+	
+	// char	**temp;
+	// Why can't we just use realloc ffs?
+
+	// if (!tokens->next)
+	// 	return (1);
+	// temp = ghost->env;
+	// free (ghost->env);
+	// ghost->env = NULL;
+	// printf("%lu\n", sizeof(temp));
+	// int i = 0;
+	// while (ghost->env[i])
+	// 	i++;
+	// temp = (char **)malloc(sizeof(char *) * (i + 1));
+	// for (int k= 0; ghost->env[k]; k++)
+	// {
+	// 	temp[k] = ft_strdup(ghost->env[k]);
+	// 	ft_putstr_fd(temp[k], 1);
+	// 	ft_putstr_fd("\n", 1);
+	// }
+	// temp[i] = ft_strdup(tokens++->content);
+	// temp[i + 1] = 0;
+	// free (ghost->env);
+	// ghost->env = NULL;
+	// ghost->env = (char **)malloc(sizeof(*temp));
+	// ghost->env = temp;
+	return (1);
+}
+
 int	run_exit(t_list *tokens, t_shell *ghost)
 {
 	(void)tokens;
@@ -130,6 +165,15 @@ int	builtin_exec(t_list *tokens, t_shell *ghost)
 	i = 0;
 	if (tokens->content == NULL)
 		return (0);
+	// while (ghost->env[i])
+	// {
+	// 	// ft_putstr_fd(envp[i], STDOUT_FILENO);
+	// 	// ft_putstr_fd("\n", STDOUT_FILENO);
+	// 	// ft_putstr_fd("This is the struct: ", 1);
+	// 	ft_putstr_fd(ghost->env[i], STDOUT_FILENO);
+	// 	ft_putstr_fd("\n", STDOUT_FILENO);
+	// 	i++;
+	// }
 	while (i < 7)
 	{
 		if (ft_strcmp(tokens->content, g_builtin[i]) == 0)

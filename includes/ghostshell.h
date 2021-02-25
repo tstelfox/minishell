@@ -57,10 +57,11 @@ int		run_cd(t_list *tokens, t_shell *ghost);
 int		run_pwd(t_list *tokens, t_shell *ghost);
 int		run_env(t_list *tokens, t_shell *ghost);
 int		run_exit(t_list *tokens, t_shell *ghost);
+int		run_export(t_list *tokens, t_shell *ghost);
 int		builtin_exec(t_list *tokens, t_shell *ghost);
 //globals
-char	*g_builtin[5];
-int		(*g_builtin_f[5])(t_list *tokens, t_shell *ghost);
+char	*g_builtin[6];
+int		(*g_builtin_f[6])(t_list *tokens, t_shell *ghost);
 
 // lft_utils
 size_t	ft_strlen(const char *s);

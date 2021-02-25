@@ -12,24 +12,38 @@
 
 #include "ghostshell.h"
 
-void	exec_shell(char *envp[])
+void	exec_shell(char **envp)
 {
 	char	*input;
 	t_list	*tokens = NULL;
 	t_shell ghost;
 
 	ghost.status = 0;
-	ghost.env = (char **)malloc(sizeof(*envp));
+	ghost.env = (char **)malloc(sizeof(envp));
 	// t_env	*env_list;
 	int i = 0;
 
 	while (envp[i])
 	{
 		ghost.env[i] = ft_strdup(envp[i]);
-		// ft_putstr_fd(ghost.env[i], STDOUT_FILENO);
+		// ft_putstr_fd(envp[i], STDOUT_FILENO);
+		// ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd("This is in the loop: ", 1);
+		ft_putstr_fd(ghost.env[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		
 		i++;
 	}
 	ghost.env[i] = 0;
+	ft_putstr_fd(ghost.env[0], STDOUT_FILENO);
+	ft_putstr_fd(ghost.env[1], STDOUT_FILENO);
+	ft_putstr_fd(ghost.env[2], STDOUT_FILENO);
+	// for (int k = 0; ghost.env[k]; k++)
+	// {
+	// 	ft_putstr_fd("This is after: ", 1);
+	// 	ft_putstr_fd(ghost.env[k], STDOUT_FILENO);
+	// 	ft_putstr_fd("\n", STDOUT_FILENO);
+	// }
 	// pid_t	pid;
 	// int		status;
 
