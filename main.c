@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/25 13:00:24 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/02/25 13:38:35 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ void	exec_shell(char *envp[])
 	t_shell ghost;
 
 	ghost.status = 0;
-	// t_env	*env_list;
 	int i = 0;
-	// ghost.env = (char **)malloc(sizeof((char *)*envp));
 	
 
 	while (envp[i])
@@ -36,10 +34,6 @@ void	exec_shell(char *envp[])
 	ghost.env[k] = 0;
 	// pid_t	pid;
 	// int		status;
-
-	// Testing env variable list and it works. Gets printed by "env" built-in
-	// env_list = ft_envnew("HOME", "/Users/codemuncher");
-	// ft_envaddback(&env_list, ft_envnew("MUMYER", "hehe"));
 
 	input = NULL;
 	while (1) // check for errors

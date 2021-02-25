@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/22 14:46:17 by zenotan       ########   odam.nl          #
+#    Updated: 2021/02/25 13:40:16 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,6 @@ LFT = lft_utils/ft_putstr_fd.c \
 		lft_utils/ft_lstnew_bonus.c \
 		lft_utils/ft_lstsize_bonus.c \
 		lft_utils/ft_lstlast_bonus.c \
-		lft_utils/ft_env_new.c \
-		lft_utils/ft_env_iter.c \
-		lft_utils/ft_envadd_back.c \
 		lft_utils/ft_strnstr.c
 
 ERR = error/error.c
@@ -44,7 +41,7 @@ ERR = error/error.c
 LEX = lexer/read_input.c \
 		lexer/lexer.c
 
-SRC = main.c builtin_exec.c env_print.c \
+SRC = main.c builtin_exec.c \
 		$(GNL) \
 		$(LFT) \
 		$(ERR) \

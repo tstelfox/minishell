@@ -6,30 +6,29 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/25 13:09:16 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/02/25 13:45:30 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-// void	(*print_env)(void *env_list);
-
-char	*g_builtin[6] = {
+char	*g_builtin[7] = {
 		"echo",
 		"cd",
 		"pwd",
 		"exit",
 		"env",
+		"unset",
 		"export"
-		// "unset",
 };
 
-int		(*g_builtin_f[6])(t_list *tokens, t_shell *ghost) = {
+int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
 		&run_exit,
 		&run_env,
+		&run_unset,
 		&run_export
 };
 
@@ -53,7 +52,6 @@ int	run_cd(t_list *tokens, t_shell *ghost)
 	int i = 0;
 	if (tokens->content == NULL)
 		return (0);
-	//To deal with ~ need to use the env variable
 	else if (ft_strcmp(tokens->content, "~") == 0)
 	{
 		while (ghost->env[i])
@@ -65,14 +63,11 @@ int	run_cd(t_list *tokens, t_shell *ghost)
 			}
 			i++;
 		}
-		// printf("chdir returns %d\n", chdir(tokens->content));
 	}
 	else
 	{
-		// printf("chdir returns %d\n", chdir(tokens->content));
 		if (chdir(tokens->content) != 0)
 			strerror(errno);
-		// ft_putstr_fd("In here at all lads\n", STDOUT_FILENO);
 	}
 	return (1);
 }
@@ -83,11 +78,8 @@ int	run_pwd(t_list *tokens, t_shell *ghost)
 
 	(void)tokens;
 	(void)ghost;
-	// if (tokens[1] != NULL)
-	// {
-	// 	printf("pwd doesn't accept arguments");
-	// 	return (0);
-	// }
+	if (tokens->next != NULL)
+		return (1);
 	if (getcwd(buff, sizeof(buff)) == NULL)
 		strerror(errno);
 	else
@@ -137,6 +129,13 @@ int	run_export(t_list *tokens, t_shell *ghost)
 	ghost->env = (char **)malloc(sizeof(*temp));
 	ghost->env = temp;
 	return (1);
+}
+
+int	run_unset(t_list *tokens, t_shell *ghost)
+{
+	(void)tokens;
+	(void)ghost;
+	return(1);
 }
 
 int	run_exit(t_list *tokens, t_shell *ghost)
