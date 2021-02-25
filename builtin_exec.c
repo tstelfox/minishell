@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/16 13:33:57 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/02/25 13:07:53 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,35 +118,37 @@ int	run_env(t_list *tokens, t_shell *ghost)
 
 int	run_export(t_list *tokens, t_shell *ghost)
 {
-	(void)tokens;
-	(void)ghost;
-	// return (1);
+	// (void)tokens;
+	// (void)ghost;
 	
-	// char	**temp;
+	char	**temp;
 	// Why can't we just use realloc ffs?
 
-	// if (!tokens->next)
-	// 	return (1);
+	if (!tokens->next)
+		return (1);
 	// temp = ghost->env;
 	// free (ghost->env);
 	// ghost->env = NULL;
-	// printf("%lu\n", sizeof(temp));
-	// int i = 0;
-	// while (ghost->env[i])
-	// 	i++;
-	// temp = (char **)malloc(sizeof(char *) * (i + 1));
-	// for (int k= 0; ghost->env[k]; k++)
-	// {
-	// 	temp[k] = ft_strdup(ghost->env[k]);
-	// 	ft_putstr_fd(temp[k], 1);
-	// 	ft_putstr_fd("\n", 1);
-	// }
-	// temp[i] = ft_strdup(tokens++->content);
-	// temp[i + 1] = 0;
-	// free (ghost->env);
-	// ghost->env = NULL;
-	// ghost->env = (char **)malloc(sizeof(*temp));
-	// ghost->env = temp;
+	int i = 0;
+	while (ghost->env[i])
+		i++;
+	temp = (char **)malloc(sizeof(char *) * (i + 2));
+	for (int k= 0; ghost->env[k]; k++)
+	{
+		temp[k] = ft_strdup(ghost->env[k]);
+		// ft_putstr_fd(temp[k], 1);
+		// ft_putstr_fd("\n", 1);
+	}
+	// ft_putstr_fd(tokens->content, 1);
+	tokens = tokens->next;
+	tokens = tokens->next; //remember this time
+	// ft_putstr_fd(tokens->content, 1);
+	temp[i] = ft_strdup(tokens->content);
+	temp[i + 1] = 0;
+	free (ghost->env);
+	ghost->env = NULL;
+	ghost->env = (char **)malloc(sizeof(*temp));
+	ghost->env = temp;
 	return (1);
 }
 
