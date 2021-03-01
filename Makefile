@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/24 14:26:15 by zenotan       ########   odam.nl          #
+#    Updated: 2021/03/01 15:40:59 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,10 @@ ERR = error/error.c
 LEX = read_input.c \
 		lexer.c
 
+PAR = parser.c
+
+PAR_PREFIX = $(addprefix parser/, $(PAR))
+
 LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
@@ -46,7 +50,8 @@ SRC = main.c \
 		$(GNL) \
 		$(LFT_PREFIX) \
 		$(ERR) \
-		$(LEX_PREFIX)
+		$(LEX_PREFIX) \
+		$(PAR_PREFIX)
 
 OBJ = $(SRC:.c=.o)
 

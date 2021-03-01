@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
+/*   lexer_v2.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/01 19:26:01 by ztan          ########   odam.nl         */
+/*   Created: 2021/03/01 18:21:35 by ztan          #+#    #+#                 */
+/*   Updated: 2021/03/01 18:28:57 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,22 @@ void	add_token(t_list **ptr, char *input, int start, int len)
 	free(result);
 }
 
-int		handle_quote(char *input, int current)
+int		handle_quote(t_list **ptr, char *input, int start, int current)
 {
 	int i;
 	char type;
 
+	if (current != start)
+		add_token(ptr, input, start, current - start); // if input before quote
 	i = current + 1;
 	type = input[current];
 	while (input[i])
 	{
 		if (input[i] == type)
-			return (i + 1);
+		{
+			add_token(ptr, input, current + 1, i - current - 1); // delete quote from token
+			return (i);
+		}
 		i++;
 	}
 	error_handler("no multiline");
@@ -56,10 +61,13 @@ int		handle_seperator(t_list **ptr, char *input, int start, int i)
 	len = i - start;
 	if (i == start) // if nothing before seperator
 		len = 1;
-	if (input[start] != ' ')
-		add_token(ptr, input, start, len); // if input before separator or esparator, tokenize it
-	if (i != start && input[i] != ' ') // if input before separator, tokenize seperator
+	add_token(ptr, input, start, len); // if input before separator or esparator, tokenize it
+	if (i != start) // if input before separator, tokenize seperator
+	{
 		add_token(ptr, input, i, 1);
+	}	
+	while (input[i + 1] == ' ')
+		i++;
 	return (i);
 }
 
@@ -82,7 +90,10 @@ t_list	*split_literal_tokens(char *input)
 			start = i + 1;
 		}
 		if (input[i] == '\"' || input[i] == '\'')
-			i = handle_quote(input, i);
+		{
+			i = handle_quote(&ptr, input, start, i);
+			start = i + 1;
+		}
 		i++;
 	}
 	if (i != start)

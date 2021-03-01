@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/25 17:20:30 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/01 16:59:56 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@
 
 enum	e_status
 {
-	INVALID_INPUT = -1
+	INVALID_INPUT = -1,
+};
+
+enum	e_types
+{
+	INPUT = 0,
+	OUTPUT = 1,
 };
 
 typedef struct		s_list
@@ -31,6 +37,7 @@ typedef struct		s_list
 
 typedef struct 		s_cmd
 {
+	char			*type;
 	t_list			*args;
 	t_list			*redirection;
 	int				seprator_type;
@@ -39,7 +46,7 @@ typedef struct 		s_cmd
 
 typedef struct		s_shell
 {
-	// save tokens
+	char	**tokens;
 	// comands
 	// status
 	int		status;
@@ -76,6 +83,9 @@ void	error_handler(char *error_message);
 
 // lexer
 void	read_line(char **input);
-void	lexer(char *input);
+t_list	*lexer(char *input);
+
+// parser
+void	parser(t_list *tokens);
 
 #endif
