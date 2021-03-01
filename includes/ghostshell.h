@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/25 13:42:41 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 22:44:49 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <string.h>
+# include <signal.h>
 # include "get_next_line.h"
 
 
