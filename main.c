@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/17 18:10:32 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/02/22 20:29:42 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	exec_shell(void)
 		// ft_putstr_fd(input , STDOUT_FILENO);
 		// ft_putstr_fd("]\n" , STDOUT_FILENO);
 	}
-	
 }
 
 int main(void)

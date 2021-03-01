@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/22 14:46:17 by zenotan       ########   odam.nl          #
+#    Updated: 2021/02/24 14:26:15 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,34 +15,38 @@ NAME = ghostshell
 GNL = gnl/get_next_line.c \
 		gnl/get_next_line_utils.c
 
-LFT = lft_utils/ft_putstr_fd.c \
-		lft_utils/ft_putnbr_fd.c \
-		lft_utils/ft_putchar_fd.c \
-		lft_utils/ft_strlen.c \
-		lft_utils/ft_split.c \
-		lft_utils/ft_memcpy.c \
-		lft_utils/ft_strchr.c \
-		lft_utils/ft_strdup.c \
-		lft_utils/ft_strlcpy.c \
-		lft_utils/ft_substr.c \
-		lft_utils/ft_strjoin.c \
-		lft_utils/ft_lstadd_back_bonus.c \
-		lft_utils/ft_lstclear_bonus.c \
-		lft_utils/ft_lstdelone_bonus.c \
-		lft_utils/ft_lstiter_bonus.c \
-		lft_utils/ft_lstnew_bonus.c \
-		lft_utils/ft_lstsize_bonus.c
+LFT = ft_putstr_fd.c \
+		ft_putnbr_fd.c \
+		ft_putchar_fd.c \
+		ft_strlen.c \
+		ft_split.c \
+		ft_memcpy.c \
+		ft_strchr.c \
+		ft_strdup.c \
+		ft_strlcpy.c \
+		ft_substr.c \
+		ft_strjoin.c \
+		ft_lstadd_back_bonus.c \
+		ft_lstclear_bonus.c \
+		ft_lstdelone_bonus.c \
+		ft_lstiter_bonus.c \
+		ft_lstnew_bonus.c \
+		ft_lstsize_bonus.c
 
 ERR = error/error.c
 
-LEX = lexer/read_input.c \
-		lexer/lexer.c
+LEX = read_input.c \
+		lexer.c
+
+LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
+
+LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
 SRC = main.c \
 		$(GNL) \
-		$(LFT) \
+		$(LFT_PREFIX) \
 		$(ERR) \
-		$(LEX)
+		$(LEX_PREFIX)
 
 OBJ = $(SRC:.c=.o)
 
