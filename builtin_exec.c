@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/01 13:42:23 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 22:28:43 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	run_env(t_list *tokens, t_shell *ghost)
 
 int	run_export(t_list *tokens, t_shell *ghost)
 {
-	char	**temp;
+	char	**temp; // If the argument has no '=' it shouldn't be made an env
 
 	if (!tokens->next)
 		return (1);
@@ -130,16 +130,47 @@ int	run_export(t_list *tokens, t_shell *ghost)
 	ghost->env = NULL;
 	ghost->env = (char **)malloc(sizeof(*temp));
 	ghost->env = temp;
-	for (int k= 0; ghost->env[k]; k++)
-		free(temp[k]);
-	free(temp);
+	// for (int k= 0; ghost->env[k]; k++)
+	// 	free(temp[k]);
+	// free(temp);
 	return (1);
 }
 
 int	run_unset(t_list *tokens, t_shell *ghost)
 {
-	(void)tokens;
-	(void)ghost;
+	int i;
+	int k = 0;
+
+	i = 0;
+	if (!tokens->next)
+		return (1);
+	tokens = tokens->next;
+	tokens = tokens->next;
+	int len = ft_strlen(tokens->content);
+	while (ghost->env[i]) // If the argument is there, find a way to delete it and resize the array (che palle);
+	{
+		if (ft_strnstr(ghost->env[i], tokens->content, len))
+			k = i;
+		i++;
+	}
+	char **temp;
+	temp = (char**)malloc(sizeof(char*) * (i - 1));
+	int j = 0;
+	for (int i = 0; ghost->env[i]; i++)
+	{
+		if (i != k)
+		{
+			temp[j] = ghost->env[i];
+			j++;
+		}
+	}
+	free(ghost->env);
+	ghost->env = (char**)malloc(sizeof(*temp));
+	for (int i = 0; temp[i]; i++)
+		ghost->env[i] = temp[i];
+	ghost->env[i] = 0;
+	// (void)tokens;
+	// (void)ghost;
 	return(1);
 }
 
