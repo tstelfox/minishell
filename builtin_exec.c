@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/25 13:45:30 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 13:42:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,15 @@ int	run_export(t_list *tokens, t_shell *ghost)
 	tokens = tokens->next; //remember this time
 	temp[i] = ft_strdup(tokens->content);
 	temp[i + 1] = 0;
+	for (int k= 0; ghost->env[k]; k++) //Just make a fucking freeing function FFS
+		free(ghost->env[k]);
 	free (ghost->env);
 	ghost->env = NULL;
 	ghost->env = (char **)malloc(sizeof(*temp));
 	ghost->env = temp;
+	for (int k= 0; ghost->env[k]; k++)
+		free(temp[k]);
+	free(temp);
 	return (1);
 }
 
@@ -142,6 +147,7 @@ int	run_exit(t_list *tokens, t_shell *ghost)
 {
 	(void)tokens;
 	(void)ghost;
+	system ("leaks ghostshell");
 	// ft_putstr_fd("Please not here yet", STDOUT_FILENO);
 	exit(1);
 }
@@ -153,15 +159,6 @@ int	builtin_exec(t_list *tokens, t_shell *ghost)
 	i = 0;
 	if (tokens->content == NULL)
 		return (0);
-	// while (ghost->env[i])
-	// {
-	// 	// ft_putstr_fd(envp[i], STDOUT_FILENO);
-	// 	// ft_putstr_fd("\n", STDOUT_FILENO);
-	// 	// ft_putstr_fd("This is the struct: ", 1);
-	// 	ft_putstr_fd(ghost->env[i], STDOUT_FILENO);
-	// 	ft_putstr_fd("\n", STDOUT_FILENO);
-	// 	i++;
-	// }
 	while (i < 7)
 	{
 		if (ft_strcmp(tokens->content, g_builtin[i]) == 0)

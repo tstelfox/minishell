@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/25 13:38:35 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 13:36:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	exec_shell(char *envp[])
 		// }
 		// else
 		// 	waitpid(pid, &status, 0);
+		free(input);
 	}
 	
 }
