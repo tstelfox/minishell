@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/01 13:36:34 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 22:38:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	exec_shell(char *envp[])
 	input = NULL;
 	while (1) // check for errors
 	{
-		ft_putstr_fd("ghostshell$> ", STDOUT_FILENO);
+		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		// printf("\e[1;34mghostshell$>\e[0m");
 		read_line(&input);
 		tokens = lexer(input);
 		if (builtin_exec(tokens, &ghost) == 0) //Presuming that the input has been processed

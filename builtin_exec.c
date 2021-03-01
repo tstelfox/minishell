@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/01 22:28:43 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/01 22:38:59 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,13 @@ int	run_unset(t_list *tokens, t_shell *ghost)
 	int len = ft_strlen(tokens->content);
 	while (ghost->env[i]) // If the argument is there, find a way to delete it and resize the array (che palle);
 	{
+		// ft_putstr_fd("Here?", 1);
 		if (ft_strnstr(ghost->env[i], tokens->content, len))
+		{
 			k = i;
+			// ft_putstr_fd(ghost->env[i], 1);
+			// ft_putstr_fd("\nHere?", 1);
+		}
 		i++;
 	}
 	char **temp;
@@ -161,14 +166,14 @@ int	run_unset(t_list *tokens, t_shell *ghost)
 		if (i != k)
 		{
 			temp[j] = ghost->env[i];
+			// ft_putstr_fd(ghost->env[i], 1);
+			// ft_putstr_fd("\n", 1);
 			j++;
 		}
 	}
 	free(ghost->env);
 	ghost->env = (char**)malloc(sizeof(*temp));
-	for (int i = 0; temp[i]; i++)
-		ghost->env[i] = temp[i];
-	ghost->env[i] = 0;
+	ghost->env = temp;
 	// (void)tokens;
 	// (void)ghost;
 	return(1);
@@ -178,8 +183,7 @@ int	run_exit(t_list *tokens, t_shell *ghost)
 {
 	(void)tokens;
 	(void)ghost;
-	system ("leaks ghostshell");
-	// ft_putstr_fd("Please not here yet", STDOUT_FILENO);
+	// system ("leaks ghostshell");
 	exit(1);
 }
 
