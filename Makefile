@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/02/25 13:40:16 by tmullan       ########   odam.nl          #
+#    Updated: 2021/03/02 17:21:12 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ LEX = lexer/read_input.c \
 		lexer/lexer.c
 
 SRC = main.c builtin_exec.c \
+		prog_launch.c \
 		$(GNL) \
 		$(LFT) \
 		$(ERR) \

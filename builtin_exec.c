@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/02 12:32:19 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/02 16:28:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,8 +209,8 @@ int	builtin_exec(t_list *tokens, t_shell *ghost)
 			return (*g_builtin_f[i])(tokens, ghost); // Need to integrate the parsing shit into this process
 		i++;
 	}
-	ft_putstr_fd("ghostshell: ", 1);
-	ft_putstr_fd(tokens->content, 1);
-	ft_putstr_fd(": command not found\n", 1);
+	// ft_putstr_fd("ghostshell: ", 1);
+	// ft_putstr_fd(tokens->content, 1);
+	// ft_putstr_fd(": command not found\n", 1);
 	return (1);
 }

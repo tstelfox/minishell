@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/01 22:44:49 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/02 16:32:01 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_shell
 	// save tokens
 	// comands
 	// status
+	pid_t	pid;
 	char	**env;
 	int		status;
 }					t_shell;
@@ -57,6 +58,9 @@ int		builtin_exec(t_list *tokens, t_shell *ghost);
 //globals
 char	*g_builtin[7];
 int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost);
+
+// Programs
+int	prog_launch(t_list *tokens, t_shell *ghost);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
