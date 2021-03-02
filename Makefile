@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/01 15:40:59 by ztan          ########   odam.nl          #
+#    Updated: 2021/03/02 12:56:22 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ LFT = ft_putstr_fd.c \
 		ft_strlcpy.c \
 		ft_substr.c \
 		ft_strjoin.c \
+		ft_strnstr.c \
+		ft_strcmp.c \
 		ft_lstadd_back_bonus.c \
 		ft_lstclear_bonus.c \
 		ft_lstdelone_bonus.c \
@@ -46,7 +48,7 @@ LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
-SRC = main.c \
+SRC = main.c builtin_exec.c \
 		$(GNL) \
 		$(LFT_PREFIX) \
 		$(ERR) \
@@ -64,7 +66,7 @@ INCLUDES = -Iincludes
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@gcc $(FLAGS) $(OBJ) -g -o $(NAME)
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@

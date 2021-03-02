@@ -6,13 +6,26 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/01 19:26:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/02 12:54:06 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	print_data(void *data)
+// rules
+// echo "\"", echo "\'" are possible
+// echo '\"' is possible
+// echo '\'' is not possible -> a single quote cannot appear in single quotes
+
+// method
+// when a quote is met, read untill valid ending quote (so not \")
+// everything is part of the same token untill seperator (;, |, <, >, <<, >>)
+// todo:
+// - check if opening quote
+// - if quote read untill valid end quote
+// - check for invalid ( \") -> check if valid "\", so not "\\"
+
+void print_data(void *data)
 {
 	char *str = data;
 	ft_putstr_fd("[", STDOUT_FILENO);
