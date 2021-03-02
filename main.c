@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/01 23:33:15 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/02 12:05:24 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,15 @@
 void	ctrl(int sig)
 {
 	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\b \b", 1);
 		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+	}
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("exit", 0);
+	}
 	// signal(SIGINT, ctrl);
 }
 
@@ -41,13 +49,14 @@ void	exec_shell(char *envp[])
 	ghost.env[k] = 0;
 	// pid_t	pid;
 	// int		status;
+	signal(SIGINT, ctrl);
+	signal(SIGQUIT, ctrl);
 
 	input = NULL;
 	while (1) // check for errors
 	{
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		// printf("\e[1;34mghostshell$>\e[0m");
-		signal(SIGINT, ctrl);
 		read_line(&input);
 
 		tokens = lexer(input);
@@ -74,7 +83,7 @@ int	main(int argc, char *args[], char *envp[])
 {
 	(void)argc;
 	(void)args;
-	// Set HOME env variable
+
 	exec_shell(envp);
 	return (0);
 }
