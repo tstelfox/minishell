@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/01 22:38:59 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/02 12:32:19 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,20 @@ int	run_echo(t_list *tokens, t_shell *ghost)
 	(void)ghost;
 	// Some check to see if there's a Pipe or a redirection or some shiz
 	if (tokens->next == NULL)
-		return (0);
-	// if (ft_strcmp(tokens->next->content, "-n") == 0)
-		//Don't print the newline
-	// Depending on flag Do the redirecting shit
-	ft_putstr_fd(tokens->next->content, STDOUT_FILENO); // Simplest case
+		return (1);
+	tokens = tokens->next;
+	tokens = tokens->next;
+	if (ft_strcmp(tokens->content, "-n") == 0)
+	{
+		tokens = tokens->next;
+		tokens = tokens->next;
+		ft_putstr_fd(tokens->content, STDOUT_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd(tokens->content, STDOUT_FILENO); // Simplest case
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	}
 	return (1);
 }
 
@@ -200,5 +209,8 @@ int	builtin_exec(t_list *tokens, t_shell *ghost)
 			return (*g_builtin_f[i])(tokens, ghost); // Need to integrate the parsing shit into this process
 		i++;
 	}
+	ft_putstr_fd("ghostshell: ", 1);
+	ft_putstr_fd(tokens->content, 1);
+	ft_putstr_fd(": command not found\n", 1);
 	return (1);
 }
