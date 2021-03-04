@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   builtin_exec.c                                     :+:    :+:            */
+/*   shell_exec.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/02 16:28:18 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/04 11:22:44 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int	run_exit(t_list *tokens, t_shell *ghost)
 	exit(1);
 }
 
-int	builtin_exec(t_list *tokens, t_shell *ghost)
+int	shell_exec(t_list *tokens, t_shell *ghost)
 {
 	int	i;
 
@@ -209,6 +209,7 @@ int	builtin_exec(t_list *tokens, t_shell *ghost)
 			return (*g_builtin_f[i])(tokens, ghost); // Need to integrate the parsing shit into this process
 		i++;
 	}
+	return(prog_launch(tokens, ghost));
 	// ft_putstr_fd("ghostshell: ", 1);
 	// ft_putstr_fd(tokens->content, 1);
 	// ft_putstr_fd(": command not found\n", 1);

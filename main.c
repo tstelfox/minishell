@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/02 17:21:51 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/04 11:22:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,8 @@ void	exec_shell(char *envp[])
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		read_line(&input);
 		tokens = lexer(input);
-		if (builtin_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
+		if (shell_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
 			break;
-		// if (prog_launch(tokens, &ghost) == 0)
-		// 	break;
 		// pid = fork();
 
 		// if (pid == 0)
