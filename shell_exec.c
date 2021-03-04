@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/04 11:22:44 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/04 13:12:04 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,5 @@ int	shell_exec(t_list *tokens, t_shell *ghost)
 		i++;
 	}
 	return(prog_launch(tokens, ghost));
-	// ft_putstr_fd("ghostshell: ", 1);
-	// ft_putstr_fd(tokens->content, 1);
-	// ft_putstr_fd(": command not found\n", 1);
 	return (1);
 }
