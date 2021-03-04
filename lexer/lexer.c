@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/02 12:54:06 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/03 14:25:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@
 // - check if opening quote
 // - if quote read untill valid end quote
 // - check for invalid ( \") -> check if valid "\", so not "\\"
-
-void print_data(void *data)
-{
-	char *str = data;
-	ft_putstr_fd("[", STDOUT_FILENO);
-	ft_putstr_fd(str, STDOUT_FILENO);
-	ft_putstr_fd("]", STDOUT_FILENO);
-}
 
 void	add_token(t_list **ptr, char *input, int start, int len)
 {
@@ -69,7 +61,7 @@ int		handle_seperator(t_list **ptr, char *input, int start, int i)
 	len = i - start;
 	if (i == start) // if nothing before seperator
 		len = 1;
-	if (input[start] != ' ')
+	if (input[start] != ' ') // ignore spaces
 		add_token(ptr, input, start, len); // if input before separator or esparator, tokenize it
 	if (i != start && input[i] != ' ') // if input before separator, tokenize seperator
 		add_token(ptr, input, i, 1);

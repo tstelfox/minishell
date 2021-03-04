@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/02 12:56:09 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/03 12:41:18 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@
 # include <signal.h>
 # include "get_next_line.h"
 
-
-
-
 enum	e_status
 {
 	INVALID_INPUT = -1,
@@ -31,8 +28,11 @@ enum	e_status
 
 enum	e_types
 {
-	INPUT = 0,
-	OUTPUT = 1,
+	INPUT = 1,
+	OUTPUT = 0,
+	OUTPUT_ADD = 2,
+	SEPERATOR = 1,
+	PIPE = 2,
 };
 
 typedef struct		s_list
@@ -40,6 +40,13 @@ typedef struct		s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef	struct 		s_redirection
+{
+	char			*file;
+	int				type;
+}					t_redir;
+
 
 typedef struct 		s_cmd
 {
@@ -60,7 +67,6 @@ typedef struct		s_shell
 }					t_shell;
 
 // built-in functions
-
 int		run_echo(t_list *tokens, t_shell *ghost);
 int		run_cd(t_list *tokens, t_shell *ghost);
 int		run_pwd(t_list *tokens, t_shell *ghost);
@@ -69,6 +75,7 @@ int		run_exit(t_list *tokens, t_shell *ghost);
 int		run_export(t_list *tokens, t_shell *ghost);
 int		run_unset(t_list *tokens, t_shell *ghost);
 int		builtin_exec(t_list *tokens, t_shell *ghost);
+
 //globals
 char	*g_builtin[7];
 int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost);
@@ -88,9 +95,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-
-
-
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);
@@ -114,4 +118,8 @@ t_list	*lexer(char *input);
 // parser
 void	parser(t_list *tokens);
 
+//debug
+void	print_data(void *data);
+void	print_cmd(t_cmd *data);
+void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
 #endif

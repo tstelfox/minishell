@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/02 12:56:22 by zenotan       ########   odam.nl          #
+#    Updated: 2021/03/02 14:02:26 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,8 @@ SRC = main.c builtin_exec.c \
 		$(LFT_PREFIX) \
 		$(ERR) \
 		$(LEX_PREFIX) \
-		$(PAR_PREFIX)
+		$(PAR_PREFIX) \
+		debug/printlists.c
 
 OBJ = $(SRC:.c=.o)
 
