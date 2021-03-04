@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/04 12:53:50 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/04 13:20:50 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		check_redir(t_cmd *command, t_list **tokens)
 	return (1);
 }
 
-void	parser(t_list *tokens)
+t_list	*parser(t_list *tokens)
 {
 	t_list	*commands = NULL;
 	t_cmd	*command = NULL;
@@ -121,5 +121,5 @@ void	parser(t_list *tokens)
 			break ;
 		tokens = tokens->next;
 	}
-	ft_cmd_lstiter(commands, print_cmd);
+	return (commands);
 }

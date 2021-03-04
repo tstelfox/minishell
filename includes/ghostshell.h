@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/03 12:41:18 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/04 13:21:47 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,12 @@ void	read_line(char **input);
 t_list	*lexer(char *input);
 
 // parser
-void	parser(t_list *tokens);
+t_list	*parser(t_list *tokens);
 
 //debug
 void	print_data(void *data);
 void	print_cmd(t_cmd *data);
 void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
+char	**list_to_arr(t_list *tokens);
+
 #endif

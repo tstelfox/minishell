@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/02 13:42:32 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/04 13:20:37 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	exec_shell(char *envp[])
 {
 	char	*input;
 	t_list	*tokens = NULL;
+	t_list	*commands = NULL;
 	t_shell ghost;
 
 	ghost.status = 0;
@@ -60,7 +61,8 @@ void	exec_shell(char *envp[])
 		read_line(&input);
 
 		tokens = lexer(input);
-		parser(tokens);
+		commands = parser(tokens);
+		ft_cmd_lstiter(commands, print_cmd);
 		// if (builtin_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
 		// 	break;
 		// pid = fork();
