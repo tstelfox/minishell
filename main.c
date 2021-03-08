@@ -51,7 +51,7 @@ void	exec_shell(char *envp[])
 	// pid_t	pid;
 	// int		status;
 	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl);
+	//signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
 	while (1) // check for errors
@@ -60,7 +60,7 @@ void	exec_shell(char *envp[])
 		read_line(&input);
 		tokens = lexer(input);
 		commands = parser(tokens);
-		// ft_cmd_lstiter(commands, print_cmd);
+		ft_cmd_lstiter(commands, print_cmd);
 		if (shell_exec(commands, &ghost) == 0) //Presuming that the input has been processed
 			break;
 		free(input);

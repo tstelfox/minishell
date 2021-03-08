@@ -79,7 +79,7 @@ t_list	*split_literal_tokens(char *input)
 	start = 0;
 	while (input[i])
 	{
-		if (ft_strchr(" ><|", input[i]))
+		if (ft_strchr(" ><|;", input[i]))
 		{
 			if (input[i] == '>' && input[i + 1] == '>')
 				i = handle_seperator(&ptr, input, start, i);

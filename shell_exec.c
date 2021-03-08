@@ -181,7 +181,7 @@ int	run_exit(t_cmd *cmd, t_shell *ghost)
 int	shell_exec(t_list *command, t_shell *ghost)
 {
 	int	i;
-	int	ret = 0;
+	// int	ret = 0;
 
 	t_cmd	*cmd = (t_cmd*)command->content;
 
@@ -191,15 +191,15 @@ int	shell_exec(t_list *command, t_shell *ghost)
 	while (i < 7)
 	{
 		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
-			ret = (*g_builtin_f[i])(cmd, ghost);
+			return (*g_builtin_f[i])(cmd, ghost);
 		i++;
 	}
-	if (ret && cmd->seprator_type != 1)
-		return (ret);
-	ret = (prog_launch(cmd, ghost));
-	if (ret && cmd->seprator_type != 1)
-		return (ret);
-	else if (command->next != NULL)
-		shell_exec(command->next, ghost);
-	return (0); // Dunno if this is what is needed here at the end
+	// if (ret && cmd->seprator_type != 1)
+	// 	return (ret);
+	return (prog_launch(cmd, ghost));
+	// if (ret && cmd->seprator_type != 1)
+	// 	return (ret);
+	// else if (command->next != NULL)
+	// 	shell_exec(command->next, ghost);
+	// return (0); // Dunno if this is what is needed here at the end
 }
