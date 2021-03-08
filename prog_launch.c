@@ -12,20 +12,24 @@
 
 #include "ghostshell.h"
 
-int	prog_launch(t_list *tokens, t_shell *ghost)
+int	prog_launch(t_cmd *cmd, t_shell *ghost)
 {
 	pid_t	pid;
 	char *command;
-	//Ok need to put list in 2D array and then do a strjoin
-	// char	command[11] = "/bin/ls";
-	// char	*args[3] = { "ls", NULL};
 
-	command = ft_strjoin("/bin/", tokens->content);
-	char **args = list_to_arr(tokens);
-	for (int i = 0; args[i]; i++)
+	command = ft_strjoin("/bin/", cmd->type);
+	char **args;
+	if (cmd->args)
 	{
-		ft_putstr_fd(args[i], 1);
-		ft_putstr_fd("\n", 1);
+		t_list	*fucker = ft_lstnew(cmd->type);
+		ft_lstadd_front(&cmd->args, fucker);
+		args = list_to_arr(cmd->args);
+	}
+	else
+	{
+		args = (char**)malloc(sizeof(char *) * 2);
+		args[0] = ft_strdup(cmd->type);
+		args[1] = NULL;
 	}
 	pid = fork();
 	if (pid == 0) //child process
@@ -35,7 +39,7 @@ int	prog_launch(t_list *tokens, t_shell *ghost)
 			printf("%s: errno %d\n", strerror(errno), errno);
 		}
 		ft_putstr_fd("ghostshell: ", 1);
-		ft_putstr_fd(tokens->content, 1);
+		ft_putstr_fd(cmd->type, 1);
 		ft_putstr_fd(": command not found\n", 1);
 		exit(0);
 	}

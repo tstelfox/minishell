@@ -15,39 +15,48 @@ NAME = ghostshell
 GNL = gnl/get_next_line.c \
 		gnl/get_next_line_utils.c
 
-LFT = lft_utils/ft_putstr_fd.c \
-		lft_utils/ft_putnbr_fd.c \
-		lft_utils/ft_putchar_fd.c \
-		lft_utils/ft_strlen.c \
-		lft_utils/ft_strcmp.c \
-		lft_utils/ft_split.c \
-		lft_utils/ft_memcpy.c \
-		lft_utils/ft_strchr.c \
-		lft_utils/ft_strdup.c \
-		lft_utils/ft_strlcpy.c \
-		lft_utils/ft_substr.c \
-		lft_utils/ft_strjoin.c \
-		lft_utils/ft_lstadd_back_bonus.c \
-		lft_utils/ft_lstclear_bonus.c \
-		lft_utils/ft_lstdelone_bonus.c \
-		lft_utils/ft_lstiter_bonus.c \
-		lft_utils/ft_lstnew_bonus.c \
-		lft_utils/ft_lstsize_bonus.c \
-		lft_utils/ft_lstlast_bonus.c \
-		lft_utils/ft_strnstr.c \
-		debug/printlists.c
+LFT = ft_putstr_fd.c \
+		ft_putnbr_fd.c \
+		ft_putchar_fd.c \
+		ft_strlen.c \
+		ft_split.c \
+		ft_memcpy.c \
+		ft_strchr.c \
+		ft_strdup.c \
+		ft_strlcpy.c \
+		ft_substr.c \
+		ft_strjoin.c \
+		ft_strnstr.c \
+		ft_strcmp.c \
+		ft_lstadd_back_bonus.c \
+		ft_lstclear_bonus.c \
+		ft_lstdelone_bonus.c \
+		ft_lstiter_bonus.c \
+		ft_lstnew_bonus.c \
+		ft_lstsize_bonus.c \
+		ft_lstadd_front_bonus.c
 
 ERR = error/error.c
 
-LEX = lexer/read_input.c \
-		lexer/lexer.c
+LEX = read_input.c \
+		lexer.c
+
+PAR = parser.c
+
+PAR_PREFIX = $(addprefix parser/, $(PAR))
+
+LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
+
+LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
 SRC = main.c shell_exec.c \
 		prog_launch.c \
 		$(GNL) \
-		$(LFT) \
+		$(LFT_PREFIX) \
 		$(ERR) \
-		$(LEX)
+		$(LEX_PREFIX) \
+		$(PAR_PREFIX) \
+		debug/printlists.c
 
 OBJ = $(SRC:.c=.o)
 

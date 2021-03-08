@@ -22,7 +22,7 @@ char	*g_builtin[7] = {
 		"export"
 };
 
-int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost) = {
+int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
@@ -32,36 +32,31 @@ int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost) = {
 		&run_export
 };
 
-int	run_echo(t_list *tokens, t_shell *ghost)
+int	run_echo(t_cmd *cmd, t_shell *ghost)
 {
 	(void)ghost;
 	// Some check to see if there's a Pipe or a redirection or some shiz
-	if (tokens->next == NULL)
+	if (cmd->args == NULL)
 		return (1);
-	tokens = tokens->next;
-	tokens = tokens->next;
-	if (ft_strcmp(tokens->content, "-n") == 0)
+	if (ft_strcmp(cmd->args->content, "-n") == 0)
 	{
-		tokens = tokens->next;
-		tokens = tokens->next;
-		ft_putstr_fd(tokens->content, STDOUT_FILENO);
+		cmd->args = cmd->args->next;
+		ft_putstr_fd(cmd->args->content, STDOUT_FILENO);
 	}
 	else
 	{
-		ft_putstr_fd(tokens->content, STDOUT_FILENO); // Simplest case
+		ft_putstr_fd(cmd->args->content, STDOUT_FILENO); // Simplest case
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 	return (1);
 }
 
-int	run_cd(t_list *tokens, t_shell *ghost)
+int	run_cd(t_cmd *cmd, t_shell *ghost)
 {
-	tokens = tokens->next; //Spaces are list items so need to be skipped
-	tokens = tokens->next;
 	int i = 0;
-	if (tokens->content == NULL)
+	if (cmd->args->content == NULL)
 		return (0);
-	else if (ft_strcmp(tokens->content, "~") == 0)
+	else if (ft_strcmp(cmd->args->content, "~") == 0)
 	{
 		while (ghost->env[i])
 		{
@@ -75,19 +70,18 @@ int	run_cd(t_list *tokens, t_shell *ghost)
 	}
 	else
 	{
-		if (chdir(tokens->content) != 0)
+		if (chdir(cmd->args->content) != 0)
 			strerror(errno);
 	}
 	return (1);
 }
 
-int	run_pwd(t_list *tokens, t_shell *ghost)
+int	run_pwd(t_cmd *cmd, t_shell *ghost)
 {
 	char	buff[1024];
 
-	(void)tokens;
 	(void)ghost;
-	if (tokens->next != NULL)
+	if (cmd->args != NULL)
 		return (1);
 	if (getcwd(buff, sizeof(buff)) == NULL)
 		strerror(errno);
@@ -100,13 +94,12 @@ int	run_pwd(t_list *tokens, t_shell *ghost)
 	return (0);
 }
 
-int	run_env(t_list *tokens, t_shell *ghost)
+int	run_env(t_cmd *cmd, t_shell *ghost)
 {
-	(void)tokens;
 	int i = 0;
 
 
-	if (tokens->next != NULL)
+	if (cmd->args != NULL)
 		return (1);
 	while (ghost->env[i])
 	{
@@ -117,11 +110,11 @@ int	run_env(t_list *tokens, t_shell *ghost)
 	return (1);
 }
 
-int	run_export(t_list *tokens, t_shell *ghost)
+int	run_export(t_cmd *cmd, t_shell *ghost)
 {
 	char	**temp; // If the argument has no '=' it shouldn't be made an env
 
-	if (!tokens->next)
+	if (!cmd->args)
 		return (1);
 	int i = 0;
 	while (ghost->env[i])
@@ -129,9 +122,7 @@ int	run_export(t_list *tokens, t_shell *ghost)
 	temp = (char **)malloc(sizeof(char *) * (i + 2));
 	for (int k= 0; ghost->env[k]; k++)
 		temp[k] = ft_strdup(ghost->env[k]);
-	tokens = tokens->next;
-	tokens = tokens->next; //remember this time
-	temp[i] = ft_strdup(tokens->content);
+	temp[i] = ft_strdup(cmd->args->content);
 	temp[i + 1] = 0;
 	for (int k= 0; ghost->env[k]; k++) //Just make a fucking freeing function FFS
 		free(ghost->env[k]);
@@ -145,26 +136,19 @@ int	run_export(t_list *tokens, t_shell *ghost)
 	return (1);
 }
 
-int	run_unset(t_list *tokens, t_shell *ghost)
+int	run_unset(t_cmd *cmd, t_shell *ghost)
 {
 	int i;
 	int k = 0;
 
 	i = 0;
-	if (!tokens->next)
+	if (!cmd->args)
 		return (1);
-	tokens = tokens->next;
-	tokens = tokens->next;
-	int len = ft_strlen(tokens->content);
+	int len = ft_strlen(cmd->args->content);
 	while (ghost->env[i]) // If the argument is there, find a way to delete it and resize the array (che palle);
 	{
-		// ft_putstr_fd("Here?", 1);
-		if (ft_strnstr(ghost->env[i], tokens->content, len))
-		{
+		if (ft_strnstr(ghost->env[i], cmd->args->content, len))
 			k = i;
-			// ft_putstr_fd(ghost->env[i], 1);
-			// ft_putstr_fd("\nHere?", 1);
-		}
 		i++;
 	}
 	char **temp;
@@ -175,40 +159,47 @@ int	run_unset(t_list *tokens, t_shell *ghost)
 		if (i != k)
 		{
 			temp[j] = ghost->env[i];
-			// ft_putstr_fd(ghost->env[i], 1);
-			// ft_putstr_fd("\n", 1);
 			j++;
 		}
 	}
 	free(ghost->env);
 	ghost->env = (char**)malloc(sizeof(*temp));
 	ghost->env = temp;
-	// (void)tokens;
+	// (void)command;
 	// (void)ghost;
 	return(1);
 }
 
-int	run_exit(t_list *tokens, t_shell *ghost)
+int	run_exit(t_cmd *cmd, t_shell *ghost)
 {
-	(void)tokens;
+	(void)cmd;
 	(void)ghost;
 	// system ("leaks ghostshell");
 	exit(1);
 }
 
-int	shell_exec(t_list *tokens, t_shell *ghost)
+int	shell_exec(t_list *command, t_shell *ghost)
 {
 	int	i;
+	int	ret = 0;
+
+	t_cmd	*cmd = (t_cmd*)command->content;
 
 	i = 0;
-	if (tokens->content == NULL)
+	if (command->content == NULL)
 		return (0);
 	while (i < 7)
 	{
-		if (ft_strcmp(tokens->content, g_builtin[i]) == 0)
-			return (*g_builtin_f[i])(tokens, ghost); // Need to integrate the parsing shit into this process
+		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			ret = (*g_builtin_f[i])(cmd, ghost);
 		i++;
 	}
-	return(prog_launch(tokens, ghost));
-	return (1);
+	if (ret && cmd->seprator_type != 1)
+		return (ret);
+	ret = (prog_launch(cmd, ghost));
+	if (ret && cmd->seprator_type != 1)
+		return (ret);
+	else if (command->next != NULL)
+		shell_exec(command->next, ghost);
+	return (0); // Dunno if this is what is needed here at the end
 }

@@ -30,6 +30,7 @@ void	exec_shell(char *envp[])
 {
 	char	*input;
 	t_list	*tokens = NULL;
+	t_list	*commands = NULL;
 	t_shell ghost;
 
 	ghost.status = 0;
@@ -56,23 +57,12 @@ void	exec_shell(char *envp[])
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		read_line(&input);
 		tokens = lexer(input);
-		if (shell_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
+		commands = parser(tokens);
+		// ft_cmd_lstiter(commands, print_cmd);
+		if (shell_exec(commands, &ghost) == 0) //Presuming that the input has been processed
 			break;
-		// pid = fork();
-
-		// if (pid == 0)
-		// {
-		// 	if (execvp(tokens->content, tokens) == -1)
-		// 	{
-		// 		strerror(errno);
-		// 		exit(1);
-		// 	}
-		// }
-		// else
-		// 	waitpid(pid, &status, 0);
 		free(input);
 	}
-	
 }
 
 int	main(int argc, char *args[], char *envp[])
