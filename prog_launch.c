@@ -17,7 +17,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	pid_t	pid;
 	char *command;
 
-	command = ft_strjoin("/bin/", cmd->type);
+	command = ft_strjoin("/bin/", cmd->type); // Realise now that there are fuckers in /usr/bin/ too
 	char **args;
 
 	int i = 0;
