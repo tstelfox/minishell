@@ -22,7 +22,8 @@ void	ctrl(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("exit", 0);
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\b \b", 1);
 	}
 }
 
@@ -50,6 +51,7 @@ void	exec_shell(char *envp[])
 	// pid_t	pid;
 	// int		status;
 	signal(SIGINT, ctrl);
+	signal(SIGQUIT, ctrl);
 
 	input = NULL;
 	while (1) // check for errors
