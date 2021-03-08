@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/03 14:25:58 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/04 15:26:16 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,17 @@ t_list	*split_literal_tokens(char *input)
 
 	int i;
 	int start;
-	int len;
 	
 	i = 0;
 	start = 0;
-	len = 0;
 	while (input[i])
 	{
 		if (ft_strchr(" ><|", input[i]))
 		{
-			i = handle_seperator(&ptr, input, start, i);
+			if (input[i] == '>' && input[i + 1] == '>')
+				i = handle_seperator(&ptr, input, start, i);
+			else
+				i = handle_seperator(&ptr, input, start, i);
 			start = i + 1;
 		}
 		if (input[i] == '\"' || input[i] == '\'')
@@ -91,10 +92,7 @@ t_list	*split_literal_tokens(char *input)
 		i++;
 	}
 	if (i != start)
-	{
-		len = i - start;
-		add_token(&ptr, input, start, len);
-	}
+		add_token(&ptr, input, start, i - start);
 	return (ptr);
 }
 

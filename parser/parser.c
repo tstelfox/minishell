@@ -6,16 +6,26 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/04 13:20:50 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/04 15:25:47 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
+int		check_meta(char *str)
+{
+	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|") ||\
+		!ft_strcmp(str, ";"))
+		return (1);
+	return (0);
+}
+
 t_redir	*new_redir(char *file, int type)
 {
 	t_redir *new_redir;
-	
+
+	if (check_meta(file))
+		error_handler("Unexpected token after redirection");
 	new_redir = malloc(sizeof(t_redir));
 	new_redir->file = ft_strdup(file);
 	new_redir->type = type;
@@ -34,13 +44,6 @@ t_cmd	*new_command()
 	new_command->seprator_type = 0;
 
 	return (new_command);
-}
-
-int		check_meta(char *str)
-{
-	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|"))
-		return (1);
-	return (0);
 }
 
 int		check_seperator(t_cmd *command, t_list *tokens)
@@ -100,7 +103,7 @@ t_list	*parser(t_list *tokens)
 	t_cmd	*command = NULL;
 
 	if (!tokens)
-		return ;
+		return NULL;
 	while (tokens)
 	{
 		command = new_command();
