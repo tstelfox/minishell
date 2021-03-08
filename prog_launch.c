@@ -15,10 +15,18 @@
 int	prog_launch(t_list *tokens, t_shell *ghost)
 {
 	pid_t	pid;
-	(void)ghost;
-	int		status; //Ok need to put list in 2D array and then do a strjoin
-	char	command[11] = "/bin/ls";
-	char	*args[3] = { "ls", NULL};
+	char *command;
+	//Ok need to put list in 2D array and then do a strjoin
+	// char	command[11] = "/bin/ls";
+	// char	*args[3] = { "ls", NULL};
+
+	command = ft_strjoin("/bin/", tokens->content);
+	char **args = list_to_arr(tokens);
+	for (int i = 0; args[i]; i++)
+	{
+		ft_putstr_fd(args[i], 1);
+		ft_putstr_fd("\n", 1);
+	}
 	pid = fork();
 	if (pid == 0) //child process
 	{
@@ -37,7 +45,7 @@ int	prog_launch(t_list *tokens, t_shell *ghost)
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
+		waitpid(pid, &ghost->status, 0);
 	}
 	return (1);
 }
