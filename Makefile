@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/02 14:02:26 by zenotan       ########   odam.nl          #
+#    Updated: 2021/03/08 14:14:45 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ LFT = ft_putstr_fd.c \
 		ft_strjoin.c \
 		ft_strnstr.c \
 		ft_strcmp.c \
+		ft_bzero.c \
 		ft_lstadd_back_bonus.c \
 		ft_lstclear_bonus.c \
 		ft_lstdelone_bonus.c \
@@ -36,6 +37,9 @@ LFT = ft_putstr_fd.c \
 		ft_lstsize_bonus.c
 
 ERR = error/error.c
+
+UTIL = struct_utils.c \
+		lst_utils.c
 
 LEX = read_input.c \
 		lexer.c
@@ -48,12 +52,15 @@ LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
+UTIL_PREFIX = $(addprefix utils/, $(UTIL))
+
 SRC = main.c builtin_exec.c \
 		$(GNL) \
 		$(LFT_PREFIX) \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
+		$(UTIL_PREFIX) \
 		debug/printlists.c
 
 OBJ = $(SRC:.c=.o)

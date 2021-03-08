@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/04 13:21:47 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/08 17:13:57 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 
 enum	e_status
 {
-	INVALID_INPUT = -1,
+	INTERNAL_ERROR = -1,
+	PARSE_ERROR = 2,
+	NO_MULTI_LINE = 5,
 };
 
 enum	e_types
@@ -59,7 +61,9 @@ typedef struct 		s_cmd
 
 typedef struct		s_shell
 {
-	char	**tokens;
+	t_list	*commands;
+	t_list	*tokens;
+	// char	**tokens;
 	// comands
 	// status
 	char	**env;
@@ -95,6 +99,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+void	ft_bzero(void *s, size_t n);
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);
@@ -109,19 +114,29 @@ t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
 
 // error
-void	error_handler(char *error_message);
+void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
 
 // lexer
 void	read_line(char **input);
-t_list	*lexer(char *input);
+void	lexer(t_shell **shell, char *input);
 
 // parser
-t_list	*parser(t_list *tokens);
+void	parser(t_shell **ghost);
+char	**get_envp(char **envp);
+int		check_meta(char *str);
+
+// struct_utils
+t_shell	*init_shell(char **env);
+t_redir	*new_redir(t_shell **ghost, char *file, int type);
+t_cmd	*new_command();
+void	restart_shell(t_shell *ghost);
+
+// lst_utils
+char	**list_to_arr(t_list *tokens);
 
 //debug
 void	print_data(void *data);
 void	print_cmd(t_cmd *data);
 void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
-char	**list_to_arr(t_list *tokens);
 
 #endif

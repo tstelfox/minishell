@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/04 15:20:45 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/08 18:12:21 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,39 +30,36 @@ void	ctrl(int sig)
 void	exec_shell(char *envp[])
 {
 	char	*input;
-	t_list	*tokens = NULL;
-	t_list	*commands = NULL;
-	t_shell ghost;
+	t_shell *ghost;
 
-	ghost.status = 0;
-	int i = 0;
-	
-
-	while (envp[i])
-		i++;
-	ghost.env = (char **)malloc(sizeof(char *) * (i + 1));
-	int k = 0;
-	while (envp[k])
-	{
-		ghost.env[k] = ft_strdup(envp[k]);
-		k++;
-	}
-	ghost.env[k] = 0;
+	ghost = init_shell(envp);
+	if (!ghost)
+		error_handler(&ghost, INTERNAL_ERROR, "could not allocate space", NULL);
 	// pid_t	pid;
 	// int		status;
 	signal(SIGINT, ctrl);
 	signal(SIGQUIT, ctrl);
 
 	input = NULL;
-	while (1) // check for errors
+	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
-		// printf("\e[1;34mghostshell$>\e[0m");
 		read_line(&input);
 
-		tokens = lexer(input);
-		commands = parser(tokens);
-		ft_cmd_lstiter(commands, print_cmd);
+		lexer(&ghost, input);
+		if (ghost->status == 0)
+			parser(&ghost);
+		if (ghost->status == 0)// debug
+		{
+			ft_lstiter(ghost->tokens, print_data);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			ft_cmd_lstiter(ghost->commands, print_cmd);
+		}
+		else
+		{
+			ft_putnbr_fd(ghost->status, STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 		// if (builtin_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
 		// 	break;
 		// pid = fork();
@@ -78,6 +75,7 @@ void	exec_shell(char *envp[])
 		// else
 		// 	waitpid(pid, &status, 0);
 		free(input);
+		restart_shell(ghost);
 	}
 }
 
