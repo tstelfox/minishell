@@ -19,6 +19,15 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 
 	command = ft_strjoin("/bin/", cmd->type);
 	char **args;
+
+	int i = 0;
+	while (i < 7)
+	{
+		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			return(1);
+		i++;
+	}
+
 	if (cmd->args)
 	{
 		t_list	*fucker = ft_lstnew(cmd->type);
@@ -36,7 +45,8 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	{
 		if (execve(command, args, NULL) == -1)
 		{
-			printf("%s: errno %d\n", strerror(errno), errno);
+			(void)pid;
+			// printf("%s: errno %d\n", strerror(errno), errno);
 		}
 		ft_putstr_fd("ghostshell: ", 1);
 		ft_putstr_fd(cmd->type, 1);
