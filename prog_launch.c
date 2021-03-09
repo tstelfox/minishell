@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/04 13:22:16 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 13:38:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int	prog_launch(t_list *tokens, t_shell *ghost)
 	pid_t	pid;
 	(void)ghost;
 	int		status; //Ok need to put list in 2D array and then do a strjoin
-	char	command[11] = "/bin/ls";
-	char	*args[3] = { "ls", NULL};
+	// char	command[8] = "/bin/ls";
+	char *command = ft_strjoin("/bin/", tokens->content);
+	
+	// char	*args[3] = { "ls", NULL};
 	pid = fork();
 	if (pid == 0) //child process
 	{
