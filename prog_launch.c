@@ -6,20 +6,49 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 13:40:38 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 15:58:44 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
+char	**get_path(t_cmd *cmd, t_shell *ghost)
+{
+	int i;
+	int k;
+	char **path;
+	char *command;
+
+	i = 0;
+	k = 0;
+	command = ft_strjoin("/", cmd->type);
+	while (ghost->env[i])
+	{
+		if (ft_strnstr(ghost->env[i], "PATH", 4))
+		{
+			path = ft_split(&ghost->env[i][5], ':');
+			while (path[k])
+			{
+				path[k] = ft_strjoin(path[k], command);
+				k++;
+			}
+			return(path);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	prog_launch(t_cmd *cmd, t_shell *ghost)
 {
 	pid_t	pid;
-	char *command;
-
-	command = ft_strjoin("/bin/", cmd->type); // Realise now that there are fuckers in /usr/bin/ too
+	char **path;
 	char **args;
+	int k = 0;
 
+	path = get_path(cmd, ghost);
+	if (path == NULL)
+		cmd_notfound(cmd);
 	int i = 0;
 	while (i < 7)
 	{
@@ -27,7 +56,6 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 			return(1);
 		i++;
 	}
-
 	if (cmd->args)
 	{
 		t_list	*fucker = ft_lstnew(cmd->type);
@@ -43,15 +71,16 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	pid = fork();
 	if (pid == 0) //child process
 	{
-		if (execve(command, args, NULL) == -1)
+		while (path[k])
 		{
-			(void)pid;
-			// printf("%s: errno %d\n", strerror(errno), errno);
+			if (execve(path[k], args, NULL) == -1)
+			{
+				(void)pid;
+				// printf("%s: errno %d\n", strerror(errno), errno);
+			}
+			k++;
 		}
-		ft_putstr_fd("ghostshell: ", 1);
-		ft_putstr_fd(cmd->type, 1);
-		ft_putstr_fd(": command not found\n", 1);
-		exit(0);
+		cmd_notfound(cmd);
 	}
 	else if (pid < 0)
 	{

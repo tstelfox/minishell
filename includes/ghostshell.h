@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/04 11:20:08 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 15:37:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
 // Programs
 int		prog_launch(t_cmd *cmd, t_shell *ghost);
 int		shell_exec(t_list *tokens, t_shell *ghost);
+char	**get_path(t_cmd *cmd, t_shell *ghost);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
@@ -113,6 +114,7 @@ int		ft_lstsize(t_list *lst);
 char	**list_to_arr(t_list *tokens);
 
 // error
+void	cmd_notfound(t_cmd *cmd);
 void	error_handler(char *error_message);
 
 // lexer
