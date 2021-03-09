@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 15:58:44 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 16:03:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 			k++;
 		}
 		cmd_notfound(cmd);
+		exit(0);
 	}
 	else if (pid < 0)
 	{
