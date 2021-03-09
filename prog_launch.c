@@ -6,30 +6,50 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 13:38:34 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 13:39:17 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-int	prog_launch(t_list *tokens, t_shell *ghost)
+int	prog_launch(t_cmd *cmd, t_shell *ghost)
 {
 	pid_t	pid;
-	(void)ghost;
-	int		status; //Ok need to put list in 2D array and then do a strjoin
-	// char	command[8] = "/bin/ls";
-	char *command = ft_strjoin("/bin/", tokens->content);
-	
-	// char	*args[3] = { "ls", NULL};
+	char *command;
+
+	command = ft_strjoin("/bin/", cmd->type); // Realise now that there are fuckers in /usr/bin/ too
+	char **args;
+
+	int i = 0;
+	while (i < 7)
+	{
+		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			return(1);
+		i++;
+	}
+
+	if (cmd->args)
+	{
+		t_list	*fucker = ft_lstnew(cmd->type);
+		ft_lstadd_front(&cmd->args, fucker);
+		args = list_to_arr(cmd->args);
+	}
+	else
+	{
+		args = (char**)malloc(sizeof(char *) * 2);
+		args[0] = ft_strdup(cmd->type);
+		args[1] = NULL;
+	}
 	pid = fork();
 	if (pid == 0) //child process
 	{
 		if (execve(command, args, NULL) == -1)
 		{
-			printf("%s: errno %d\n", strerror(errno), errno);
+			(void)pid;
+			// printf("%s: errno %d\n", strerror(errno), errno);
 		}
 		ft_putstr_fd("ghostshell: ", 1);
-		ft_putstr_fd(tokens->content, 1);
+		ft_putstr_fd(cmd->type, 1);
 		ft_putstr_fd(": command not found\n", 1);
 		exit(0);
 	}
@@ -39,7 +59,7 @@ int	prog_launch(t_list *tokens, t_shell *ghost)
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
+		waitpid(pid, &ghost->status, 0);
 	}
 	return (1);
 }
