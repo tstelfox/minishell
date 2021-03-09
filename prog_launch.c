@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 16:03:23 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 17:37:20 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,27 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 		ft_lstadd_front(&cmd->args, fucker);
 		args = list_to_arr(cmd->args);
 	}
+	else if (cmd->redirection) // This shit is all krfucked
+	{
+		t_list	*tuma = ft_lstnew(cmd->type);
+		t_list	*symbol = ft_lstnew(">");
+		t_list  *file = ft_lstnew("test");
+		// t_list  *file = ft_lstnew(cmd->redirection->content->file);
+		ft_lstadd_back(&tuma, symbol);
+		ft_lstadd_back(&tuma, file);
+		args = list_to_arr(tuma);
+	}
 	else
 	{
 		args = (char**)malloc(sizeof(char *) * 2);
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
+	// for (int i = 0; args[i]; i++)
+	// {
+	// 	ft_putstr_fd(args[i], 1);
+	// 	ft_putstr_fd("\n", 1);
+	// }
 	pid = fork();
 	if (pid == 0) //child process
 	{

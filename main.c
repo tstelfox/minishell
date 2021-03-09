@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/04 11:22:40 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/09 16:59:55 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	exec_shell(char *envp[])
 
 	ghost.status = 0;
 	int i = 0;
-	
-
 	while (envp[i])
 		i++;
 	ghost.env = (char **)malloc(sizeof(char *) * (i + 1));
@@ -48,8 +46,6 @@ void	exec_shell(char *envp[])
 		k++;
 	}
 	ghost.env[k] = 0;
-	// pid_t	pid;
-	// int		status;
 	signal(SIGINT, ctrl);
 	//signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
@@ -60,7 +56,7 @@ void	exec_shell(char *envp[])
 		read_line(&input);
 		tokens = lexer(input);
 		commands = parser(tokens);
-		// ft_cmd_lstiter(commands, print_cmd);
+		ft_cmd_lstiter(commands, print_cmd);
 		if (shell_exec(commands, &ghost) == 0) //Presuming that the input has been processed
 			break;
 		free(input);
