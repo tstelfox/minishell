@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 15:37:54 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/11 11:38:01 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <string.h>
 # include <signal.h>
+# include <fcntl.h>
 # include "get_next_line.h"
 
 enum	e_status

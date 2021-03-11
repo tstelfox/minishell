@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/09 17:37:20 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/11 12:15:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,6 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 		ft_lstadd_front(&cmd->args, fucker);
 		args = list_to_arr(cmd->args);
 	}
-	else if (cmd->redirection) // This shit is all krfucked
-	{
-		t_list	*tuma = ft_lstnew(cmd->type);
-		t_list	*symbol = ft_lstnew(">");
-		t_list  *file = ft_lstnew("test");
-		// t_list  *file = ft_lstnew(cmd->redirection->content->file);
-		ft_lstadd_back(&tuma, symbol);
-		ft_lstadd_back(&tuma, file);
-		args = list_to_arr(tuma);
-	}
 	else
 	{
 		args = (char**)malloc(sizeof(char *) * 2);
@@ -86,6 +76,14 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	pid = fork();
 	if (pid == 0) //child process
 	{
+		if (cmd->redirection)
+		{
+			t_redir	*file_struct;
+			file_struct = (t_redir *)cmd->redirection->content;
+			int fd = open(file_struct->file, O_CREAT | O_RDWR);
+			printf("what the fuck is fd then? %d && STdOUT?", fd, STDOUT_FILENO);
+			dup2(fd, STDOUT_FILENO);
+		}
 		while (path[k])
 		{
 			if (execve(path[k], args, NULL) == -1)
