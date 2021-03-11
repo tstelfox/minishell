@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/11 09:51:04 by tmullan       ########   odam.nl          #
+#    Updated: 2021/03/11 12:49:07 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ LEX = read_input.c \
 PAR = parser.c
 
 SHEL = shell_exec.c \
-		prog_launch.c
+		prog_launch.c \
+		redirect.c
 
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 

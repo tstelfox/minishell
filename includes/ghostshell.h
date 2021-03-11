@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/11 11:38:01 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/11 13:09:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct		s_shell
 	pid_t	pid;
 	char	**env;
 	int		status;
+	int		out;
 }					t_shell;
 
 // built-in functions
@@ -84,6 +85,9 @@ int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
 int		prog_launch(t_cmd *cmd, t_shell *ghost);
 int		shell_exec(t_list *tokens, t_shell *ghost);
 char	**get_path(t_cmd *cmd, t_shell *ghost);
+
+// Redirection
+int		redirect(t_cmd *cmd);
 
 // lft_utils
 size_t	ft_strlen(const char *s);

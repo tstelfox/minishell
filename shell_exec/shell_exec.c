@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/04 13:12:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/11 13:13:50 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	run_echo(t_cmd *cmd, t_shell *ghost)
 		ft_putstr_fd(cmd->args->content, STDOUT_FILENO); // Simplest case
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	return (1);
 }
 
@@ -73,6 +75,8 @@ int	run_cd(t_cmd *cmd, t_shell *ghost)
 		if (chdir(cmd->args->content) != 0)
 			strerror(errno);
 	}
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	return (1);
 }
 
@@ -89,8 +93,12 @@ int	run_pwd(t_cmd *cmd, t_shell *ghost)
 	{
 		ft_putstr_fd(buff, STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
+		if (ghost->out != -42)
+			dup2(ghost->out, STDOUT_FILENO);
 		return (1);
 	}
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	return (0);
 }
 
@@ -107,6 +115,8 @@ int	run_env(t_cmd *cmd, t_shell *ghost)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	return (1);
 }
 
@@ -130,6 +140,8 @@ int	run_export(t_cmd *cmd, t_shell *ghost)
 	ghost->env = NULL;
 	ghost->env = (char **)malloc(sizeof(*temp));
 	ghost->env = temp;
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	// for (int k= 0; ghost->env[k]; k++)
 	// 	free(temp[k]);
 	// free(temp);
@@ -165,6 +177,8 @@ int	run_unset(t_cmd *cmd, t_shell *ghost)
 	free(ghost->env);
 	ghost->env = (char**)malloc(sizeof(*temp));
 	ghost->env = temp;
+	if (ghost->out != -42)
+		dup2(ghost->out, STDOUT_FILENO);
 	// (void)command;
 	// (void)ghost;
 	return(1);
@@ -183,7 +197,6 @@ int	shell_exec(t_list *command, t_shell *ghost)
 	int	i;
 
 	t_cmd	*cmd = (t_cmd*)command->content;
-
 	if (command->content == NULL)
 		return (0);
 	i = 0;
@@ -199,6 +212,8 @@ int	shell_exec(t_list *command, t_shell *ghost)
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
 			{
+				if (cmd->redirection)
+					ghost->out = redirect(cmd);
 				if (!command->next)
 					return (*g_builtin_f[i])(cmd, ghost);
 				else

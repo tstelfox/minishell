@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/11 11:57:36 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/11 13:09:56 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	exec_shell(char *envp[])
 	t_shell ghost;
 
 	ghost.status = 0;
+	ghost.out = -42;
 	int i = 0;
 	while (envp[i])
 		i++;
