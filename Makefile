@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/04 11:20:34 by tmullan       ########   odam.nl          #
+#    Updated: 2021/03/11 09:51:04 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,19 +43,24 @@ LEX = read_input.c \
 
 PAR = parser.c
 
+SHEL = shell_exec.c \
+		prog_launch.c
+
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
 LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
-SRC = main.c shell_exec.c \
-		prog_launch.c \
+SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
+
+SRC = main.c \
 		$(GNL) \
 		$(LFT_PREFIX) \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
+		$(SHELL_PREFIX) \
 		debug/printlists.c
 
 OBJ = $(SRC:.c=.o)
