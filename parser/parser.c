@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/08 18:11:56 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/10 13:33:32 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int		check_redir(t_shell **ghost, t_cmd *command)
 
 void	parser(t_shell **ghost)
 {
-	t_cmd	*command = NULL;
+	t_cmd	*command;
 	t_list 	*head;
 
 	head = (*ghost)->tokens;
