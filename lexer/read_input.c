@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/03 12:59:29 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/13 00:32:23 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	read_line(char **input)
 {
 	// this also needs to read from a file?
 	int ret;
-	
+	char *tty = ttyname(STDIN_FILENO);
 	ret = get_next_line(STDOUT_FILENO, input);
 	if (ret == -1)
 	{
