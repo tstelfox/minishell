@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/11 13:09:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 16:25:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int		run_env(t_cmd *cmd, t_shell *ghost);
 int		run_exit(t_cmd *cmd, t_shell *ghost);
 int		run_export(t_cmd *cmd, t_shell *ghost);
 int		run_unset(t_cmd *cmd, t_shell *ghost);
+void	print_echo(void *data);
 //globals
 char	*g_builtin[7];
 int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
@@ -88,6 +89,8 @@ char	**get_path(t_cmd *cmd, t_shell *ghost);
 
 // Redirection
 int		redirect(t_cmd *cmd);
+int		ft_lstredir(t_list *lst, int (*f)(void *));
+int		redir_muti(void *file_struct);
 
 // lft_utils
 size_t	ft_strlen(const char *s);

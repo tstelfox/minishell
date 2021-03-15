@@ -6,11 +6,21 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 13:00:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 16:17:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+int	redir_multi(void *file_struct)
+{
+	int		fd;
+	t_redir *filename;
+
+	filename = (t_redir*)file_struct;
+	fd = open(filename->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+	return (fd);
+}
 
 int	redirect(t_cmd *cmd)
 {
@@ -22,7 +32,6 @@ int	redirect(t_cmd *cmd)
 	if (file_struct->type == 1)
 	{
 		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
-		// ft_putnbr_fd(fd, 1);
 		if (fd == -1)
 		{
 			cmd_notfound(cmd);
@@ -33,8 +42,11 @@ int	redirect(t_cmd *cmd)
 	}
 	else
 	{
-		if (file_struct->type == 0)
-			fd = open(file_struct->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+		if (file_struct->type == 0) // Ok so need to look into this same shit but with the various kinds of redirections
+		{
+			fd = ft_lstredir(cmd->redirection, &redir_multi);
+		}
+			// fd = open(file_struct->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
 		else
 			fd = open(file_struct->file, O_CREAT | O_APPEND | O_RDWR, 0666);
 		out = dup(STDOUT_FILENO);
