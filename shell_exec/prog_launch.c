@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/11 14:21:03 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 10:54:10 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,6 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	{
 		if (cmd->redirection)
 			redirect(cmd);
-		// {
-		// 	t_redir	*file_struct;
-		// 	file_struct = (t_redir *)cmd->redirection->content;
-		// 	int fd = open(file_struct->file, O_CREAT | O_RDWR);
-		// 	printf("what the fuck is fd then? %d && STdOUT?", fd, STDOUT_FILENO);
-		// 	dup2(fd, STDOUT_FILENO);
-		// }
 		while (path[k])
 		{
 			if (execve(path[k], args, NULL) == -1)
