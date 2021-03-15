@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 18:33:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 18:42:09 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ int		run_env(t_cmd *cmd, t_shell *ghost);
 int		run_exit(t_cmd *cmd, t_shell *ghost);
 int		run_export(t_cmd *cmd, t_shell *ghost);
 int		run_unset(t_cmd *cmd, t_shell *ghost);
-void	print_echo(void *data);
-void	ft_echoiter(t_list *lst, void (*f)(void *));
+void	print_echo(t_list *args);
 //globals
 char	*g_builtin[7];
 int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
