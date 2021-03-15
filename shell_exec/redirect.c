@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 11:00:26 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 13:00:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,31 @@ int	redirect(t_cmd *cmd)
 	int		out;
 
 	file_struct = (t_redir *)cmd->redirection->content;
-	fd = open(file_struct->file, O_CREAT | O_RDWR, 0666);
-	out = dup(STDOUT_FILENO);
-	dup2(fd, STDOUT_FILENO);
+	if (file_struct->type == 1)
+	{
+		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
+		// ft_putnbr_fd(fd, 1);
+		if (fd == -1)
+		{
+			cmd_notfound(cmd);
+			return (-1);
+		}
+		out = dup(STDIN_FILENO);
+		dup2(fd, STDIN_FILENO);
+	}
+	else
+	{
+		if (file_struct->type == 0)
+			fd = open(file_struct->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+		else
+			fd = open(file_struct->file, O_CREAT | O_APPEND | O_RDWR, 0666);
+		out = dup(STDOUT_FILENO);
+		dup2(fd, STDOUT_FILENO);
+	}
+	// else // else if (file_struct->type == 1)
+	// {
+	// 	// Think this shouldn't create files
+	// 	fd = open(file_struct->file, O_CREAT | O_RDWR, 0666);
+	// }
 	return (out);
 }

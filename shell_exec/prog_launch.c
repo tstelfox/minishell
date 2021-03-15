@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 10:54:10 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 13:03:16 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	if (pid == 0) //child process
 	{
 		if (cmd->redirection)
-			redirect(cmd);
+		{
+			if (redirect(cmd) == -1)
+				exit(0);
+		}
 		while (path[k])
 		{
 			if (execve(path[k], args, NULL) == -1)

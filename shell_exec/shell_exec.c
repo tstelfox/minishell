@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/11 13:24:06 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 13:01:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,8 @@ int	shell_exec(t_list *command, t_shell *ghost)
 			{
 				if (cmd->redirection)
 					ghost->out = redirect(cmd);
+				if (ghost->out == -1)
+					return(1);
 				// if (!command->next)
 				// 	return (*g_builtin_f[i])(cmd, ghost);
 				// else
