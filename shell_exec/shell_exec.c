@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 16:29:12 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/15 18:34:03 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int	run_echo(t_cmd *cmd, t_shell *ghost)
 	if (ft_strcmp(cmd->args->content, "-n") == 0)
 	{
 		cmd->args = cmd->args->next;
-		ft_lstiter(cmd->args, print_echo);
+		ft_echoiter(cmd->args, print_echo);
 			// ft_putstr_fd(cmd->args->content, STDOUT_FILENO);
 	}
 	else
 	{
-		ft_lstiter(cmd->args, print_echo);
+		ft_echoiter(cmd->args, print_echo);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 	return (1);
