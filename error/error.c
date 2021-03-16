@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/08 16:18:16 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/16 13:21:32 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,22 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 	}
 	write(STDERR_FILENO, "\n", 1);
 	(*ghost)->status = error_code;
+	exit(1);
+}
+
+void	cmd_notfound(t_cmd *cmd)
+{
+	ft_putstr_fd("ghostshell: ", 1);
+	if (!cmd->redirection)
+	{
+		ft_putstr_fd(cmd->type, 1);
+		ft_putstr_fd(": command not found\n", 1);
+	}
+	else
+	{
+		t_redir	*file;
+		file = (t_redir *)cmd->redirection->content;
+		ft_putstr_fd(file->file, 1);
+		ft_putstr_fd(": No such file or directory\n", 1);
+	}
 }

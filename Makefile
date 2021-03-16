@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/08 14:14:45 by ztan          ########   odam.nl          #
+#    Updated: 2021/03/16 13:41:49 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ LFT = ft_putstr_fd.c \
 		ft_lstdelone_bonus.c \
 		ft_lstiter_bonus.c \
 		ft_lstnew_bonus.c \
-		ft_lstsize_bonus.c
+		ft_lstsize_bonus.c \
+		ft_lstadd_front_bonus.c
 
 ERR = error/error.c
 
@@ -46,6 +47,10 @@ LEX = read_input.c \
 
 PAR = parser.c
 
+SHEL = shell_exec.c \
+		prog_launch.c \
+		redirect.c \
+
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
 LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
@@ -54,13 +59,16 @@ LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
 UTIL_PREFIX = $(addprefix utils/, $(UTIL))
 
-SRC = main.c builtin_exec.c \
+SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
+
+SRC = main.c \
 		$(GNL) \
 		$(LFT_PREFIX) \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
+		$(SHELL_PREFIX) \
 		debug/printlists.c
 
 OBJ = $(SRC:.c=.o)

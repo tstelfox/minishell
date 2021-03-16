@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/08 18:16:08 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/16 13:21:05 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,3 +92,4 @@ void	lexer(t_shell **ghost, char *input)
 	if (i != start)
 		add_token(ghost, input, start, i - start);
 }
+

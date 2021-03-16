@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/08 18:12:21 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/16 13:35:35 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	ctrl(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("exit", 0);
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\b \b", 1);
 	}
-	// signal(SIGINT, ctrl);
 }
 
 void	exec_shell(char *envp[])
@@ -35,10 +35,23 @@ void	exec_shell(char *envp[])
 	ghost = init_shell(envp);
 	if (!ghost)
 		error_handler(&ghost, INTERNAL_ERROR, "could not allocate space", NULL);
-	// pid_t	pid;
-	// int		status;
+
+	// ---------env---------
+	int i = 0;
+	while (envp[i])
+		i++;
+	ghost->env = (char **)malloc(sizeof(char *) * (i + 1));
+	int k = 0;
+	while (envp[k])
+	{
+		ghost->env[k] = ft_strdup(envp[k]);
+		k++;
+	}
+	ghost->env[k] = 0;
+	// ---------env---------
+
 	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl);
+	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
 	while (ghost->status != INTERNAL_ERROR) // check for errors
@@ -49,31 +62,19 @@ void	exec_shell(char *envp[])
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
+		if (shell_exec(ghost->commands, ghost) == 0)
+			break;
 		if (ghost->status == 0)// debug
 		{
 			ft_lstiter(ghost->tokens, print_data);
 			ft_putstr_fd("\n", STDOUT_FILENO);
 			ft_cmd_lstiter(ghost->commands, print_cmd);
 		}
-		else
+		else//if error debug
 		{
 			ft_putnbr_fd(ghost->status, STDOUT_FILENO);
 			ft_putstr_fd("\n", STDOUT_FILENO);
 		}
-		// if (builtin_exec(tokens, &ghost) == 0) //Presuming that the input has been processed
-		// 	break;
-		// pid = fork();
-
-		// if (pid == 0)
-		// {
-		// 	if (execvp(tokens->content, tokens) == -1)
-		// 	{
-		// 		strerror(errno);
-		// 		exit(1);
-		// 	}
-		// }
-		// else
-		// 	waitpid(pid, &status, 0);
 		free(input);
 		restart_shell(ghost);
 	}

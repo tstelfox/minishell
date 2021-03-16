@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/08 17:13:57 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/16 13:36:25 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <string.h>
 # include <signal.h>
+# include <fcntl.h>
 # include "get_next_line.h"
 
 enum	e_status
@@ -66,23 +67,35 @@ typedef struct		s_shell
 	// char	**tokens;
 	// comands
 	// status
+	pid_t	pid;
 	char	**env;
 	int		status;
+	int		out;
 }					t_shell;
 
 // built-in functions
-int		run_echo(t_list *tokens, t_shell *ghost);
-int		run_cd(t_list *tokens, t_shell *ghost);
-int		run_pwd(t_list *tokens, t_shell *ghost);
-int		run_env(t_list *tokens, t_shell *ghost);
-int		run_exit(t_list *tokens, t_shell *ghost);
-int		run_export(t_list *tokens, t_shell *ghost);
-int		run_unset(t_list *tokens, t_shell *ghost);
-int		builtin_exec(t_list *tokens, t_shell *ghost);
+int		run_echo(t_cmd *cmd, t_shell *ghost);
+int		run_cd(t_cmd *cmd, t_shell *ghost);
+int		run_pwd(t_cmd *cmd, t_shell *ghost);
+int		run_env(t_cmd *cmd, t_shell *ghost);
+int		run_exit(t_cmd *cmd, t_shell *ghost);
+int		run_export(t_cmd *cmd, t_shell *ghost);
+int		run_unset(t_cmd *cmd, t_shell *ghost);
+void	print_echo(t_list *args);
 
 //globals
 char	*g_builtin[7];
-int		(*g_builtin_f[7])(t_list *tokens, t_shell *ghost);
+int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
+
+// Programs
+int		prog_launch(t_cmd *cmd, t_shell *ghost);
+int		shell_exec(t_list *tokens, t_shell *ghost);
+char	**get_path(t_cmd *cmd, t_shell *ghost);
+
+// Redirection
+int		redirect(t_cmd *cmd);
+int		ft_lstredir(t_list *lst, int (*f)(void *));
+int		redir_muti(void *file_struct);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
@@ -112,9 +125,11 @@ t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
+char	**list_to_arr(t_list *tokens);
 
 // error
 void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
+void	cmd_notfound(t_cmd *cmd);
 
 // lexer
 void	read_line(char **input);

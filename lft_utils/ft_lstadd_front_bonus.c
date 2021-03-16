@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   read_input.c                                       :+:    :+:            */
+/*   ft_lstadd_front_bonus.c                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/16 13:24:17 by zenotan       ########   odam.nl         */
+/*   Created: 2019/11/07 10:16:45 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:35 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	read_line(char **input)
+void	ft_lstadd_front(t_list **alst, t_list *new)
 {
-	// this also needs to read from a file?
-	int ret;
-	ret = get_next_line(STDOUT_FILENO, input);
-	if (ret == -1)
-	{
-		free(*input);
-		/* err handler */
-	}
+	if (!new)
+		return ;
+	new->next = *alst;
+	*alst = new;
 }

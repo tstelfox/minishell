@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/08 17:11:16 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/16 13:33:01 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_shell	*init_shell(char **env)
 	ft_bzero(new_shell, sizeof(t_shell));
 	new_shell->env = get_envp(env);
 	new_shell->status = 0;
+	new_shell->out = -42;
 	return (new_shell);
 }
 
