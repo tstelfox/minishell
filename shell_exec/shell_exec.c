@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/18 12:21:55 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/18 12:37:25 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	run_echo(t_cmd *cmd, t_shell *ghost)
 int	run_cd(t_cmd *cmd, t_shell *ghost)
 {
 	int i = 0;
-	if (cmd->args->content == NULL)
-		return (0);
+	if (cmd->args == NULL)
+		return (1);
 	else if (ft_strcmp(cmd->args->content, "~") == 0)
 	{
 		while (ghost->env[i])
