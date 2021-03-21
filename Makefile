@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/16 13:41:49 by zenotan       ########   odam.nl          #
+#    Updated: 2021/03/18 12:01:18 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ LFT = ft_putstr_fd.c \
 ERR = error/error.c
 
 UTIL = struct_utils.c \
-		lst_utils.c
+		lst_utils.c \
+		history_utils.c
 
 LEX = read_input.c \
 		lexer.c
@@ -79,18 +80,25 @@ CC = gcc
 
 INCLUDES = -Iincludes
 
+REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+
+TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) -g -o $(NAME)
+		@make -C reins_termcap/
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -c $< -o $@
 
 clean:
+		@make clean -C reins_termcap/
 		rm -f $(OBJ)
 
 fclean: clean
+		@make fclean -C reins_termcap/
 		rm -f $(NAME)
 
 re: fclean all

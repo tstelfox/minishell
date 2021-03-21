@@ -6,11 +6,16 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/16 13:35:35 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/19 12:07:49 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+void	pass_param(void *param)
+{
+	(void)param;
+}
 
 void	ctrl(int sig)
 {
@@ -34,8 +39,15 @@ void	exec_shell(char *envp[])
 
 	ghost = init_shell(envp);
 	if (!ghost)
-		error_handler(&ghost, INTERNAL_ERROR, "could not allocate space", NULL);
-
+		error_handler(&ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
+	if (!reins_key(ghost->reins, KEY_ESC "[" KEY_UP, up_function))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook(ghost->reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_key(ghost->reins, KEY_ESC "[" KEY_DOWN, down_function))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook(ghost->reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
 	// ---------env---------
 	int i = 0;
 	while (envp[i])
@@ -49,21 +61,20 @@ void	exec_shell(char *envp[])
 	}
 	ghost->env[k] = 0;
 	// ---------env---------
-
 	signal(SIGINT, ctrl);
 	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
-		read_line(&input);
-
+		read_line(&ghost, &input);
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
-		if (shell_exec(ghost->commands, ghost) == 0)
-			break;
+		// if (shell_exec(ghost->commands, ghost) == 0)
+		// 	break;
 		if (ghost->status == 0)// debug
 		{
 			ft_lstiter(ghost->tokens, print_data);
@@ -78,6 +89,7 @@ void	exec_shell(char *envp[])
 		free(input);
 		restart_shell(ghost);
 	}
+	reins_destroy(ghost->reins);
 }
 
 int	main(int argc, char *args[], char *envp[])

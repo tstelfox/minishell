@@ -6,20 +6,22 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/16 13:24:17 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/19 19:42:29 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	read_line(char **input)
+void	read_line(t_shell **ghost, char **input)
 {
-	// this also needs to read from a file?
 	int ret;
-	ret = get_next_line(STDOUT_FILENO, input);
-	if (ret == -1)
+
+	ret = reins_get_input((*ghost)->reins, input);
+	if (ret != 1)
 	{
 		free(*input);
-		/* err handler */
+		error_handler(ghost, INTERNAL_ERROR, "failed to get input", NULL);
 	}
+	store_command(ghost, *input);
+	reins_disable((*ghost)->reins);
 }

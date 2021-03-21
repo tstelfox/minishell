@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/16 13:36:25 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/19 19:52:45 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include "get_next_line.h"
+# include "reins.h"
 
 enum	e_status
 {
@@ -31,6 +32,8 @@ enum	e_status
 
 enum	e_types
 {
+	TRUE = 1,
+	FALSE = 0,
 	INPUT = 1,
 	OUTPUT = 0,
 	OUTPUT_ADD = 2,
@@ -43,6 +46,13 @@ typedef struct		s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_dlist
+{
+	void			*content;
+	struct s_dlist	*prev;
+	struct s_dlist	*next;
+}					t_dlist;
 
 typedef	struct 		s_redirection
 {
@@ -62,8 +72,12 @@ typedef struct 		s_cmd
 
 typedef struct		s_shell
 {
+	t_dlist	*history;
+	t_dlist	*current;
+	int		first_command;
 	t_list	*commands;
 	t_list	*tokens;
+	t_reins	*reins;
 	// char	**tokens;
 	// comands
 	// status
@@ -132,7 +146,7 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 void	cmd_notfound(t_cmd *cmd);
 
 // lexer
-void	read_line(char **input);
+void	read_line(t_shell **ghost, char **input);
 void	lexer(t_shell **shell, char *input);
 
 // parser
@@ -148,6 +162,16 @@ void	restart_shell(t_shell *ghost);
 
 // lst_utils
 char	**list_to_arr(t_list *tokens);
+t_dlist	*ft_dlstnew(void *content);
+void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
+void	ft_dlstclear(t_dlist **lst);
+void	ft_dlstdelone(t_dlist *lst);
+
+//history shit idk man this kinda confusing lol
+int		up_function(t_input *line, char *buf, t_hook *hook);
+int		down_function(t_input *line, char *buf, t_hook *hook);
+void	store_command(t_shell **ghost, char *line);
+
 
 //debug
 void	print_data(void *data);
