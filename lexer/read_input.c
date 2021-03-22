@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/19 19:42:29 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/22 14:37:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	read_line(t_shell **ghost, char **input)
 	}
 	store_command(ghost, *input);
 	reins_disable((*ghost)->reins);
+	ft_putchar_fd('\n', STDOUT_FILENO);
 }
