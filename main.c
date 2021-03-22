@@ -6,16 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/19 12:07:49 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/22 12:49:10 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-void	pass_param(void *param)
-{
-	(void)param;
-}
 
 void	ctrl(int sig)
 {
@@ -38,15 +33,16 @@ void	exec_shell(char *envp[])
 	t_shell *ghost;
 
 	ghost = init_shell(envp);
+	// init_reins(&ghost);
 	if (!ghost)
 		error_handler(&ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
 	if (!reins_key(ghost->reins, KEY_ESC "[" KEY_UP, up_function))
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook(ghost->reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
+	if (!reins_hook((ghost)->reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_key(ghost->reins, KEY_ESC "[" KEY_DOWN, down_function))
+	if (!reins_key((ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook(ghost->reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
+	if (!reins_hook((ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
 	// ---------env---------
 	int i = 0;
@@ -75,17 +71,7 @@ void	exec_shell(char *envp[])
 			parser(&ghost);
 		// if (shell_exec(ghost->commands, ghost) == 0)
 		// 	break;
-		if (ghost->status == 0)// debug
-		{
-			ft_lstiter(ghost->tokens, print_data);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-			ft_cmd_lstiter(ghost->commands, print_cmd);
-		}
-		else//if error debug
-		{
-			ft_putnbr_fd(ghost->status, STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
+		debug_loop(&ghost);
 		free(input);
 		restart_shell(ghost);
 	}

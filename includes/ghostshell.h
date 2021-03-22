@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/19 19:52:45 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/22 12:49:24 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,18 @@ void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
 void	ft_dlstclear(t_dlist **lst);
 void	ft_dlstdelone(t_dlist *lst);
 
-//history shit idk man this kinda confusing lol
+//history shit
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
 void	store_command(t_shell **ghost, char *line);
+void	init_reins(t_shell **ghost);
+void	pass_param(void *param);
 
 
 //debug
 void	print_data(void *data);
 void	print_cmd(t_cmd *data);
 void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
+void	debug_loop(t_shell **ghost);
 
 #endif
