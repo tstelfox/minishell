@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 18:42:42 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 16:56:51 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int	shell_exec(t_list *command, t_shell *ghost)
 {
 	int	i;
 
-	t_cmd	*cmd = (t_cmd*)command->content;
+	t_cmd	*cmd = command->content;
 	if (command->content == NULL)
 		return (0);
 	i = 0;
@@ -206,7 +206,7 @@ int	shell_exec(t_list *command, t_shell *ghost)
 		{
 			i = 0;
 			command = command->next;
-			cmd = (t_cmd*)command->content;
+			cmd = command->content;
 		}
 		while (i < 7)
 		{

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/22 14:40:59 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/22 16:29:01 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	del_list(void *content)
 {
-	free(content);
+	if (content)
+		free(content);
 	content = NULL;
 }
 
