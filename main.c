@@ -6,7 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2021/03/22 12:52:12 by tmullan       ########   odam.nl         */
+=======
+/*   Updated: 2021/03/22 12:49:10 by ztan          ########   odam.nl         */
+>>>>>>> 71427f4e5a2420866c4c4b848dd11409f4518e71
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +34,52 @@ void	ctrl(int sig)
 void	exec_shell(char *envp[])
 {
 	char	*input;
-	t_list	*tokens = NULL;
-	t_list	*commands = NULL;
-	t_shell ghost;
+	t_shell *ghost;
 
-	ghost.status = 0;
-	ghost.out = -42;
+	ghost = init_shell(envp);
+	// init_reins(&ghost);
+	if (!ghost)
+		error_handler(&ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
+	if (!reins_key(ghost->reins, KEY_ESC "[" KEY_UP, up_function))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook((ghost)->reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_key((ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook((ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
+		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	// ---------env---------
 	int i = 0;
 	while (envp[i])
 		i++;
-	ghost.env = (char **)malloc(sizeof(char *) * (i + 1));
+	ghost->env = (char **)malloc(sizeof(char *) * (i + 1));
 	int k = 0;
 	while (envp[k])
 	{
-		ghost.env[k] = ft_strdup(envp[k]);
+		ghost->env[k] = ft_strdup(envp[k]);
 		k++;
 	}
-	ghost.env[k] = 0;
+	ghost->env[k] = 0;
+	// ---------env---------
 	signal(SIGINT, ctrl);
-	//signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
+	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
-	while (1) // check for errors
+	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
-		read_line(&input);
-		tokens = lexer(input);
-		commands = parser(tokens);
-		ft_cmd_lstiter(commands, print_cmd);
-		// if (shell_exec(commands, &ghost) == 0)
+		read_line(&ghost, &input);
+		lexer(&ghost, input);
+		if (ghost->status == 0)
+			parser(&ghost);
+		// if (shell_exec(ghost->commands, ghost) == 0)
 		// 	break;
+		debug_loop(&ghost);
 		free(input);
+		restart_shell(ghost);
 	}
+	reins_destroy(ghost->reins);
 }
 
 int	main(int argc, char *args[], char *envp[])

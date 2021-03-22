@@ -6,33 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 13:56:38 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/03 13:35:13 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/22 12:23:40 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-char	**list_to_arr(t_list *tokens)
-{
-	t_list	*temp;
-	char	**ret;
-	int		i;
-
-	if (!tokens)
-		return (NULL);
-	temp = tokens;
-	if (!(ret = (char **)malloc(sizeof(char *) * ft_lstsize(tokens) + 1)))
-		error_handler("malloc fail");
-	i = 0;
-	while (temp)
-	{
-		ret[i] = ft_strdup(temp->content);
-		temp = temp->next;
-		i++;
-	}
-	ret[i] = 0;
-	return (ret);
-}
 
 void	print_data(void *data)
 {
@@ -99,4 +77,19 @@ void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *))
 		f(temp->content);
 		temp = temp->next;
 	}
+}
+
+void	debug_loop(t_shell **ghost)
+{
+	if ((*ghost)->status == 0)// debug
+		{
+			ft_lstiter((*ghost)->tokens, print_data);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			ft_cmd_lstiter((*ghost)->commands, print_cmd);
+		}
+		else//if error debug
+		{
+			ft_putnbr_fd((*ghost)->status, STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 }

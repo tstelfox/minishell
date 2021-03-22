@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/18 14:07:26 by tmullan       ########   odam.nl          #
+#    Updated: 2021/03/22 13:33:10 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ LFT = ft_putstr_fd.c \
 		ft_strjoin.c \
 		ft_strnstr.c \
 		ft_strcmp.c \
+		ft_bzero.c \
 		ft_lstadd_back_bonus.c \
 		ft_lstclear_bonus.c \
 		ft_lstdelone_bonus.c \
@@ -38,6 +39,10 @@ LFT = ft_putstr_fd.c \
 
 ERR = error/error.c
 
+UTIL = struct_utils.c \
+		lst_utils.c \
+		history_utils.c
+
 LEX = read_input.c \
 		lexer.c
 
@@ -46,13 +51,18 @@ PAR = parser.c
 SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
+<<<<<<< HEAD
 		pipe_exec.c
+=======
+>>>>>>> 71427f4e5a2420866c4c4b848dd11409f4518e71
 
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
 LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
+
+UTIL_PREFIX = $(addprefix utils/, $(UTIL))
 
 SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 
@@ -62,6 +72,7 @@ SRC = main.c \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
+		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		debug/printlists.c
 
@@ -73,18 +84,25 @@ CC = gcc
 
 INCLUDES = -Iincludes
 
+REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+
+TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) -g -o $(NAME)
+		@make -C reins_termcap/
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) $(INCLUDES) -c $< -o $@
+		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -c $< -o $@
 
 clean:
+		@make clean -C reins_termcap/
 		rm -f $(OBJ)
 
 fclean: clean
+		@make fclean -C reins_termcap/
 		rm -f $(NAME)
 
 re: fclean all

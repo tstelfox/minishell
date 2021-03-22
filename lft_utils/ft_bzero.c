@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   read_input.c                                       :+:    :+:            */
+/*   ft_bzero.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/19 19:42:29 by zenotan       ########   odam.nl         */
+/*   Created: 2019/10/28 17:18:12 by ztan          #+#    #+#                 */
+/*   Updated: 2021/03/08 14:14:33 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	read_line(t_shell **ghost, char **input)
+void	ft_bzero(void *s, size_t n)
 {
-	int ret;
+	size_t	i;
+	char	*str;
 
-	ret = reins_get_input((*ghost)->reins, input);
-	if (ret != 1)
+	i = 0;
+	str = (char *)s;
+	while (i < n)
 	{
-		free(*input);
-		error_handler(ghost, INTERNAL_ERROR, "failed to get input", NULL);
+		str[i] = '\0';
+		i++;
 	}
-	store_command(ghost, *input);
-	reins_disable((*ghost)->reins);
 }
