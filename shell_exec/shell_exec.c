@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/18 12:37:25 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 11:31:58 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,14 @@ int	shell_exec(t_list *command, t_shell *ghost)
 
 	if (!command)
 		return (1);
+	i = 0;
 	t_cmd	*cmd = (t_cmd*)command->content;
+	// if (cmd->seprator_type == PIPE)
+	// {
+	// 	// pipe_exec(command, ghost);
+	// }
 	if (command->content == NULL)
 		return (0);
-	i = 0;
 	while (1)
 	{
 		if (i != 0)
