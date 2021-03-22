@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/18 12:27:35 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 12:52:12 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	exec_shell(char *envp[])
 		tokens = lexer(input);
 		commands = parser(tokens);
 		ft_cmd_lstiter(commands, print_cmd);
-		if (shell_exec(commands, &ghost) == 0)
-			break;
+		// if (shell_exec(commands, &ghost) == 0)
+		// 	break;
 		free(input);
 	}
 }

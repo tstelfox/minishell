@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/18 12:34:15 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 12:52:33 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ char	**get_path(t_cmd *cmd, t_shell *ghost);
 int		redirect(t_cmd *cmd);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		redir_muti(void *file_struct);
+
+// Piping
+int		pipe_exec(t_list *commands, t_shell *ghost);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
