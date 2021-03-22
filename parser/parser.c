@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/10 13:33:32 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/22 14:51:10 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ int		check_redir(t_shell **ghost, t_cmd *command)
 		else
 			redir = new_redir(ghost, tokens->next->content, OUTPUT);
 		ft_lstadd_back(&command->redirection, ft_lstnew(redir));
-		tokens = tokens->next;
+		(*ghost)->tokens = tokens->next;
 	}
 	else if (!ft_strcmp(tokens->content, "<"))
 	{
 		redir = new_redir(ghost, tokens->next->content, INPUT);
 		ft_lstadd_back(&command->redirection, ft_lstnew(redir));
-		tokens = tokens->next;
+		(*ghost)->tokens = tokens->next;
 	}
 	else
 		return (0);

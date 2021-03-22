@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 14:40:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 14:59:15 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ void	ctrl(int sig)
 	}
 }
 
+void	init_reins(t_shell **ghost)
+{
+	t_reins *reins = (*ghost)->reins;
+	if (!(*ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
+	if (!reins_key(reins, KEY_ESC "[" KEY_UP, up_function))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook(reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_key(reins, KEY_ESC "[" KEY_DOWN, down_function))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook(reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+}
+
 void	exec_shell(char *envp[])
 {
 	char	*input;
@@ -44,7 +59,7 @@ void	exec_shell(char *envp[])
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
 	if (!reins_hook((ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
 		error_handler(&ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	// ---------env---------
+	// // ---------env---------
 	int i = 0;
 	while (envp[i])
 		i++;

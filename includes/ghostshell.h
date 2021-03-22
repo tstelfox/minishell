@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 13:42:25 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 14:59:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ void	cmd_notfound(t_cmd *cmd);
 
 // lexer
 void	read_line(t_shell **ghost, char **input);
+int		up_function(t_input *line, char *buf, t_hook *hook);
+int		down_function(t_input *line, char *buf, t_hook *hook);
 void	lexer(t_shell **shell, char *input);
 
 // parser
@@ -170,12 +172,11 @@ void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
 void	ft_dlstclear(t_dlist **lst);
 void	ft_dlstdelone(t_dlist *lst);
 
-//history shit
-int		up_function(t_input *line, char *buf, t_hook *hook);
-int		down_function(t_input *line, char *buf, t_hook *hook);
+//	history_utils
 void	store_command(t_shell **ghost, char *line);
 void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
+void	edit_content(t_dlist **node, char *line, int size);
 
 
 //debug
