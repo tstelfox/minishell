@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 13:03:16 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/22 17:02:05 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	}
 	if (cmd->args)
 	{
-		t_list	*fucker = ft_lstnew(cmd->type);
+		t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
 		ft_lstadd_front(&cmd->args, fucker);
 		args = list_to_arr(cmd->args);
 	}

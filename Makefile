@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/22 13:53:39 by tmullan       ########   odam.nl          #
+#    Updated: 2021/03/22 17:12:44 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ OBJ = $(SRC:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
+# CC = clang
 
 INCLUDES = -Iincludes
 
@@ -89,10 +90,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 		@make -C reins_termcap/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -c $< -o $@
+		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -g -c $< -o $@
 
 clean:
 		@make clean -C reins_termcap/
