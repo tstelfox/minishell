@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 17:02:05 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/23 10:21:50 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd);
+		cmd_notfound(cmd); // Might need some work
 	int i = 0;
 	while (i < 7)
 	{

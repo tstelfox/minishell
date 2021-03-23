@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 17:12:24 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/23 10:51:25 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	exec_shell(char *envp[])
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
+		debug_loop(&ghost);
 		if (shell_exec(ghost->commands, ghost) == 0)
 			break;
-		debug_loop(&ghost);
 		free(input);
 		restart_shell(ghost);
 	}
