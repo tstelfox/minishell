@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 10:21:50 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/23 16:06:14 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	**get_path(t_cmd *cmd, t_shell *ghost)
 				path[k] = ft_strjoin(path[k], command);
 				k++;
 			}
+			path = arr_addback(path, cmd->type);
 			return(path);
 		}
 		i++;
@@ -46,6 +47,13 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	char **args;
 	int k = 0;
 
+	// if (cmd->type[0] == '.')
+	// {
+	// 	path = (char**)malloc(sizeof(char *) * 2);
+	// 	path[0] = ft_strdup(cmd->type);
+	// 	path[1] = NULL;
+	// }
+	// else
 	path = get_path(cmd, ghost);
 	if (path == NULL)
 		cmd_notfound(cmd); // Might need some work

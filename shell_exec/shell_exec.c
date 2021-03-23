@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 17:13:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/23 16:04:24 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,27 +126,9 @@ int	run_env(t_cmd *cmd, t_shell *ghost)
 
 int	run_export(t_cmd *cmd, t_shell *ghost)
 {
-	char	**temp; // If the argument has no '=' it shouldn't be made an env
-
 	if (!cmd->args)
 		return (1);
-	int i = 0;
-	while (ghost->env[i])
-		i++;
-	temp = (char **)malloc(sizeof(char *) * (i + 2));
-	for (int k= 0; ghost->env[k]; k++)
-		temp[k] = ft_strdup(ghost->env[k]);
-	temp[i] = ft_strdup(cmd->args->content);
-	temp[i + 1] = 0;
-	for (int k= 0; ghost->env[k]; k++) //Just make a fucking freeing function FFS
-		free(ghost->env[k]);
-	free (ghost->env);
-	ghost->env = NULL;
-	ghost->env = (char **)malloc(sizeof(*temp));
-	ghost->env = temp;
-	// for (int k= 0; ghost->env[k]; k++)
-	// 	free(temp[k]);
-	// free(temp);
+	ghost->env = arr_addback(ghost->env, cmd->args->content);
 	return (1);
 }
 

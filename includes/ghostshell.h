@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 14:59:40 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/23 16:03:13 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
 void	edit_content(t_dlist **node, char *line, int size);
 
+// Utils
+char	**arr_addback(char **arr, char *str);
 
 //debug
 void	print_data(void *data);
