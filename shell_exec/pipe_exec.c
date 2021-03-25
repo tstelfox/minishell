@@ -6,20 +6,20 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 09:50:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 12:49:25 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-int		pipe_redirect(void)
-{
-	int	out;
+// int		pipe_redirect(void)
+// {
+// 	int	out;
 
-	out = dup(STDOUT_FILENO);
-	dup2(STDIN_FILENO, STDOUT_FILENO);
-	return (out);
-}
+// 	out = dup(STDOUT_FILENO);
+// 	dup2(STDIN_FILENO, STDOUT_FILENO);
+// 	return (out);
+// }
 
 void	pipe_prog(t_cmd *cmd, t_shell *ghost)
 {
@@ -53,15 +53,19 @@ void	pipe_prog(t_cmd *cmd, t_shell *ghost)
 	exit(0);
 }
 
-int		first_cmd(pid_t pid, t_cmd *cmd, t_shell *ghost)
+int		first_cmd(pid_t pid, t_list *command, t_shell *ghost, int fd_in)
 {
 	int i;
+	t_cmd *cmd;
 
 	i = 0;
+	cmd = command->content;
 	if (pid == 0)
 	{
+		dup2(fd_in, 0);
+		if (command->next != NULL)
+			dup2(ghost->pipefd[1], STDOUT_FILENO);
 		close(ghost->pipefd[0]);
-		dup2(ghost->pipefd[1], STDOUT_FILENO);
 		while (i < 7)
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
@@ -72,38 +76,36 @@ int		first_cmd(pid_t pid, t_cmd *cmd, t_shell *ghost)
 			i++;
 		}
 		pipe_prog(cmd, ghost);
-		close(ghost->pipefd[1]);
 	}
 	else if (pid < 0)
 		strerror(errno);
 	else
+	{
 		waitpid(pid, &ghost->status, 0);
-	return (1);
+		close(ghost->pipefd[1]);
+		fd_in = ghost->pipefd[0];
+	}
+	return (fd_in);
 }
 
-int		pipe_exec(t_list *commands, t_shell *ghost)
+int		pipe_exec(t_list *command, t_shell *ghost)
 {
-	// Redirect stdout to stdin
-	t_cmd	*cmd;
 	pid_t	pid;
+	int		fd_in;
 
-	cmd = (t_cmd*)commands->content;
-	// stdout = pipe_redirect();
-
-	pipe(ghost->pipefd);
+	fd_in = 0;
 	// // Execute first in a fork()
-	pid = fork();
-	first_cmd(pid, cmd, ghost);
+	while (command)
+	{
+		pipe(ghost->pipefd);
+		pid = fork();
+		fd_in = first_cmd(pid, command, ghost, fd_in);
+		command = command->next;
+	}
 	// // Close write pipe
-	close(ghost->pipefd[1]);
-	dup2(ghost->pipefd[0], STDIN_FILENO);
-	// // print stdin to check what's there
-	// char line[1000];
-	// fgets(line, 1000, STDIN_FILENO);
-	// ft_putstr_fd("ere\n", STDOUT_FILENO);
-	// ft_putstr_fd(line, STDOUT_FILENO);
+	// close(ghost->pipefd[1]);
+	// dup2(ghost->pipefd[0], STDIN_FILENO);
 	
-
 	// // Execute second command (Always in a fork or only for exec?)
 
 	// // Return to main loop
