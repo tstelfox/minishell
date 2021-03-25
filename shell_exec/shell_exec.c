@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 11:34:14 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 15:53:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,9 +189,6 @@ int	shell_exec(t_list *command, t_shell *ghost)
 		{
 			pipe_exec(command, ghost);
 			return (1);
-			// close(ghost->pipefd[0]);
-			// command = command->next;
-			// cmd = (t_cmd*)command->content;
 		}
 		if (i != 0)
 		{
@@ -207,9 +204,6 @@ int	shell_exec(t_list *command, t_shell *ghost)
 					ghost->out = redirect(cmd);
 				if (ghost->out == -1)
 					return(1);
-				// if (!command->next)
-				// 	return (*g_builtin_f[i])(cmd, ghost);
-				// else
 				(*g_builtin_f[i])(cmd, ghost);
 				if (ghost->out != -42)
 					dup2(ghost->out, STDOUT_FILENO);
@@ -222,9 +216,6 @@ int	shell_exec(t_list *command, t_shell *ghost)
 			}
 			i++;
 		}
-		// if (!command->next)
-		// 	return (prog_launch(cmd, ghost));
-		// else
 		prog_launch(cmd, ghost);
 		if (ghost->out != -42)
 			dup2(ghost->out, STDOUT_FILENO);

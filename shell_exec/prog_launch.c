@@ -6,11 +6,27 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 16:06:14 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 15:57:48 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+int		check_dir(t_cmd *cmd, t_shell *ghost)
+{
+	struct stat buf;
+
+	lstat(cmd->type, &buf);
+	if (S_ISDIR(buf.st_mode))
+	{
+	// 	ft_putstr_fd("ghostshell: ", 1);
+	// 	ft_putstr_fd(cmd->type, 1);
+	// 	ft_putstr_fd(": is a directory\n", 1);
+		ghost->error = DIRECTORY;
+		return(0);
+	}
+	return (1);
+}
 
 char	**get_path(t_cmd *cmd, t_shell *ghost)
 {
@@ -21,6 +37,11 @@ char	**get_path(t_cmd *cmd, t_shell *ghost)
 
 	i = 0;
 	k = 0;
+	if (cmd->type[0] == '.' || cmd->type[0] == '/')
+	{
+		if (!check_dir(cmd, ghost))
+			return (0);
+	}
 	command = ft_strjoin("/", cmd->type);
 	while (ghost->env[i])
 	{
@@ -47,16 +68,9 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	char **args;
 	int k = 0;
 
-	// if (cmd->type[0] == '.')
-	// {
-	// 	path = (char**)malloc(sizeof(char *) * 2);
-	// 	path[0] = ft_strdup(cmd->type);
-	// 	path[1] = NULL;
-	// }
-	// else
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd); // Might need some work
+		cmd_notfound(cmd, ghost->error); // Might need some work
 	int i = 0;
 	while (i < 7)
 	{
@@ -76,11 +90,6 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
-	// for (int i = 0; args[i]; i++)
-	// {
-	// 	ft_putstr_fd(args[i], 1);
-	// 	ft_putstr_fd("\n", 1);
-	// }
 	pid = fork();
 	if (pid == 0) //child process
 	{
@@ -98,7 +107,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 			}
 			k++;
 		}
-		cmd_notfound(cmd);
+		cmd_notfound(cmd, 0);
 		exit(0);
 	}
 	else if (pid < 0)

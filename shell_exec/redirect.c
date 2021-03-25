@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 11:55:28 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 15:40:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	redirect(t_cmd *cmd)
 		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
 		if (fd == -1)
 		{
-			cmd_notfound(cmd);
+			cmd_notfound(cmd, 0);
 			return (-1);
 		}
 		original = dup(STDIN_FILENO);

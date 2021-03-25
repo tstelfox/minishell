@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 12:49:08 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 15:47:58 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "get_next_line.h"
 # include "reins.h"
 
@@ -39,6 +41,8 @@ enum	e_types
 	OUTPUT_ADD = 2,
 	SEPERATOR = 1,
 	PIPE = 2,
+	DIRECTORY = 3,
+	NO_CMD = 4
 };
 
 typedef struct		s_list
@@ -86,6 +90,7 @@ typedef struct		s_shell
 	int		status;
 	int		out;
 	int		pipefd[2];
+	int		error;
 }					t_shell;
 
 // built-in functions
@@ -148,7 +153,7 @@ char	**list_to_arr(t_list *tokens);
 
 // error
 void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
-void	cmd_notfound(t_cmd *cmd);
+void	cmd_notfound(t_cmd *cmd, int flag);
 
 // lexer
 void	read_line(t_shell **ghost, char **input);
