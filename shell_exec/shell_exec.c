@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 16:04:24 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 09:54:53 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,6 @@ int	shell_exec(t_list *command, t_shell *ghost)
 {
 	int	i;
 
-	// if (!command)
-	// 	return (1);
 	i = 0;
 	// t_cmd	*cmd = (t_cmd*)command->content;
 	t_cmd	*cmd = command->content;
@@ -187,10 +185,10 @@ int	shell_exec(t_list *command, t_shell *ghost)
 		return (0);
 	while (1)
 	{
-		if (cmd->seprator_type == PIPE)
+		while (cmd->seprator_type == PIPE)
 		{
 			pipe_exec(command, ghost);
-			// Maybe move the command up here?
+			// close(ghost->pipefd[0]);
 			command = command->next;
 			cmd = (t_cmd*)command->content;
 		}
@@ -215,7 +213,11 @@ int	shell_exec(t_list *command, t_shell *ghost)
 				if (ghost->out != -42)
 					dup2(ghost->out, STDOUT_FILENO);
 				if (!command->next)
+				{
+					if (ghost->pipefd[0] != -69)
+						close(ghost->pipefd[0]);
 					return (1);
+				}
 			}
 			i++;
 		}
@@ -226,7 +228,11 @@ int	shell_exec(t_list *command, t_shell *ghost)
 		if (ghost->out != -42)
 			dup2(ghost->out, STDOUT_FILENO);
 		if (!command->next)
+		{
+			if (ghost->pipefd[0] != -69)
+				close(ghost->pipefd[0]);
 			return (1);
+		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 16:03:13 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 09:31:15 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct		s_shell
 	char	**env;
 	int		status;
 	int		out;
+	int		pipefd[2];
 }					t_shell;
 
 // built-in functions

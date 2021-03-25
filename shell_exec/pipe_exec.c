@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 10:54:33 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/25 09:50:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int		first_cmd(pid_t pid, t_cmd *cmd, t_shell *ghost)
 	i = 0;
 	if (pid == 0)
 	{
-		ft_putstr_fd("HELLO?", 1);
+		close(ghost->pipefd[0]);
+		dup2(ghost->pipefd[1], STDOUT_FILENO);
 		while (i < 7)
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
@@ -71,6 +72,7 @@ int		first_cmd(pid_t pid, t_cmd *cmd, t_shell *ghost)
 			i++;
 		}
 		pipe_prog(cmd, ghost);
+		close(ghost->pipefd[1]);
 	}
 	else if (pid < 0)
 		strerror(errno);
@@ -84,17 +86,17 @@ int		pipe_exec(t_list *commands, t_shell *ghost)
 	// Redirect stdout to stdin
 	t_cmd	*cmd;
 	pid_t	pid;
-	int		stdout;
 
 	cmd = (t_cmd*)commands->content;
-	// (void)ghost;
-	stdout = pipe_redirect();
+	// stdout = pipe_redirect();
 
+	pipe(ghost->pipefd);
 	// // Execute first in a fork()
 	pid = fork();
 	first_cmd(pid, cmd, ghost);
-	// // Redirect stdout back to stdout
-	dup2(stdout, STDOUT_FILENO);
+	// // Close write pipe
+	close(ghost->pipefd[1]);
+	dup2(ghost->pipefd[0], STDIN_FILENO);
 	// // print stdin to check what's there
 	// char line[1000];
 	// fgets(line, 1000, STDIN_FILENO);
