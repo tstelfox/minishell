@@ -6,7 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2021/03/18 12:27:35 by tmullan       ########   odam.nl         */
+=======
+/*   Updated: 2021/02/25 12:14:05 by tmullan       ########   odam.nl         */
+>>>>>>> d79674409982165df7bdd8a6b7312890dec47e4c
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +58,8 @@ void	exec_shell(char *envp[])
 	while (1) // check for errors
 	{
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		if (builtin_exec(tokens) == 0) //Presuming that the input has been processed
+			break;
 		read_line(&input);
 		tokens = lexer(input);
 		commands = parser(tokens);
