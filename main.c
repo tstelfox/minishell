@@ -6,34 +6,69 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/15 20:14:27 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/18 12:27:35 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	read_line(char **input)
+void	ctrl(int sig)
 {
-	int ret;
-	
-	ret = get_next_line(STDIN_FILENO, input);
-	if (ret == -1)
+	if (sig == SIGINT)
 	{
-		free(*input);
-		// err handler
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 	}
-	return ;
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("\b \b", 1);
+		ft_putstr_fd("\b \b", 1);
+	}
 }
 
-int main(void)
+void	exec_shell(char *envp[])
 {
 	char	*input;
+	t_list	*tokens = NULL;
+	t_list	*commands = NULL;
+	t_shell ghost;
+
+	ghost.status = 0;
+	ghost.out = -42;
+	int i = 0;
+	while (envp[i])
+		i++;
+	ghost.env = (char **)malloc(sizeof(char *) * (i + 1));
+	int k = 0;
+	while (envp[k])
+	{
+		ghost.env[k] = ft_strdup(envp[k]);
+		k++;
+	}
+	ghost.env[k] = 0;
+	signal(SIGINT, ctrl);
+	//signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
-	// prompt
-	// printf("ghostshell$> ");
-	ft_putstr_fd("ghostshell$> ", STDIN_FILENO);
-	read_line(&input);
-	printf("[%s]" , input);
+	while (1) // check for errors
+	{
+		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		read_line(&input);
+		tokens = lexer(input);
+		commands = parser(tokens);
+		ft_cmd_lstiter(commands, print_cmd);
+		if (shell_exec(commands, &ghost) == 0)
+			break;
+		free(input);
+	}
+}
+
+int	main(int argc, char *args[], char *envp[])
+{
+	(void)argc;
+	(void)args;
+
+	exec_shell(envp);
 	return (0);
 }

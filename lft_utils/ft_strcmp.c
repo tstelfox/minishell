@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strcmp.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:38:18 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/02/16 13:38:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int		ft_strcmp(const char *str1, const char *str2)
 {
-	for (int i = 0; envp[i]; i++) {
+	int i;
 
-		printf("%s\n", envp[i]);
+	i = 0;
+	while (str1[i] && str2[i])
+	{
+		if (str1[i] == str2[i])
+			i++;
+		else
+			return((unsigned char)str1[i] - (unsigned char)str2[i]);
 	}
-	return (0);
+	return((unsigned char)str1[i] - (unsigned char)str2[i]);
 }

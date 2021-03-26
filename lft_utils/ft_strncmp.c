@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/30 12:29:53 by ztan          #+#    #+#                 */
+/*   Updated: 2021/03/02 12:55:00 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	for (int i = 0; envp[i]; i++) {
-
-		printf("%s\n", envp[i]);
+	while (n != 0 && (*s1 != '\0' || *s2 != '\0'))
+	{
+		if (*s1 == *s2)
+		{
+			s1++;
+			s2++;
+		}
+		else
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		n--;
 	}
 	return (0);
 }

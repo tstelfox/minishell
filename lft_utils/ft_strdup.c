@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strdup.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/30 21:02:07 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/17 17:52:17 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	*ft_strdup(const char *s1)
 {
-	for (int i = 0; envp[i]; i++) {
+	size_t	i;
+	char	*dup;
 
-		printf("%s\n", envp[i]);
+	i = 0;
+	dup = malloc(ft_strlen(s1) + 1);
+	if (!dup)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		dup[i] = s1[i];
+		i++;
 	}
-	return (0);
+	dup[i] = '\0';
+	return (dup);
 }

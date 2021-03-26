@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_lstdelone_bonus.c                               :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/11/07 12:47:27 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/25 12:49:00 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
-	for (int i = 0; envp[i]; i++) {
-
-		printf("%s\n", envp[i]);
-	}
-	return (0);
+	if (!lst)
+		return ;
+	del(lst->content);
+	free(lst);
 }

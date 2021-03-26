@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_lstadd_front_bonus.c                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/11/07 10:16:45 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:35 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	ft_lstadd_front(t_list **alst, t_list *new)
 {
-	for (int i = 0; envp[i]; i++) {
-
-		printf("%s\n", envp[i]);
-	}
-	return (0);
+	if (!new)
+		return ;
+	new->next = *alst;
+	*alst = new;
 }

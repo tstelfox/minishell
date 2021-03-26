@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   read_input.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/03/03 12:59:29 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	read_line(char **input)
 {
-	for (int i = 0; envp[i]; i++) {
-
-		printf("%s\n", envp[i]);
+	// this also needs to read from a file?
+	int ret;
+	
+	ret = get_next_line(STDOUT_FILENO, input);
+	if (ret == -1)
+	{
+		free(*input);
+		/* err handler */
 	}
-	return (0);
 }

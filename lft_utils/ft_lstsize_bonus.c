@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_lstsize_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/11/07 10:47:06 by ztan          #+#    #+#                 */
+/*   Updated: 2021/03/01 15:25:44 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	ft_lstsize(t_list *lst)
 {
-	for (int i = 0; envp[i]; i++) {
+	int		count;
 
-		printf("%s\n", envp[i]);
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
 	}
-	return (0);
+	return (count);
 }

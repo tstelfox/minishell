@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/02/15 13:03:37 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/29 15:58:49 by ztan          #+#    #+#                 */
+/*   Updated: 2021/02/17 17:52:09 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	*ft_strchr(const char *s, int c)
 {
-	for (int i = 0; envp[i]; i++) {
+	int	i;
+	int	s_len;
 
-		printf("%s\n", envp[i]);
+	i = 0;
+	s_len = ft_strlen(s);
+	while (i <= (s_len))
+	{
+		if (s[i] == (char)c)
+			return ((char *)(s + i));
+		i++;
 	}
 	return (0);
 }
