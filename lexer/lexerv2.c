@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
+/*   lexerv2.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/26 11:03:22 by zenotan       ########   odam.nl         */
+/*   Created: 2021/03/25 19:28:05 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/03/26 00:05:17 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-// rules
-// echo "\"", echo "\'" are possible
-// echo '\"' is possible
-// echo '\'' is not possible -> a single quote cannot appear in single quotes
-
-// method
-// when a quote is met, read untill valid ending quote (so not \")
-// everything is part of the same token untill seperator (;, |, <, >, <<, >>)
-// todo:
-// - check if opening quote
-// - if quote read untill valid end quote
-// - check for invalid ( \") -> check if valid "\", so not "\\"
 
 void	add_token(t_shell **ghost, char *input, int start, int len)
 {
@@ -35,6 +22,25 @@ void	add_token(t_shell **ghost, char *input, int start, int len)
 		error_handler(ghost, INTERNAL_ERROR, "something went wrong with tokenizing", NULL);
 	ft_lstadd_back(&(*ghost)->tokens, new);
 	free(result);
+}
+
+int		handle_colon(t_shell **ghost, char input, int i)
+{
+	char *line;
+	int len;
+
+	if (input != ';')
+		return (0);
+	len = ft_strlen((*ghost)->line);
+	if (len > i)
+	{
+		line = ft_substr((*ghost)->line, i, len - i);
+		free((*ghost)->line);
+		(*ghost)->line = line;
+	}
+	else
+		(*ghost)->status = FINISHED;
+	return (1);
 }
 
 int		handle_quote(t_shell **ghost, char *input, int current)
@@ -81,7 +87,9 @@ void	lexer(t_shell **ghost)
 	input = (*ghost)->line;
 	while (input[i])
 	{
-		if (ft_strchr(" ><|;", input[i]))
+		if (handle_colon(ghost, input[i], i))
+			return;
+		if (ft_strchr(" ><|", input[i]))
 		{
 			if (input[i] == '>' && input[i + 1] == '>')
 				i = handle_seperator(ghost, input, start, i);
@@ -95,5 +103,5 @@ void	lexer(t_shell **ghost)
 	}
 	if (i != start)
 		add_token(ghost, input, start, i - start);
+	(*ghost)->status = FINISHED;
 }
-

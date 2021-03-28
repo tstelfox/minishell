@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 13:56:38 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 12:23:40 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/26 12:53:33 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,16 @@ void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *))
 
 void	debug_loop(t_shell **ghost)
 {
-	if ((*ghost)->status == 0)// debug
-		{
-			ft_lstiter((*ghost)->tokens, print_data);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-			ft_cmd_lstiter((*ghost)->commands, print_cmd);
-		}
-		else//if error debug
-		{
-			ft_putnbr_fd((*ghost)->status, STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
+	if ((*ghost)->status > 0)// debug
+	{
+		ft_lstiter((*ghost)->tokens, print_data);
+		// ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_cmd_lstiter((*ghost)->commands, print_cmd);
+	}
+	else//if error debug
+	{
+		ft_putnbr_fd((*ghost)->status, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	}
+	ft_putstr_fd("----DEBUG----\n", STDOUT_FILENO);
 }

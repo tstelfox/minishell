@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 14:51:10 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/26 14:30:10 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,34 @@ char	**get_envp(char **envp)
 
 int		check_meta(char *str)
 {
-	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|") ||\
-		!ft_strcmp(str, ";"))
+	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|"))
 		return (1);
+	return (0);
+}
+
+int		check_colon(t_shell **ghost, t_cmd *command)
+{
+	(void)command;
+	if (!ft_strcmp((*ghost)->tokens->content, ";"))
+	{
+		// command->seprator_type = SEPERATOR;
+		(*ghost)->status = EXECUTE;
+		if ((*ghost)->tokens->next)
+			(*ghost)->tokens = (*ghost)->tokens->next;
+		else
+			(*ghost)->status = FINISHED;
+		return (1);
+	}
 	return (0);
 }
 
 int		check_seperator(t_shell **ghost, t_cmd *command)
 {
-	t_list	*tokens;
-
-	tokens = (*ghost)->tokens;
-	if (!ft_strcmp(tokens->content, "|"))
+	if (!ft_strcmp((*ghost)->tokens->content, "|"))
 	{
 		command->seprator_type = PIPE;
-		if (!ft_strcmp(tokens->next->content, "|"))
+		if (!ft_strcmp((*ghost)->tokens->next->content, "|"))
 			error_handler(ghost, PARSE_ERROR, "ghostshell does not support double pipes", NULL);
-		return (1);
-	}
-	if (!ft_strcmp(tokens->content, ";"))
-	{
-		command->seprator_type = SEPERATOR;
 		return (1);
 	}
 	return (0);
@@ -96,17 +103,21 @@ int		check_redir(t_shell **ghost, t_cmd *command)
 void	parser(t_shell **ghost)
 {
 	t_cmd	*command;
-	t_list 	*head;
 
-	head = (*ghost)->tokens;
-	
-	while ((*ghost)->tokens && (*ghost)->status == 0)
+	if ((*ghost)->commands)
+		ft_lstclear(&(*ghost)->commands, del_commands);
+	while ((*ghost)->tokens && (*ghost)->status == PARSE)
 	{
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
-		while ((*ghost)->tokens && (*ghost)->status == 0) //parse command
+		while ((*ghost)->tokens && (*ghost)->status == PARSE) //parse command
 		{
+			if (check_colon(ghost, command))
+			{
+				ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
+				return ;
+			}
 			if (check_seperator(ghost, command))
 				break ;
 			if (!check_redir(ghost, command))
@@ -121,5 +132,5 @@ void	parser(t_shell **ghost)
 			break ;
 		(*ghost)->tokens = (*ghost)->tokens->next;
 	}
-	(*ghost)->tokens = head;
+	(*ghost)->status = FINISHED;
 }

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 14:35:38 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/26 23:26:04 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	up_function(t_input *line, char *buf, t_hook *hook)
 {
+	// printf("\nUP\n");
 	t_shell **ghost = NULL;
 	t_dlist *node = NULL;
 	(void)buf;
 	if (hook && hook->function && hook->param)
 	{
+		// printf("DEBUG\n");
 		ghost = hook->param;
 		node = (*ghost)->current;
 	}
@@ -42,6 +44,7 @@ int	up_function(t_input *line, char *buf, t_hook *hook)
 	if (node->next != NULL)
 		node = node->next;
 	// 4 - add node content to input
+	// printf("\n[%s]\n", node->content);
 	if (ft_strcmp(node->content, ""))
 		reins_input_add(line, node->content, ft_strlen(node->content));
 	(*ghost)->current = node;
@@ -50,6 +53,7 @@ int	up_function(t_input *line, char *buf, t_hook *hook)
 
 int	down_function(t_input *line, char *buf, t_hook *hook)
 {
+	// printf("\nDOWN\n");
 	t_shell **ghost = NULL;
 	t_dlist *node = NULL;
 	(void)buf;
@@ -74,17 +78,20 @@ int	down_function(t_input *line, char *buf, t_hook *hook)
 	return (RD_IDLE);
 }
 
-void	read_line(t_shell **ghost, char **input)
+void	read_line(t_shell **ghost)
 {
-	int ret;
+	int		ret;
+	char	*input;
 
-	ret = reins_get_input((*ghost)->reins, input);
+	ret = reins_get_input((*ghost)->reins, &input);
 	if (ret != 1)
 	{
-		free(*input);
+		free(input);
 		error_handler(ghost, INTERNAL_ERROR, "failed to get input", NULL);
 	}
-	store_command(ghost, *input);
+	store_command(ghost, input);
+	(*ghost)->line = ft_strdup(input);
 	reins_disable((*ghost)->reins);
+	free(input);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }

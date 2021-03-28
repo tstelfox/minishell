@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 13:29:56 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/26 14:27:26 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@
 enum	e_status
 {
 	INTERNAL_ERROR = -1,
-	PARSE_ERROR = 2,
-	NO_MULTI_LINE = 5,
+	PARSE_ERROR = -2,
+	NO_MULTI_LINE = -3,
+	PARSE = 0,
+	EXECUTE = 1,
+	FINISHED = 2,
 };
 
 enum	e_types
@@ -60,7 +63,6 @@ typedef	struct 		s_redirection
 	int				type;
 }					t_redir;
 
-
 typedef struct 		s_cmd
 {
 	char			*type;
@@ -83,6 +85,7 @@ typedef struct		s_shell
 	// status
 	pid_t	pid;
 	char	**env;
+	char	*line;
 	int		status;
 	int		out;
 }					t_shell;
@@ -146,10 +149,11 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 void	cmd_notfound(t_cmd *cmd);
 
 // lexer
-void	read_line(t_shell **ghost, char **input);
+void	read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
-void	lexer(t_shell **shell, char *input);
+// void	lexer(t_shell **shell, char *input);
+void	lexer(t_shell **shell);
 
 // parser
 void	parser(t_shell **ghost);
@@ -160,7 +164,8 @@ int		check_meta(char *str);
 t_shell	*init_shell(char **env);
 t_redir	*new_redir(t_shell **ghost, char *file, int type);
 t_cmd	*new_command();
-void	restart_shell(t_shell *ghost);
+void	restart_shell(t_shell **ghost);
+void	del_commands(void *list);
 
 // lst_utils
 char	**list_to_arr(t_list *tokens);

@@ -6,11 +6,20 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 16:32:05 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/26 23:04:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+void print_env(char **str)
+{
+	while (*str)
+	{
+		printf("[%s]\n", *str);
+		str++;
+	}
+}
 
 void	ctrl(int sig)
 {
@@ -27,27 +36,14 @@ void	ctrl(int sig)
 	}
 }
 
-void	init_reins(t_shell **ghost)
-{
-	if (!(*ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
-	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_UP, up_function))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_UP, &pass_param, ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-}
-
 void	exec_shell(char *envp[])
 {
-	char	*input;
 	t_shell *ghost;
+	t_list *head;
 
 	ghost = init_shell(envp);
 	init_reins(&ghost);
+	
 	// // ---------env---------
 	int i = 0;
 	while (envp[i])
@@ -63,21 +59,31 @@ void	exec_shell(char *envp[])
 	// ---------env---------
 	signal(SIGINT, ctrl);
 	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
-
-	input = NULL;
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		head = ghost->tokens;
+		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
-		read_line(&ghost, &input);
-		lexer(&ghost, input);
-		if (ghost->status == 0)
+		read_line(&ghost);
+		// printf("\nDEBUG\n");
+		lexer(&ghost);
+		if (ghost->status > 0)
+			error_handler(&ghost, INTERNAL_ERROR, "failed to tokenize", NULL);
+		while (ghost->status != FINISHED && ghost->status >= 0)
+		{
 			parser(&ghost);
-		if (shell_exec(ghost->commands, ghost) == 0)
-			break;
-		debug_loop(&ghost);
-		free(input);
-		restart_shell(ghost);
+			// printf("\nDEBUG2\n");
+			// debug_loop(&ghost);
+			if (shell_exec(ghost->commands, ghost) == 0)
+				return ;
+			// printf("\nDEBUG3\n");
+			debug_loop(&ghost);
+			if (ghost->status != FINISHED)
+				ghost->status = PARSE;
+		}
+		ghost->tokens = head;
+		restart_shell(&ghost);
 	}
 	reins_destroy(ghost->reins);
 }

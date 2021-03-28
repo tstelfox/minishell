@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/22 16:27:10 by ztan          ########   odam.nl          #
+#    Updated: 2021/03/26 11:03:34 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 		@make -C reins_termcap/
-		gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -g -c $< -o $@

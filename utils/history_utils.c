@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/17 19:03:59 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 13:54:35 by ztan          ########   odam.nl         */
+/*   Updated: 2021/03/25 23:32:24 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,16 @@ void	store_command(t_shell **ghost, char *line)
 	(*ghost)->current = (*ghost)->history;
 }
 
-// void	init_reins(t_shell **ghost)
-// {
-// 	t_reins *reins = (*ghost)->reins;
-// 	if (!(*ghost))
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
-// 	if (!reins_key(reins, KEY_ESC "[" KEY_UP, up_function))
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-// 	if (!reins_hook(reins, KEY_ESC "[" KEY_UP, &pass_param, &ghost))
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-// 	if (!reins_key(reins, KEY_ESC "[" KEY_DOWN, down_function))
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-// 	if (!reins_hook(reins, KEY_ESC "[" KEY_DOWN, &pass_param, &ghost))
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-// }
+void	init_reins(t_shell **ghost)
+{
+	if (!(*ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
+	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_UP, up_function))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_UP, &pass_param, ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, ghost))
+		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
+}
