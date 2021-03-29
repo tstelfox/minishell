@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/26 23:04:48 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/29 16:14:05 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	exec_shell(char *envp[])
 	t_list *head;
 
 	ghost = init_shell(envp);
+	// if (!ghost)
+	// 	return ;
 	init_reins(&ghost);
 	
 	// // ---------env---------
@@ -75,11 +77,13 @@ void	exec_shell(char *envp[])
 			parser(&ghost);
 			// printf("\nDEBUG2\n");
 			// debug_loop(&ghost);
-			if (shell_exec(ghost->commands, ghost) == 0)
-				return ;
-			// printf("\nDEBUG3\n");
+			printf("\nDEBUG2[%i]\n", ghost->status);
+			if (ghost->commands)
+				if (shell_exec(ghost->commands, ghost) == 0)
+					return ;
+			printf("\nDEBUG3[%i]\n", ghost->status);
 			debug_loop(&ghost);
-			if (ghost->status != FINISHED)
+			if (ghost->status == EXECUTE)
 				ghost->status = PARSE;
 		}
 		ghost->tokens = head;

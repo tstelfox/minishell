@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/26 11:51:38 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/29 15:54:31 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,44 @@ void	del_commands(void *list)
 	commands->seprator_type = 0;
 }
 
+// void	restart_shell(t_shell **ghost)
+// {
+// 	char **env;
+// 	t_reins *reins;
+// 	t_dlist	*history;
+// 	t_dlist	*current;
+
+// 	env = get_envp((*ghost)->env);
+// 	reins = (*ghost)->reins;
+// 	history = (*ghost)->history;
+// 	current = (*ghost)->current;
+// 	ft_lstclear(&(*ghost)->tokens, del_list);
+// 	ft_lstclear(&(*ghost)->commands, del_commands);
+// 	free((*ghost));
+// 	*ghost = malloc(sizeof(t_shell));
+// 	if (!*ghost)
+// 	{
+// 		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
+// 		return ;
+// 	}
+// 	(*ghost)->history = history;
+// 	(*ghost)->current = current;
+// 	(*ghost)->env = env;
+// 	(*ghost)->reins = reins;
+// 	(*ghost)->commands = NULL;
+// 	(*ghost)->tokens = NULL;
+// 	(*ghost)->status = PARSE;
+// }
+
 void	restart_shell(t_shell **ghost)
 {
 	char **env;
-	t_reins *reins;
 
 	env = get_envp((*ghost)->env);
-	reins = (*ghost)->reins;
+	free((*ghost)->env);//2darray?
 	ft_lstclear(&(*ghost)->tokens, del_list);
 	ft_lstclear(&(*ghost)->commands, del_commands);
-	free((*ghost));
-	*ghost = malloc(sizeof(t_shell));
-	if (!*ghost)
-	{
-		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
-		return ;
-	}
 	(*ghost)->env = env;
-	(*ghost)->reins = reins;
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
@@ -69,10 +89,15 @@ t_shell	*init_shell(char **env)
 	t_shell *new_shell;
 	
 	new_shell = malloc(sizeof(t_shell));
+	if (!new_shell)
+		return (NULL);
 	ft_bzero(new_shell, sizeof(t_shell));
 	new_shell->reins = reins_init();
 	if (!new_shell->reins)
+	{
+		free(new_shell);
 		return (NULL);
+	}
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
 	new_shell->env = get_envp(env);

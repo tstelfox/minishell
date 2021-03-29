@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/26 14:27:26 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/29 16:57:54 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ enum	e_status
 	INTERNAL_ERROR = -1,
 	PARSE_ERROR = -2,
 	NO_MULTI_LINE = -3,
+	INVALID_ENV = -4,
 	PARSE = 0,
 	EXECUTE = 1,
 	FINISHED = 2,
@@ -159,6 +160,7 @@ void	lexer(t_shell **shell);
 void	parser(t_shell **ghost);
 char	**get_envp(char **envp);
 int		check_meta(char *str);
+void	handle_env(t_shell **ghost, char **content);
 
 // struct_utils
 t_shell	*init_shell(char **env);

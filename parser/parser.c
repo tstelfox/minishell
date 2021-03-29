@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/26 14:30:10 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/29 16:58:18 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,15 @@ int		check_redir(t_shell **ghost, t_cmd *command)
 void	parser(t_shell **ghost)
 {
 	t_cmd	*command;
+	char	*content;
 
 	if ((*ghost)->commands)
 		ft_lstclear(&(*ghost)->commands, del_commands);
 	while ((*ghost)->tokens && (*ghost)->status == PARSE)
 	{
+		content = (*ghost)->tokens->content;
+		if (content[0] == '$')
+			handle_env(ghost, &(*ghost)->tokens->content);
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
@@ -121,7 +125,7 @@ void	parser(t_shell **ghost)
 			if (check_seperator(ghost, command))
 				break ;
 			if (!check_redir(ghost, command))
-				if ((*ghost)->status == 0)
+				if ((*ghost)->status == PARSE)
 					ft_lstadd_back(&command->args, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 			if (!(*ghost)->tokens)
 				break ;
