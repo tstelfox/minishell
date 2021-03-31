@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/31 18:13:02 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/31 21:46:28 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 
 void	cmd_notfound(t_cmd *cmd, int flag)
 {
+	t_redir	*file;
+
 	ft_putstr_fd("ghostshell: ", 1);
 	if (flag == DIRECTORY)
 	{
@@ -49,7 +51,6 @@ void	cmd_notfound(t_cmd *cmd, int flag)
 	}
 	else
 	{
-		t_redir	*file;
 		file = (t_redir *)cmd->redirection->content;
 		ft_putstr_fd(file->file, 1);
 		ft_putstr_fd(": No such file or directory\n", 1);
