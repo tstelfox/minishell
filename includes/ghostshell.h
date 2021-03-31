@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:47:58 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/31 18:11:55 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ enum	e_types
 	SEPERATOR = 1,
 	PIPE = 2,
 	DIRECTORY = 3,
-	NO_CMD = 4
+	EXPRT_FAIL = 4
 };
 
 typedef struct		s_list
@@ -137,6 +137,9 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 void	ft_bzero(void *s, size_t n);
+int		ft_isdigit(int c);
+int		ft_isalpha(int c);
+int		ft_isalnum(int c);
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);

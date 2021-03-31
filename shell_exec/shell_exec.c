@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:53:34 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/31 18:24:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,21 @@ int	run_env(t_cmd *cmd, t_shell *ghost)
 
 int	run_export(t_cmd *cmd, t_shell *ghost)
 {
+	int i;
+	char *str;
+
+	i = 0;
+	str = cmd->args->content;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+			&& str[i] != '='))
+		{
+			cmd_notfound(cmd, EXPRT_FAIL);
+			return (1);
+		}
+		i++;
+	}
 	if (!cmd->args)
 		return (1);
 	ghost->env = arr_addback(ghost->env, cmd->args->content);

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:51:12 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/03/31 18:13:02 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ void	cmd_notfound(t_cmd *cmd, int flag)
 	{
 		ft_putstr_fd(cmd->type, 1);
 		ft_putstr_fd(": is a directory\n", 1);
+	}
+	else if (flag == EXPRT_FAIL)
+	{
+		ft_putstr_fd(cmd->type, 1);
+		ft_putstr_fd(": '", 1);
+		ft_putstr_fd(cmd->args->content, 1);
+		ft_putstr_fd("': not a valid identifier\n", 1);
 	}
 	else if (!cmd->redirection)
 	{
