@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/31 18:11:55 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 13:31:32 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include "get_next_line.h"
 # include "reins.h"
 
@@ -43,6 +44,14 @@ enum	e_types
 	PIPE = 2,
 	DIRECTORY = 3,
 	EXPRT_FAIL = 4
+};
+
+enum	e_return
+{
+	ERR = 1,
+	EXEC_FAIL = 126,
+	NOT_CMD = 127,
+	SYNTAX_ERR = 258
 };
 
 typedef struct		s_list
@@ -88,6 +97,7 @@ typedef struct		s_shell
 	pid_t	pid;
 	char	**env;
 	int		status;
+	int		ret_stat;
 	int		out;
 	int		pipefd[2];
 	int		error;

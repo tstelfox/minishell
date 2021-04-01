@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/25 15:55:42 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 11:42:52 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_shell	*init_shell(char **env)
 	new_shell->pipefd[0] = -69;
 	new_shell->pipefd[1] = -47;
 	new_shell->error = -46;
+	new_shell->last_return = 0;
 	return (new_shell);
 }
 

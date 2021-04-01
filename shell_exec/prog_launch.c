@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:57:48 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 13:36:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 		{
 			if (execve(path[k], args, NULL) == -1)
 			{
-				(void)pid;
+				// ft_putnbr_fd(errno, 1);
+				ghost->ret_stat = 1;
 				// printf("%s: errno %d\n", strerror(errno), errno);
 			}
 			k++;
@@ -116,7 +117,11 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	}
 	else
 	{
-		waitpid(pid, &ghost->status, 0);
+		waitpid(pid, &ghost->status, WUNTRACED);
+		ft_putnbr_fd(WIFSIGNALED(ghost->status), 1);
+		ft_putstr_fd("\n", 1);
+		ft_putnbr_fd(WIFEXITED(ghost->status), 1);
+		ft_putstr_fd("\n", 1);
 	}
 	return (1);
 }

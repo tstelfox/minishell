@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/31 21:46:28 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 12:01:41 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	cmd_notfound(t_cmd *cmd, int flag)
 	}
 	else if (!cmd->redirection)
 	{
+		// ghost->last_return = 127;
 		ft_putstr_fd(cmd->type, 1);
 		ft_putstr_fd(": command not found\n", 1);
 	}

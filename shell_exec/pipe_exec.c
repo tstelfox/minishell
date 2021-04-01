@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:57:09 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 13:00:09 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	pipe_prog(t_cmd *cmd, t_shell *ghost)
 	while (path[k])
 	{
 		if (execve(path[k], args, NULL) == -1)
-			strerror(errno);
+		{
+			// ft_putnbr_fd(errno, 1);
+			ghost->ret_stat = 1;
+		}
 		k++;
 	}
 	cmd_notfound(cmd, 0);
