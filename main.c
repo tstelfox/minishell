@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/02/25 12:14:05 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 17:35:56 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ void	exec_shell(char *envp[])
 		if (ghost->status == 0)
 			parser(&ghost);
 		debug_loop(&ghost);
+		ft_putstr_fd("Last command returned: ", 1);
+		ft_putnbr_fd(ghost->ret_stat, 1);
+		ft_putchar_fd('\n', 1);
 		if (shell_exec(ghost->commands, ghost) == 0)
 			break;
 		free(input);

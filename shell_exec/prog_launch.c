@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/01 13:36:54 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 17:34:03 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, ghost->error); // Might need some work
+		cmd_notfound(cmd, ghost->error, ghost); // Might need some work
 	int i = 0;
 	while (i < 7)
 	{
@@ -95,7 +95,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	{
 		if (cmd->redirection)
 		{
-			if (redirect(cmd) == -1)
+			if (redirect(cmd, ghost) == -1)
 				exit(0);
 		}
 		while (path[k])
@@ -108,7 +108,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 			}
 			k++;
 		}
-		cmd_notfound(cmd, 0);
+		cmd_notfound(cmd, 0, ghost);
 		exit(0);
 	}
 	else if (pid < 0)
@@ -118,10 +118,17 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	else
 	{
 		waitpid(pid, &ghost->status, WUNTRACED);
-		ft_putnbr_fd(WIFSIGNALED(ghost->status), 1);
-		ft_putstr_fd("\n", 1);
-		ft_putnbr_fd(WIFEXITED(ghost->status), 1);
-		ft_putstr_fd("\n", 1);
+		if (WIFSIGNALED(ghost->status))
+		{
+			ghost->ret_stat = WTERMSIG(ghost->status);
+			ft_putstr_fd("the motherfucking thing is: ", 1);
+			ft_putnbr_fd(ghost->ret_stat, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		if (WIFEXITED(ghost->status))
+		{
+			ghost->ret_stat = (ghost->status);
+		}
 	}
 	return (1);
 }

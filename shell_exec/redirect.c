@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/25 15:40:23 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 16:53:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	redir_multi(void *file_struct)
 	return (fd);
 }
 
-int	redirect(t_cmd *cmd)
+int	redirect(t_cmd *cmd, t_shell *ghost)
 {
 	t_redir	*file_struct;
 	int		fd;
@@ -34,7 +34,7 @@ int	redirect(t_cmd *cmd)
 		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
 		if (fd == -1)
 		{
-			cmd_notfound(cmd, 0);
+			cmd_notfound(cmd, 0, ghost);
 			return (-1);
 		}
 		original = dup(STDIN_FILENO);

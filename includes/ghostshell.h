@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/01 13:31:32 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/01 16:53:16 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		shell_exec(t_list *tokens, t_shell *ghost);
 char	**get_path(t_cmd *cmd, t_shell *ghost);
 
 // Redirection
-int		redirect(t_cmd *cmd);
+int		redirect(t_cmd *cmd, t_shell *ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		redir_muti(void *file_struct);
 
@@ -166,7 +166,7 @@ char	**list_to_arr(t_list *tokens);
 
 // error
 void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
-void	cmd_notfound(t_cmd *cmd, int flag);
+void	cmd_notfound(t_cmd *cmd, int flag, t_shell *ghost);
 
 // lexer
 void	read_line(t_shell **ghost, char **input);
