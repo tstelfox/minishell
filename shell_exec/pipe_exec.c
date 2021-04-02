@@ -6,22 +6,13 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 11:34:45 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/02 12:35:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-// int		pipe_redirect(void)
-// {
-// 	int	out;
-
-// 	out = dup(STDOUT_FILENO);
-// 	dup2(STDIN_FILENO, STDOUT_FILENO);
-// 	return (out);
-// }
-
-void	pipe_prog(t_cmd *cmd, t_shell *ghost)
+void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
 	char **path;
 	char **args;
@@ -29,7 +20,7 @@ void	pipe_prog(t_cmd *cmd, t_shell *ghost)
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, ghost->error, &ghost); // This might need some work. maybe exit
+		cmd_notfound(cmd, (*ghost)->error, ghost); // This might need some work. maybe exit
 	k = 0;
 	if (cmd->args)
 	{
@@ -48,15 +39,15 @@ void	pipe_prog(t_cmd *cmd, t_shell *ghost)
 		if (execve(path[k], args, NULL) == -1)
 		{
 			// ft_putnbr_fd(errno, 1);
-			ghost->ret_stat = 1;
+			(*ghost)->ret_stat = 1;
 		}
 		k++;
 	}
-	cmd_notfound(cmd, 0, &ghost);
+	cmd_notfound(cmd, 0, ghost);
 	exit(0);
 }
 
-int		first_cmd(pid_t pid, t_list *command, t_shell *ghost, int fd_in)
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 {
 	int i;
 	t_cmd *cmd;
@@ -68,8 +59,8 @@ int		first_cmd(pid_t pid, t_list *command, t_shell *ghost, int fd_in)
 	{
 		dup2(fd_in, 0);
 		if (command->next != NULL)
-			dup2(ghost->pipefd[1], STDOUT_FILENO);
-		close(ghost->pipefd[0]);
+			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
+		close((*ghost)->pipefd[0]);
 		while (i < 7)
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
@@ -86,13 +77,13 @@ int		first_cmd(pid_t pid, t_list *command, t_shell *ghost, int fd_in)
 	else
 	{
 		waitpid(pid, &w_status, WUNTRACED);
-		close(ghost->pipefd[1]);
-		fd_in = ghost->pipefd[0];
+		close((*ghost)->pipefd[1]);
+		fd_in = (*ghost)->pipefd[0];
 	}
 	return (fd_in);
 }
 
-int		pipe_exec(t_list *command, t_shell *ghost)
+int		pipe_exec(t_list *command, t_shell **ghost)
 {
 	pid_t	pid;
 	int		fd_in;
@@ -101,7 +92,7 @@ int		pipe_exec(t_list *command, t_shell *ghost)
 	// // Execute first in a fork()
 	while (command)
 	{
-		pipe(ghost->pipefd);
+		pipe((*ghost)->pipefd);
 		pid = fork();
 		fd_in = first_cmd(pid, command, ghost, fd_in);
 		command = command->next;

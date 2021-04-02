@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 11:38:05 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/02 11:55:45 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,32 +104,32 @@ typedef struct		s_shell
 }					t_shell;
 
 // built-in functions
-int		run_echo(t_cmd *cmd, t_shell *ghost);
-int		run_cd(t_cmd *cmd, t_shell *ghost);
-int		run_pwd(t_cmd *cmd, t_shell *ghost);
-int		run_env(t_cmd *cmd, t_shell *ghost);
-int		run_exit(t_cmd *cmd, t_shell *ghost);
-int		run_export(t_cmd *cmd, t_shell *ghost);
-int		run_unset(t_cmd *cmd, t_shell *ghost);
+int		run_echo(t_cmd *cmd, t_shell **ghost);
+int		run_cd(t_cmd *cmd, t_shell **ghost);
+int		run_pwd(t_cmd *cmd, t_shell **ghost);
+int		run_env(t_cmd *cmd, t_shell **ghost);
+int		run_exit(t_cmd *cmd, t_shell **ghost);
+int		run_export(t_cmd *cmd, t_shell **ghost);
+int		run_unset(t_cmd *cmd, t_shell **ghost);
 void	print_echo(t_list *args);
 
 //globals
 char	*g_builtin[7];
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost);
+int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost);
 
 // Programs
-int		prog_launch(t_cmd *cmd, t_shell *ghost);
-int		shell_exec(t_list *tokens, t_shell *ghost);
-char	**get_path(t_cmd *cmd, t_shell *ghost);
+int		prog_launch(t_cmd *cmd, t_shell **ghost);
+int		shell_exec(t_list *tokens, t_shell **ghost);
+char	**get_path(t_cmd *cmd, t_shell **ghost);
 
 // Redirection
-int		redirect(t_cmd *cmd, t_shell *ghost);
+int		redirect(t_cmd *cmd, t_shell **ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		redir_muti(void *file_struct);
 
 // Piping
-int		pipe_exec(t_list *command, t_shell *ghost);
-int		first_cmd(pid_t pid, t_list *command, t_shell *ghost, int fd_in);
+int		pipe_exec(t_list *command, t_shell **ghost);
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
 
 // lft_utils
 size_t	ft_strlen(const char *s);
