@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/01 17:34:03 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/02 11:34:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,13 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	pid_t	pid;
 	char **path;
 	char **args;
-	int k = 0;
+	int	w_status;
 
+	int k = 0;
+	// w_status = 0;
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, ghost->error, ghost); // Might need some work
+		cmd_notfound(cmd, ghost->error, &ghost); // Might need some work
 	int i = 0;
 	while (i < 7)
 	{
@@ -108,7 +110,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 			}
 			k++;
 		}
-		cmd_notfound(cmd, 0, ghost);
+		cmd_notfound(cmd, 0, &ghost);
 		exit(0);
 	}
 	else if (pid < 0)
@@ -117,17 +119,17 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	}
 	else
 	{
-		waitpid(pid, &ghost->status, WUNTRACED);
-		if (WIFSIGNALED(ghost->status))
+		waitpid(pid, &w_status, WUNTRACED);
+		if (WIFSIGNALED(w_status))
 		{
-			ghost->ret_stat = WTERMSIG(ghost->status);
+			ghost->ret_stat = WTERMSIG(w_status);
 			ft_putstr_fd("the motherfucking thing is: ", 1);
 			ft_putnbr_fd(ghost->ret_stat, 1);
 			ft_putstr_fd("\n", 1);
 		}
-		if (WIFEXITED(ghost->status))
+		if (WIFEXITED(w_status))
 		{
-			ghost->ret_stat = (ghost->status);
+			ghost->ret_stat = (w_status);
 		}
 	}
 	return (1);
