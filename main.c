@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/02 14:48:19 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/05 17:12:31 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	exec_shell(char *envp[])
 				if (shell_exec(ghost->commands, ghost) == 0)
 					return ;
 			// printf("\nDEBUG3[%i]\n", ghost->status);
-			debug_loop(&ghost);
+			// debug_loop(&ghost);
 			if (ghost->status == EXECUTE)
 				ghost->status = PARSE;
 		}
@@ -83,6 +83,9 @@ int	main(int argc, char *args[], char *envp[])
 	(void)argc;
 	(void)args;
 
-	exec_shell(envp);
+	// exec_shell(envp);
+
+	test();
+	(void)envp;
 	return (0);
 }

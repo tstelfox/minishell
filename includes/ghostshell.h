@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 14:39:21 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/05 17:50:14 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,9 @@ char	**list_to_arr(t_list *tokens);
 t_dlist	*ft_dlstnew(void *content);
 void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
 void	ft_dlstclear(t_dlist **lst);
-void	ft_dlstdelone(t_dlist *lst);
+void	ft_dlstdelone(t_dlist **lst);
+void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
+void	ft_dlstiter(t_dlist *lst, void (*f)(void *));
 void	del_ghost(t_shell **ghost);
 t_dlist	*ft_dlstfirst(t_dlist *lst);
 
@@ -198,5 +200,6 @@ void	print_data(void *data);
 void	print_cmd(t_cmd *data);
 void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
 void	debug_loop(t_shell **ghost);
+void	test();
 
 #endif

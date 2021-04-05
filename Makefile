@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/26 11:03:34 by zenotan       ########   odam.nl          #
+#    Updated: 2021/04/05 17:11:36 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,8 @@ SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
 
+TEST = test.c
+
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
 LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
@@ -70,7 +72,8 @@ SRC = main.c \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
-		debug/printlists.c
+		debug/printlists.c \
+		$(TEST)
 
 OBJ = $(SRC:.c=.o)
 
@@ -88,6 +91,10 @@ TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
 all: $(NAME)
 
 $(NAME): $(OBJ)
+		@make -C reins_termcap/
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		
+test: $(OBJ)
 		@make -C reins_termcap/
 		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 

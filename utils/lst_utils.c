@@ -6,19 +6,27 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/31 14:57:23 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/05 19:31:01 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_dlstdelone(t_dlist *lst)
-{
+void	ft_dlstdelone(t_dlist **lst)
+{	
 	if (!lst)
 		return ;
-	free(lst->content);
-	lst->content = NULL;
-	free(lst);
+	if ((*lst)->prev)
+	{
+		printf("current[%s], prev[%s], next[%s]\n", (*lst)->content, (*lst)->prev->content, (*lst)->next->content);
+		printf("cont[%s],[%s]\n", (*lst)->prev->next->content, (*lst)->next->prev->content);
+		(*lst)->prev->next = (*lst)->next;
+		(*lst)->next->prev = (*lst)->prev;
+		printf("cont[%s],[%s]\n", (*lst)->prev->next->content, (*lst)->next->prev->content);
+	}
+	free((*lst)->content);
+	(*lst)->content = NULL;
+	free(*lst);
 }
 
 void	ft_dlstclear(t_dlist **lst)
@@ -30,7 +38,7 @@ void	ft_dlstclear(t_dlist **lst)
 	while (*lst)
 	{
 		temp = (*lst)->next;
-		ft_dlstdelone(*lst);
+		ft_dlstdelone(&(*lst));
 		*lst = temp;
 	}
 }
@@ -43,6 +51,42 @@ void	ft_dlstadd_front(t_dlist **alst, t_dlist *new)
 	if (*alst)
 		(*alst)->prev = new;
 	*alst = new;
+}
+
+void	ft_dlstadd_back(t_dlist **alst, t_dlist *new)
+{
+	t_dlist *temp;
+
+	if (!alst)
+		return ;
+	temp = *alst;
+	if (!*alst)
+		*alst = new;
+	else
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->prev = temp;
+	}
+}
+// void	ft_dlstinsert(t_dlist **current, t_dlist **insert)
+// {
+	
+// }
+
+void	ft_dlstiter(t_dlist *lst, void (*f)(void *))
+{
+	t_dlist *temp;
+
+	if (!lst)
+		return ;
+	temp = lst;
+	while (temp)
+	{
+		f(temp->content);
+		temp = temp->next;
+	}
 }
 
 t_dlist *ft_dlstfirst(t_dlist *lst)

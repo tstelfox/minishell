@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/02 20:01:20 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/05 14:39:24 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	parser(t_shell **ghost)
 		ft_lstclear(&(*ghost)->commands, del_commands);
 	while ((*ghost)->tokens && (*ghost)->status == PARSE && !(*ghost)->status)
 	{
+		// if env token->content
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
@@ -139,6 +140,7 @@ void	parser(t_shell **ghost)
 		{
 			if (check_quote(ghost, (*ghost)->tokens->content))
 				break ;
+			// if env token->content
 			if (check_colon(ghost, command))
 				return ;
 			if (check_seperator(ghost, command))
