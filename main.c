@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/29 16:14:05 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/02 14:48:19 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,13 @@ void	exec_shell(char *envp[])
 	t_list *head;
 
 	ghost = init_shell(envp);
-	// if (!ghost)
-	// 	return ;
+	if (!ghost)
+		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
-	
-	// // ---------env---------
-	int i = 0;
-	while (envp[i])
-		i++;
-	ghost->env = (char **)malloc(sizeof(char *) * (i + 1));
-	int k = 0;
-	while (envp[k])
-	{
-		ghost->env[k] = ft_strdup(envp[k]);
-		k++;
-	}
-	ghost->env[k] = 0;
-	// ---------env---------
+
 	signal(SIGINT, ctrl);
 	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
-	while (ghost->status != INTERNAL_ERROR) // check for errors
+	while (ghost->error != INTERNAL_ERROR) // check for errors
 	{
 		head = ghost->tokens;
 		// print_env(ghost->env);
@@ -70,18 +57,17 @@ void	exec_shell(char *envp[])
 		read_line(&ghost);
 		// printf("\nDEBUG\n");
 		lexer(&ghost);
-		if (ghost->status > 0)
-			error_handler(&ghost, INTERNAL_ERROR, "failed to tokenize", NULL);
-		while (ghost->status != FINISHED && ghost->status >= 0)
+		// printf("\nDEBUG_AFTER\n");
+		while (ghost->status != FINISHED)
 		{
 			parser(&ghost);
 			// printf("\nDEBUG2\n");
 			// debug_loop(&ghost);
-			printf("\nDEBUG2[%i]\n", ghost->status);
-			if (ghost->commands)
+			// printf("\nDEBUG2[%i]\n", ghost->status);
+			if (ghost->commands && !ghost->error)
 				if (shell_exec(ghost->commands, ghost) == 0)
 					return ;
-			printf("\nDEBUG3[%i]\n", ghost->status);
+			// printf("\nDEBUG3[%i]\n", ghost->status);
 			debug_loop(&ghost);
 			if (ghost->status == EXECUTE)
 				ghost->status = PARSE;

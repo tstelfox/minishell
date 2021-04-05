@@ -6,32 +6,57 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/29 16:58:18 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/02 20:01:20 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char	**get_envp(char **envp)
-{
-	char	**env;
-	int		i;
-	int		k;
+// char	**get_envp(char **envp)
+// {
+// 	char	**env;
+// 	int		i;
+// 	int		k;
 
+// 	i = 0;
+// 	k = 0;
+// 	while (envp[i])
+// 		i++;
+// 	env = (char **)malloc(sizeof(char *) * (i + 1));
+// 	if (!env)
+// 		return (NULL);
+// 	while (envp[k])
+// 	{
+// 		env[k] = ft_strdup(envp[k]);
+// 		k++;
+// 	}
+// 	env[k] = 0;
+// 	return (env);
+// }
+
+int		check_quote(t_shell **ghost, char *str)
+{
+	char	type;
+	int		check;
+	int		i;
+
+	type = 0;
+	check = 0;
 	i = 0;
-	k = 0;
-	while (envp[i])
-		i++;
-	env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!env)
-		return (NULL);
-	while (envp[k])
+	while (str[i])
 	{
-		env[k] = ft_strdup(envp[k]);
-		k++;
+		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+			type = str[i];
+		if (type != 0 && str[i] == type)
+			check++;
+		i++;
 	}
-	env[k] = 0;
-	return (env);
+	if (check % 2)
+	{
+		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
+		return (-1);
+	}
+	return (0);
 }
 
 int		check_meta(char *str)
@@ -43,15 +68,14 @@ int		check_meta(char *str)
 
 int		check_colon(t_shell **ghost, t_cmd *command)
 {
-	(void)command;
 	if (!ft_strcmp((*ghost)->tokens->content, ";"))
 	{
-		// command->seprator_type = SEPERATOR;
 		(*ghost)->status = EXECUTE;
 		if ((*ghost)->tokens->next)
 			(*ghost)->tokens = (*ghost)->tokens->next;
 		else
 			(*ghost)->status = FINISHED;
+		ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 		return (1);
 	}
 	return (0);
@@ -103,30 +127,24 @@ int		check_redir(t_shell **ghost, t_cmd *command)
 void	parser(t_shell **ghost)
 {
 	t_cmd	*command;
-	char	*content;
 
 	if ((*ghost)->commands)
 		ft_lstclear(&(*ghost)->commands, del_commands);
-	while ((*ghost)->tokens && (*ghost)->status == PARSE)
+	while ((*ghost)->tokens && (*ghost)->status == PARSE && !(*ghost)->status)
 	{
-		content = (*ghost)->tokens->content;
-		if (content[0] == '$')
-			handle_env(ghost, &(*ghost)->tokens->content);
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
 		while ((*ghost)->tokens && (*ghost)->status == PARSE) //parse command
 		{
+			if (check_quote(ghost, (*ghost)->tokens->content))
+				break ;
 			if (check_colon(ghost, command))
-			{
-				ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 				return ;
-			}
 			if (check_seperator(ghost, command))
 				break ;
 			if (!check_redir(ghost, command))
-				if ((*ghost)->status == PARSE)
-					ft_lstadd_back(&command->args, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
+				ft_lstadd_back(&command->args, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 			if (!(*ghost)->tokens)
 				break ;
 			(*ghost)->tokens = (*ghost)->tokens->next;

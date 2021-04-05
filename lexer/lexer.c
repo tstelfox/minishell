@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/26 11:03:22 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/02 20:52:26 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_token(t_shell **ghost, char *input, int start, int len)
 	free(result);
 }
 
-int		handle_quote(t_shell **ghost, char *input, int current)
+int		handle_quote(char *input, int current)
 {
 	int i;
 	char type;
@@ -50,7 +50,6 @@ int		handle_quote(t_shell **ghost, char *input, int current)
 			return (i);
 		i++;
 	}
-	error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 	return (i);
 }
 
@@ -90,7 +89,7 @@ void	lexer(t_shell **ghost)
 			start = i + 1;
 		}
 		if (input[i] == '\"' || input[i] == '\'')
-			i = handle_quote(ghost, input, i);
+			i = handle_quote(input, i);
 		i++;
 	}
 	if (i != start)

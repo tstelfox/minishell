@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/19 19:52:06 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/31 14:57:23 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ void	ft_dlstadd_front(t_dlist **alst, t_dlist *new)
 	if (*alst)
 		(*alst)->prev = new;
 	*alst = new;
+}
+
+t_dlist *ft_dlstfirst(t_dlist *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->prev)
+		lst = lst->prev;
+	return (lst);
 }
 
 t_dlist	*ft_dlstnew(void *content)

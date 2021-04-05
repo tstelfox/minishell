@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/29 16:57:54 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/02 14:39:21 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,18 @@
 
 enum	e_status
 {
-	INTERNAL_ERROR = -1,
-	PARSE_ERROR = -2,
-	NO_MULTI_LINE = -3,
-	INVALID_ENV = -4,
 	PARSE = 0,
 	EXECUTE = 1,
 	FINISHED = 2,
+};
+
+enum	e_errors
+{
+	INTERNAL_ERROR = -1,
+	INIT_ERROR = -2,
+	NO_MULTI_LINE = 1,
+	INVALID_ENV = 2,
+	PARSE_ERROR = 3,
 };
 
 enum	e_types
@@ -88,6 +93,7 @@ typedef struct		s_shell
 	char	**env;
 	char	*line;
 	int		status;
+	int		error;
 	int		out;
 }					t_shell;
 
@@ -158,7 +164,7 @@ void	lexer(t_shell **shell);
 
 // parser
 void	parser(t_shell **ghost);
-char	**get_envp(char **envp);
+// char	**get_envp(char **envp);
 int		check_meta(char *str);
 void	handle_env(t_shell **ghost, char **content);
 
@@ -168,6 +174,8 @@ t_redir	*new_redir(t_shell **ghost, char *file, int type);
 t_cmd	*new_command();
 void	restart_shell(t_shell **ghost);
 void	del_commands(void *list);
+void	del_list(void *content);
+void	del_darray(char **str);
 
 // lst_utils
 char	**list_to_arr(t_list *tokens);
@@ -175,6 +183,8 @@ t_dlist	*ft_dlstnew(void *content);
 void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
 void	ft_dlstclear(t_dlist **lst);
 void	ft_dlstdelone(t_dlist *lst);
+void	del_ghost(t_shell **ghost);
+t_dlist	*ft_dlstfirst(t_dlist *lst);
 
 //	history_utils
 void	store_command(t_shell **ghost, char *line);

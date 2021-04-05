@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/29 16:53:44 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/02 13:57:19 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 		write(STDERR_FILENO, "'", 1);
 	}
 	write(STDERR_FILENO, "\n", 1);
-	(*ghost)->status = error_code;
-	exit(1);
+	if (error_code < 0)
+	{
+		del_ghost(ghost);
+		exit(1);
+	}
+	(*ghost)->error = error_code;
 }
 
 void	cmd_notfound(t_cmd *cmd)

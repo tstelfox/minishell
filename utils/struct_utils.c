@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/29 15:54:31 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/02 14:08:22 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,84 @@ void	del_commands(void *list)
 	commands->seprator_type = 0;
 }
 
+void	del_darray(char **str)
+{
+	int i;
+
+	i = 0;
+	if (str)
+	{
+		if (str[i])
+		{
+			while (str[i])
+			{
+				free(str[i]);
+				i++;
+			}
+		}
+		free(str);
+	}
+}
+
+t_redir	*new_redir(t_shell **ghost, char *file, int type)
+{
+	t_redir *new_redir;
+
+	if (check_meta(file))
+		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
+	new_redir = malloc(sizeof(t_redir));
+	if (!new_redir)
+		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
+	new_redir->file = ft_strdup(file);
+	new_redir->type = type;
+
+	return (new_redir);
+}
+
+t_cmd	*new_command()
+{
+	t_cmd	*new_command;
+
+	new_command = malloc(sizeof(t_cmd));
+	if (!new_command)
+		return NULL;
+	new_command->args = NULL;
+	new_command->redirection = NULL;
+	new_command->type = NULL;
+	new_command->seprator_type = 0;
+
+	return (new_command);
+}
+
+void		del_ghost(t_shell **ghost)
+{
+	if (*ghost)
+	{
+		if ((*ghost)->current)
+		{
+			ft_dlstclear(&(*ghost)->current);
+			free((*ghost)->current);
+		}
+		if ((*ghost)->commands)
+		{
+			ft_lstclear(&(*ghost)->commands, del_commands);
+			free((*ghost)->commands);
+		}
+		if ((*ghost)->tokens)
+		{
+			ft_lstclear(&(*ghost)->tokens, del_list);
+			free((*ghost)->tokens);
+		}
+		if ((*ghost)->env)
+			del_darray((*ghost)->env);
+		if ((*ghost)->line)
+			free((*ghost)->line);
+		if ((*ghost)->reins)
+			reins_destroy((*ghost)->reins);
+		free(*ghost);
+	}
+}
+
 // void	restart_shell(t_shell **ghost)
 // {
 // 	char **env;
@@ -70,18 +148,31 @@ void	del_commands(void *list)
 // 	(*ghost)->status = PARSE;
 // }
 
+void	get_env(t_shell **ghost, char **envp)
+{
+	int i = 0;
+	while (envp[i])
+		i++;
+	(*ghost)->env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!(*ghost)->env)
+		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
+	int k = 0;
+	while (envp[k])
+	{
+		(*ghost)->env[k] = ft_strdup(envp[k]);
+		k++;
+	}
+	(*ghost)->env[k] = 0;
+}
+
 void	restart_shell(t_shell **ghost)
 {
-	char **env;
-
-	env = get_envp((*ghost)->env);
-	free((*ghost)->env);//2darray?
 	ft_lstclear(&(*ghost)->tokens, del_list);
 	ft_lstclear(&(*ghost)->commands, del_commands);
-	(*ghost)->env = env;
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
+	(*ghost)->error = 0;
 }
 
 t_shell	*init_shell(char **env)
@@ -100,41 +191,9 @@ t_shell	*init_shell(char **env)
 	}
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
-	new_shell->env = get_envp(env);
+	get_env(&new_shell, env);
 	new_shell->status = PARSE;
+	new_shell->error = 0;
 	new_shell->out = -42;
 	return (new_shell);
-}
-
-t_redir	*new_redir(t_shell **ghost, char *file, int type)
-{
-	t_redir *new_redir;
-
-	if (check_meta(file))
-		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
-	new_redir = malloc(sizeof(t_redir));
-	if (!new_redir)
-	{
-		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
-		return NULL;
-	}
-	new_redir->file = ft_strdup(file);
-	new_redir->type = type;
-
-	return (new_redir);
-}
-
-t_cmd	*new_command()
-{
-	t_cmd	*new_command;
-
-	new_command = malloc(sizeof(t_cmd));
-	if (!new_command)
-		return NULL;
-	new_command->args = NULL;
-	new_command->redirection = NULL;
-	new_command->type = NULL;
-	new_command->seprator_type = 0;
-
-	return (new_command);
 }
