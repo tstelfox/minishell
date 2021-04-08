@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 11:48:53 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/08 12:30:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,37 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 	int i = 0;
 	if (cmd->args == NULL)
 		return (1);
-	else if (ft_strcmp(cmd->args->content, "~") == 0)
+	else if ((ft_strcmp(cmd->args->content, "~") == 0)) // || (ft_strcmp(cmd->args->content, "-") == 0))
 	{
 		while ((*ghost)->env[i])
 		{
-			if (ft_strnstr((*ghost)->env[i], "HOME", ft_strlen("HOME")) != 0)
+			if (ft_strnstr((*ghost)->env[i], "HOME", ft_strlen("HOME")) 
+				!= 0 && (ft_strcmp(cmd->args->content, "~") == 0))
 			{
 				if (chdir(&(*ghost)->env[i][5]) != 0)
 					strerror(errno);
 			}
+			// if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD"))
+			// 	!= 0 && (ft_strcmp(cmd->args->content, "-") == 0))
+			// {
+			// 	if (chdir(&(*ghost)->env[i][7]) != 0)
+			// 		strerror(errno);
+			// }
 			i++;
 		}
 	}
+	// else if (ft_strcmp(cmd->args->content, "-") == 0)
+	// {
+	// 	while ((*ghost)->env[i])
+	// 	{
+	// 		if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD")) != 0)
+	// 		{
+	// 			if (chdir(&(*ghost)->env[i][7]) != 0)
+	// 				strerror(errno);
+	// 		}
+	// 		i++;
+	// 	}
+	// }
 	else
 	{
 		if (chdir(cmd->args->content) != 0)
@@ -124,6 +143,38 @@ int	run_env(t_cmd *cmd, t_shell **ghost)
 	return (1);
 }
 
+int	export_replace(char *str, t_shell **ghost)
+{
+	int i;
+	char *var;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			var = (char*)malloc(sizeof(char) * (i + 1));
+			ft_strlcpy(var, str, i + 1);
+			i = 0;
+			break;
+		}
+		i++;
+	}
+	while ((*ghost)->env[i])
+	{
+		if (ft_strnstr((*ghost)->env[i], var, ft_strlen(var)))
+		{
+			free((*ghost)->env[i]);
+			(*ghost)->env[i] = ft_strdup(str);
+			free(var);
+			return (0);
+		}
+		i++;
+	}
+	free(var);
+	return (1);
+}
+
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
@@ -134,7 +185,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	while (str[i])
 	{
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-			&& str[i] != '=')) || str[0] == '=')
+			&& str[i] != '=' && str[i] != '/')) || str[0] == '=')
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost);
 			return (1);
@@ -143,7 +194,9 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	}
 	if (!cmd->args)
 		return (1);
-	(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
+	i = 0;
+	if (export_replace(str, ghost))
+		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
 	return (1);
 }
 
