@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/07 15:22:14 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/15 18:40:39 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/08 19:01:42 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int		ft_lstredir(t_list *lst, int (*f)(void *))
 	while (temp)
 	{
 		fd = f(temp->content);
+		if (temp->next != NULL)
+			close(fd);
 		temp = temp->next;
 	}
 	return (fd);

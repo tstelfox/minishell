@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 11:50:59 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/08 19:12:26 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 		original = dup(STDOUT_FILENO);
 		dup2(fd, STDOUT_FILENO);
 	}
+	close(fd);
 	// else // else if (file_struct->type == 1)
 	// {
 	// 	// Think this shouldn't create files
