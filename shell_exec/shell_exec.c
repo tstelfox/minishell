@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 12:30:51 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/08 18:09:21 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,6 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	}
 	if (!cmd->args)
 		return (1);
-	i = 0;
 	if (export_replace(str, ghost))
 		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
 	return (1);
