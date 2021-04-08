@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 19:07:23 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/08 20:06:04 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,8 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 
 int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
-	(void)cmd;
+	if (cmd->args == NULL)
+		(*ghost)->ret_stat = 99;
 	(void)ghost;
 	// system ("leaks ghostshell");
 	exit(1);
