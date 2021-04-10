@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/05 14:39:24 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/10 14:44:27 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		check_seperator(t_shell **ghost, t_cmd *command)
 int		check_redir(t_shell **ghost, t_cmd *command)
 {
 	t_redir *redir;
-	t_list	*tokens;
+	t_dlist	*tokens;
 
 	redir = NULL;
 	tokens = (*ghost)->tokens;

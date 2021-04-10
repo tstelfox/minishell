@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/05 17:50:14 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/10 14:49:29 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct		s_shell
 	t_dlist	*current;
 	int		first_command;
 	t_list	*commands;
-	t_list	*tokens;
+	t_dlist	*tokens;
 	t_reins	*reins;
 	// char	**tokens;
 	// comands
@@ -174,15 +174,21 @@ t_redir	*new_redir(t_shell **ghost, char *file, int type);
 t_cmd	*new_command();
 void	restart_shell(t_shell **ghost);
 void	del_commands(void *list);
-void	del_list(void *content);
+void	del_content(void *content);
 void	del_darray(char **str);
 
 // lst_utils
-char	**list_to_arr(t_list *tokens);
+void	*copy_data(void	*data);
+// char	**dlist_to_arr(t_dlist *tokens);
 t_dlist	*ft_dlstnew(void *content);
 void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
-void	ft_dlstclear(t_dlist **lst);
-void	ft_dlstdelone(t_dlist **lst);
+void	ft_dlstclear(t_dlist **lst, void (*del)(void *));
+int		ft_dlstgetpos(t_dlist *lst);
+t_dlist *ft_dlstlast(t_dlist *lst);
+void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *));
+void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *));
+void	ft_dlsreversetiter(t_dlist *lst, void (*f)(void *));
+
 void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
 void	ft_dlstiter(t_dlist *lst, void (*f)(void *));
 void	del_ghost(t_shell **ghost);

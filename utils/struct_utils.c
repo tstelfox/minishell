@@ -6,13 +6,13 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/02 14:08:22 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/10 14:46:31 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	del_list(void *content)
+void	del_content(void *content)
 {
 	if (content)
 		free(content);
@@ -35,7 +35,7 @@ void	del_commands(void *list)
 
 	commands = list;
 	free(commands->type);
-	ft_lstclear(&commands->args, del_list);
+	ft_lstclear(&commands->args, del_content);
 	ft_lstclear(&commands->redirection, del_redir);
 	ft_bzero(commands, sizeof(t_cmd));
 	commands->seprator_type = 0;
@@ -96,7 +96,7 @@ void		del_ghost(t_shell **ghost)
 	{
 		if ((*ghost)->current)
 		{
-			ft_dlstclear(&(*ghost)->current);
+			ft_dlstclear(&(*ghost)->current, del_content);
 			free((*ghost)->current);
 		}
 		if ((*ghost)->commands)
@@ -106,7 +106,7 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->tokens)
 		{
-			ft_lstclear(&(*ghost)->tokens, del_list);
+			ft_dlstclear(&(*ghost)->tokens, del_content);
 			free((*ghost)->tokens);
 		}
 		if ((*ghost)->env)
@@ -130,7 +130,7 @@ void		del_ghost(t_shell **ghost)
 // 	reins = (*ghost)->reins;
 // 	history = (*ghost)->history;
 // 	current = (*ghost)->current;
-// 	ft_lstclear(&(*ghost)->tokens, del_list);
+// 	ft_lstclear(&(*ghost)->tokens, del_content);
 // 	ft_lstclear(&(*ghost)->commands, del_commands);
 // 	free((*ghost));
 // 	*ghost = malloc(sizeof(t_shell));
@@ -167,7 +167,7 @@ void	get_env(t_shell **ghost, char **envp)
 
 void	restart_shell(t_shell **ghost)
 {
-	ft_lstclear(&(*ghost)->tokens, del_list);
+	ft_dlstclear(&(*ghost)->tokens, del_content);
 	ft_lstclear(&(*ghost)->commands, del_commands);
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;

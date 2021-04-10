@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/02 20:52:26 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/10 14:47:32 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,31 @@
 void	add_token(t_shell **ghost, char *input, int start, int len)
 {
 	char	*result;
-	t_list	*new;
+	t_dlist	*new;
 	result = ft_substr(input, start, len);
-	new = ft_lstnew(ft_strdup(result));
+	new = ft_dlstnew(ft_strdup(result));
 	if (!new)
 		error_handler(ghost, INTERNAL_ERROR, "something went wrong with tokenizing", NULL);
-	ft_lstadd_back(&(*ghost)->tokens, new);
+	ft_dlstadd_back(&(*ghost)->tokens, new);
 	free(result);
 }
 
-int		handle_quote(char *input, int current)
+int		handle_quote(t_shell **ghost, char *input, int start, int current)
 {
 	int i;
 	char type;
 
 	i = current + 1;
 	type = input[current];
+	if (start !=  current)
+		add_token(ghost, input, start, current - start);
 	while (input[i])
 	{
 		if (input[i] == type)
+		{
+			add_token(ghost, input, current, i - current + 1);
 			return (i);
+		}
 		i++;
 	}
 	return (i);
@@ -82,14 +87,14 @@ void	lexer(t_shell **ghost)
 	{
 		if (ft_strchr(" ><|;", input[i]))
 		{
-			if (input[i] == '>' && input[i + 1] == '>')
-				i = handle_seperator(ghost, input, start, i);
-			else
-				i = handle_seperator(ghost, input, start, i);
+			i = handle_seperator(ghost, input, start, i);
 			start = i + 1;
 		}
 		if (input[i] == '\"' || input[i] == '\'')
-			i = handle_quote(input, i);
+		{
+			i = handle_quote(ghost, input, start, i);
+			start = i + 1;
+		}
 		i++;
 	}
 	if (i != start)

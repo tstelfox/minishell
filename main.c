@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/05 17:12:31 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/10 14:46:52 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ctrl(int sig)
 void	exec_shell(char *envp[])
 {
 	t_shell *ghost;
-	t_list *head;
+	t_dlist *head;
 
 	ghost = init_shell(envp);
 	if (!ghost)
@@ -57,6 +57,8 @@ void	exec_shell(char *envp[])
 		read_line(&ghost);
 		// printf("\nDEBUG\n");
 		lexer(&ghost);
+		ft_dlstiter(ghost->tokens, print_data);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		// printf("\nDEBUG_AFTER\n");
 		while (ghost->status != FINISHED)
 		{
@@ -64,11 +66,11 @@ void	exec_shell(char *envp[])
 			// printf("\nDEBUG2\n");
 			// debug_loop(&ghost);
 			// printf("\nDEBUG2[%i]\n", ghost->status);
-			if (ghost->commands && !ghost->error)
-				if (shell_exec(ghost->commands, ghost) == 0)
-					return ;
+			// if (ghost->commands && !ghost->error)
+			// 	if (shell_exec(ghost->commands, ghost) == 0)
+					// return ;
 			// printf("\nDEBUG3[%i]\n", ghost->status);
-			// debug_loop(&ghost);
+			debug_loop(&ghost);
 			if (ghost->status == EXECUTE)
 				ghost->status = PARSE;
 		}
@@ -83,9 +85,9 @@ int	main(int argc, char *args[], char *envp[])
 	(void)argc;
 	(void)args;
 
-	// exec_shell(envp);
+	exec_shell(envp);
 
-	test();
-	(void)envp;
+	// test();
+	// (void)envp;
 	return (0);
 }

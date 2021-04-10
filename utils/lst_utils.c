@@ -6,41 +6,62 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/05 19:31:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/10 14:49:41 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_dlstdelone(t_dlist **lst)
-{	
-	if (!lst)
-		return ;
-	if ((*lst)->prev)
-	{
-		printf("current[%s], prev[%s], next[%s]\n", (*lst)->content, (*lst)->prev->content, (*lst)->next->content);
-		printf("cont[%s],[%s]\n", (*lst)->prev->next->content, (*lst)->next->prev->content);
-		(*lst)->prev->next = (*lst)->next;
-		(*lst)->next->prev = (*lst)->prev;
-		printf("cont[%s],[%s]\n", (*lst)->prev->next->content, (*lst)->next->prev->content);
-	}
-	free((*lst)->content);
-	(*lst)->content = NULL;
-	free(*lst);
+void	*copy_data(void	*data)
+{
+	char *str;
+
+	str = data;
+	return (ft_strdup(str));
 }
 
-void	ft_dlstclear(t_dlist **lst)
+int	ft_dlstsize(t_dlist *lst)
 {
-	t_dlist *temp;
+	int		count;
 
-	if (!lst)
-		return ;
-	while (*lst)
+	count = 0;
+	while (lst)
 	{
-		temp = (*lst)->next;
-		ft_dlstdelone(&(*lst));
-		*lst = temp;
+		count++;
+		lst = lst->next;
 	}
+	return (count);
+}
+
+int		ft_dlstgetpos(t_dlist *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->prev;
+		i++;
+	}
+	return (i);
+}
+
+t_dlist *ft_dlstfirst(t_dlist *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->prev)
+		lst = lst->prev;
+	return (lst);
+}
+
+t_dlist *ft_dlstlast(t_dlist *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
 void	ft_dlstadd_front(t_dlist **alst, t_dlist *new)
@@ -70,10 +91,6 @@ void	ft_dlstadd_back(t_dlist **alst, t_dlist *new)
 		new->prev = temp;
 	}
 }
-// void	ft_dlstinsert(t_dlist **current, t_dlist **insert)
-// {
-	
-// }
 
 void	ft_dlstiter(t_dlist *lst, void (*f)(void *))
 {
@@ -89,13 +106,102 @@ void	ft_dlstiter(t_dlist *lst, void (*f)(void *))
 	}
 }
 
-t_dlist *ft_dlstfirst(t_dlist *lst)
+void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *))
 {
+	t_dlist *temp;
+
+	if (!lst || position < 1)
+		return ;
+	temp = (*lst);
+	while (position-- > 1)
+		temp = temp->next;
+	if (!temp)
+		return ;
+	if (temp->prev)
+		temp->prev->next = temp->next;
+	if (temp->next)
+		temp->next->prev = temp->prev;
+	if (!temp->prev)
+		*lst = temp->next;
+	del(temp->content);
+	temp->content = NULL;
+	free(temp);
+}
+
+void	ft_dlstclear(t_dlist **lst, void (*del)(void *))
+{
+	int		len;
+
+	if (!lst)
+		return ;
+	len = ft_dlstsize(*lst);
+	while (--len >= 0)
+		ft_dlstdelone(lst, 1, del);
+}
+
+static t_dlist	*free_dlist(t_dlist *lst, t_dlist *data, void (*del)(void *))
+{
+	del(data);
+	ft_dlstclear(&lst, del);
+	return (NULL);
+}
+
+t_dlist			*ft_dlstmap(t_dlist *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_dlist	*new;
+	t_dlist	*temp;
+	t_dlist	*data;
+
 	if (!lst)
 		return (NULL);
-	while (lst->prev)
-		lst = lst->prev;
-	return (lst);
+	data = f(lst->content);
+	new = ft_dlstnew(data);
+	if (!new)
+		return (free_dlist(new, data, del));
+	lst = lst->next;
+	while (lst)
+	{
+		if (f)
+			data = f(lst->content);
+		temp = ft_dlstnew(data);
+		if (!temp)
+			return (free_dlist(new, data, del));
+		ft_dlstadd_back(&new, temp);
+		lst = lst->next;
+	}
+	return (new);
+}
+
+void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *))
+{
+	t_dlist	*last;
+	t_dlist	*temp;
+	t_dlist *copy;
+	
+	if (!insert || !*lst || pos < 1)
+		return ;
+	temp = (*lst);
+	copy = ft_dlstmap(insert, copy_data, del);
+	last = ft_dlstlast(copy);
+	while (pos-- > 1)
+		temp = temp->next;
+	if (!temp)
+		return ;
+	if (temp->prev)
+	{
+		copy->prev = temp->prev;
+		temp->prev->next = copy;
+	}
+	if (temp->next)
+	{
+		last->next = temp->next;
+		temp->next->prev = last;
+	}
+	if (!temp->prev)
+		*lst = copy;
+	del(temp->content);
+	temp->content = NULL;
+	free(temp);
 }
 
 t_dlist	*ft_dlstnew(void *content)
