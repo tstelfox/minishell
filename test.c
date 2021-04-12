@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/05 17:12:59 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/08 17:39:50 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/12 15:11:25 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,24 @@ void	insertion_test_new(t_dlist **list)
 	
 }
 
+void	env_test(t_dlist **list)
+{
+	// char *str = "test=LOL";
+	char *str = "test=";
+
+	if (valid_val(str) == 2)
+	{
+		printf("lesgoo\n");
+		dreplace(list, split_env(str) , ft_dlstgetpos((*list)->next->next->next->next), del_content);
+	}
+	// if (valid_val(str) == 1)
+	// 	list
+	ft_dlstiter((*list), print_data);
+	printf("\n");
+	ft_dlsreversetiter(ft_dlstlast(*list), print_data);
+	printf("\n");	
+}
+
 void	test()
 {
 	t_dlist *list = NULL;
@@ -202,6 +220,7 @@ void	test()
 	// getpos_test(&list);
 	// insertion_test(&list);
 	// new_delone_test(&list);
-	insertion_test_new(&list);
+	// insertion_test_new(&list);
+	env_test(&list);
 
 }

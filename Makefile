@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/05 17:11:36 by ztan          ########   odam.nl          #
+#    Updated: 2021/04/12 19:21:45 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,33 +15,34 @@ NAME = ghostshell
 GNL = gnl/get_next_line.c \
 		gnl/get_next_line_utils.c
 
-LFT = ft_putstr_fd.c \
-		ft_putnbr_fd.c \
-		ft_putchar_fd.c \
-		ft_strlen.c \
-		ft_split.c \
-		ft_memcpy.c \
-		ft_strchr.c \
-		ft_strdup.c \
-		ft_strlcpy.c \
-		ft_substr.c \
-		ft_strjoin.c \
-		ft_strnstr.c \
-		ft_strcmp.c \
-		ft_bzero.c \
-		ft_lstadd_back_bonus.c \
-		ft_lstclear_bonus.c \
-		ft_lstdelone_bonus.c \
-		ft_lstiter_bonus.c \
-		ft_lstnew_bonus.c \
-		ft_lstsize_bonus.c \
-		ft_lstadd_front_bonus.c
+# LFT = ft_putstr_fd.c \
+# 		ft_putnbr_fd.c \
+# 		ft_putchar_fd.c \
+# 		ft_strlen.c \
+# 		ft_split.c \
+# 		ft_memcpy.c \
+# 		ft_strchr.c \
+# 		ft_strdup.c \
+# 		ft_strlcpy.c \
+# 		ft_substr.c \
+# 		ft_strjoin.c \
+# 		ft_strnstr.c \
+# 		ft_strcmp.c \
+# 		ft_bzero.c \
+# 		ft_lstadd_back_bonus.c \
+# 		ft_lstclear_bonus.c \
+# 		ft_lstdelone_bonus.c \
+# 		ft_lstiter_bonus.c \
+# 		ft_lstnew_bonus.c \
+# 		ft_lstsize_bonus.c \
+# 		ft_lstadd_front_bonus.c
 
 ERR = error/error.c
 
 UTIL = struct_utils.c \
 		lst_utils.c \
-		history_utils.c
+		history_utils.c \
+		env_utils.c
 
 LEX = read_input.c \
 		lexer.c
@@ -56,7 +57,7 @@ TEST = test.c
 
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
-LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
+# LFT_PREFIX = $(addprefix lft_utils/, $(LFT))
 
 LEX_PREFIX = $(addprefix lexer/, $(LEX))
 
@@ -66,14 +67,14 @@ SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 
 SRC = main.c \
 		$(GNL) \
-		$(LFT_PREFIX) \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		debug/printlists.c \
-		$(TEST)
+		$(TEST) \
+		# $(LFT_PREFIX)
 
 OBJ = $(SRC:.c=.o)
 
@@ -86,27 +87,33 @@ INCLUDES = -Iincludes
 
 REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
 
+LIBFT = -Ilft/
+
 TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 		@make -C reins_termcap/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@make bonus -C lft/
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 		
 test: $(OBJ)
 		@make -C reins_termcap/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@make bonus -C lft/
+		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
 
 %.o: %.c
-		$(CC) $(FLAGS) $(INCLUDES) $(REINS) -g -c $< -o $@
+		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
 		@make clean -C reins_termcap/
+		@make clean -C lft/
 		rm -f $(OBJ)
 
 fclean: clean
 		@make fclean -C reins_termcap/
+		@make fclean -C lft/
 		rm -f $(NAME)
 
 re: fclean all

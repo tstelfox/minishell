@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstiter_bonus.c                                 :+:    :+:            */
+/*   ft_isalnum.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
+/*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 15:22:14 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/12 12:34:36 by ztan          ########   odam.nl         */
+/*   Created: 2019/10/30 14:28:40 by ztan          #+#    #+#                 */
+/*   Updated: 2020/08/24 18:36:13 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+int	ft_isalnum(int c)
 {
-	t_list *temp;
-
-	if (!lst)
-		return ;
-	temp = lst;
-	while (temp)
-	{
-		f(temp->content);
-		temp = temp->next;
-	}
+	if (ft_isdigit(c) || ft_isalpha(c))
+		return (1);
+	return (0);
 }
