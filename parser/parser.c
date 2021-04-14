@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/10 14:44:27 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/12 19:03:33 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,62 @@
 // 	return (env);
 // }
 
-int		check_quote(t_shell **ghost, char *str)
+char 	*remove_quotes(t_shell **ghost, char *str, int len)
 {
-	char	type;
-	int		check;
-	int		i;
+	char *ret;
+	int i;
+	int j;
+	int type;
+	int check;
 
-	type = 0;
-	check = 0;
 	i = 0;
+	j = 0;
+	check = 0;
+	printf("len:%i\n", len);
+	ret = malloc(sizeof(char) * (len + 1));
+	if (!ret)
+	{
+		error_handler(ghost, INTERNAL_ERROR, "no multiline", NULL);
+		return (NULL);
+	}
 	while (str[i])
 	{
 		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
 			type = str[i];
 		if (type != 0 && str[i] == type)
 			check++;
+		if (type != str[i] || type == 0)
+		{
+			ret[j] = str[i];
+			j++;
+		}
+		if (!(check % 2))
+			type = 0;
+		i++;
+	}
+	ret[j] = '\0';
+	return (ret);
+}
+
+int		check_quote(t_shell **ghost, void **data)
+{
+	char	type;
+	int		check;
+	int		i;
+	char	*str;
+
+	type = 0;
+	check = 0;
+	i = 0;
+	str = *data;
+	while (str[i])
+	{
+		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+			type = str[i];
+		if (type != 0 && str[i] == type)
+			check++;
+		if (!(check % 2))
+			type = 0;
 		i++;
 	}
 	if (check % 2)
@@ -56,6 +97,10 @@ int		check_quote(t_shell **ghost, char *str)
 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 		return (-1);
 	}
+	printf("DEBUG\n");
+	str = remove_quotes(ghost, str, ft_strlen(str) - check);
+	free(*data);
+	*data = str;
 	return (0);
 }
 
@@ -133,14 +178,22 @@ void	parser(t_shell **ghost)
 	while ((*ghost)->tokens && (*ghost)->status == PARSE && !(*ghost)->status)
 	{
 		// if env token->content
+		if (check_quote(ghost, &(*ghost)->tokens->content))
+				break ;
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
 		while ((*ghost)->tokens && (*ghost)->status == PARSE) //parse command
 		{
-			if (check_quote(ghost, (*ghost)->tokens->content))
-				break ;
 			// if env token->content
+			if (check_quote(ghost, &(*ghost)->tokens->content))
+				break ;
+			// else
+			// {
+			// 	free((*ghost)->tokens->content);
+			// 	(*ghost)->tokens->content) = 
+			// }
+			
 			if (check_colon(ghost, command))
 				return ;
 			if (check_seperator(ghost, command))

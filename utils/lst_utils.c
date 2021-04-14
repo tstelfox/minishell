@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/10 14:49:41 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/12 12:35:10 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,22 @@ t_dlist	*ft_dlstnew(void *content)
 	new_node->prev = NULL;
 	new_node->next = NULL;
 	return (new_node);
+}
+
+int		ft_lstredir(t_list *lst, int (*f)(void *))
+{
+	t_list *temp;
+	int		fd;
+
+	if (!lst)
+		return (-1);
+	temp = lst;
+	while (temp)
+	{
+		fd = f(temp->content);
+		temp = temp->next;
+	}
+	return (fd);
 }
 
 char	**list_to_arr(t_list *tokens)

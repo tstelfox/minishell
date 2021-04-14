@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/10 14:49:29 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/12 14:27:34 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include "get_next_line.h"
+# include "libft.h"
 # include "reins.h"
 
 enum	e_status
@@ -50,11 +51,11 @@ enum	e_types
 	PIPE = 2,
 };
 
-typedef struct		s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+// typedef struct		s_list
+// {
+// 	void			*content;
+// 	struct s_list	*next;
+// }					t_list;
 
 typedef struct		s_dlist
 {
@@ -121,22 +122,22 @@ int		redirect(t_cmd *cmd);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		redir_muti(void *file_struct);
 
-// lft_utils
-size_t	ft_strlen(const char *s);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	ft_putstr_fd(char *str, int fd);
-int		ft_strcmp(const char *str1, const char *str2);
-void	ft_putnbr_fd(int n, int fd);
-void	ft_putchar_fd(char c, int fd);
-char	**ft_split(char const *s, char c);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *s1);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-void	ft_bzero(void *s, size_t n);
+// // lft_utils
+// size_t	ft_strlen(const char *s);
+// void	*ft_memcpy(void *dst, const void *src, size_t n);
+// void	ft_putstr_fd(char *str, int fd);
+// int		ft_strcmp(const char *str1, const char *str2);
+// void	ft_putnbr_fd(int n, int fd);
+// void	ft_putchar_fd(char c, int fd);
+// char	**ft_split(char const *s, char c);
+// char	*ft_strchr(const char *s, int c);
+// char	*ft_strdup(const char *s1);
+// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+// char	*ft_substr(char const *s, unsigned int start, size_t len);
+// char	*ft_strjoin(char const *s1, char const *s2);
+// int		ft_strncmp(const char *s1, const char *s2, size_t n);
+// char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+// void	ft_bzero(void *s, size_t n);
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);
@@ -188,6 +189,7 @@ t_dlist *ft_dlstlast(t_dlist *lst);
 void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *));
 void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *));
 void	ft_dlsreversetiter(t_dlist *lst, void (*f)(void *));
+int		ft_lstredir(t_list *lst, int (*f)(void *));
 
 void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
 void	ft_dlstiter(t_dlist *lst, void (*f)(void *));
@@ -200,6 +202,10 @@ void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
 void	edit_content(t_dlist **node, char *line, int size);
 
+//env_utils
+int 	valid_val(char *str);
+int		valid_word(char *str);
+t_dlist	*split_env(char *str);
 
 //debug
 void	print_data(void *data);

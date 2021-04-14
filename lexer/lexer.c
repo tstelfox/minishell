@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/10 14:47:32 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/12 15:18:16 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,49 @@ void	add_token(t_shell **ghost, char *input, int start, int len)
 	free(result);
 }
 
-int		handle_quote(t_shell **ghost, char *input, int start, int current)
-{
-	int i;
-	char type;
+// int		handle_quote(t_shell **ghost, char *input, int start, int current)
+// {
+// 	int i;
+// 	char type;
 
-	i = current + 1;
-	type = input[current];
-	if (start !=  current)
-		add_token(ghost, input, start, current - start);
-	while (input[i])
-	{
-		if (input[i] == type)
-		{
-			add_token(ghost, input, current, i - current + 1);
-			return (i);
-		}
-		i++;
-	}
-	return (i);
-}
+// 	i = current + 1;
+// 	type = input[current];
+// 	if (start !=  current && input[current - 1] != '=')
+// 		add_token(ghost, input, start, current - start);
+// 	if (input[current - 1] == '=')
+// 		current = start;
+// 	while (input[i])
+// 	{
+// 		if (input[i] == type)
+// 		{
+// 			add_token(ghost, input, current, i - current + 1);
+// 			return (i);
+// 		}
+// 		i++;
+// 	}
+// 	return (i);
+// }
+
+// int		handle_quote(t_shell **ghost, char *input, int start, int current)
+// {
+// 	int i;
+// 	char type;
+
+// 	i = current + 1;
+// 	type = input[current];
+// 	if (input[current - 1] == '=')
+// 		current = start;
+// 	while (input[i])
+// 	{
+// 		if (input[i] == type)
+// 		{
+// 			add_token(ghost, input, current, i - current + 1);
+// 			return (i);
+// 		}
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
 int		handle_seperator(t_shell **ghost, char *input, int start, int i)
 {
@@ -90,11 +113,11 @@ void	lexer(t_shell **ghost)
 			i = handle_seperator(ghost, input, start, i);
 			start = i + 1;
 		}
-		if (input[i] == '\"' || input[i] == '\'')
-		{
-			i = handle_quote(ghost, input, start, i);
-			start = i + 1;
-		}
+		// if (input[i] == '\"' || input[i] == '\'')
+		// {
+		// 	i = handle_quote(ghost, input, start, i);
+		// 	start = i + 1;
+		// }
 		i++;
 	}
 	if (i != start)
