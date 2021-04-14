@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 11:55:45 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/14 16:24:36 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	ft_bzero(void *s, size_t n);
 int		ft_isdigit(int c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
+int		ft_atoi(const char *str);
 
 //list
 void	ft_lstadd_back(t_list **alst, t_list *new);

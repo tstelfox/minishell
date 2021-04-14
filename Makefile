@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/03/31 18:11:19 by tmullan       ########   odam.nl          #
+#    Updated: 2021/04/14 16:23:42 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ LFT = ft_putstr_fd.c \
 		ft_lstadd_front_bonus.c \
 		ft_isalpha.c \
 		ft_isdigit.c \
-		ft_isalnum.c
+		ft_isalnum.c \
+		ft_atoi.c
 
 ERR = error/error.c
 

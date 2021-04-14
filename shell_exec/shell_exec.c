@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 20:06:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/14 16:59:16 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,11 +235,32 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 
 int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
-	if (cmd->args == NULL)
-		(*ghost)->ret_stat = 99;
+	char *exit_code;
+
+	// if (cmd->seprator_type != PIPE)
+	// {
+	// 	ft_putstr_fd("exit", 1);
+	// 	ft_putstr_fd("\n", 1);
+	// }
+	if (!cmd->args)
+		exit(0);
+	else
+	{
+		exit_code = cmd->args->content;
+		if (ft_isdigit(exit_code[0])) // Need to perfect this tbh
+		{
+			exit(ft_atoi(exit_code));
+		}
+		else
+		{
+			ft_putstr_fd("ghostshell: ", 1);
+			ft_putstr_fd(exit_code, 1);
+			ft_putstr_fd(": numeric argument reguired\n", 1);
+			exit(0);
+		}
+	}
 	(void)ghost;
 	// system ("leaks ghostshell");
-	exit(1);
 }
 
 int	shell_exec(t_list *command, t_shell **ghost)

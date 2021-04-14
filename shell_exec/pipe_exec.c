@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/02 12:35:05 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/14 16:58:22 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 	else
 	{
 		waitpid(pid, &w_status, WUNTRACED);
+		if (WIFEXITED(w_status))
+			(*ghost)->ret_stat = (w_status);
 		close((*ghost)->pipefd[1]);
 		fd_in = (*ghost)->pipefd[0];
 	}

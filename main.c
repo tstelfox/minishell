@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/08 20:07:21 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/14 16:56:24 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ void	exec_shell(char *envp[])
 		if (ghost->status == 0)
 			parser(&ghost);
 		debug_loop(&ghost);
+		ft_putstr_fd("well it do be: ", 1);
+		ft_putnbr_fd(ghost->ret_stat, 1);
 		if (shell_exec(ghost->commands, &ghost) == 0)
 			break;
-		// ft_putstr_fd("well it do be: ", 1);
-		// ft_putnbr_fd(ghost->ret_stat, 1);
 		free(input);
 		restart_shell(ghost);
 	}
