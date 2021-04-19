@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/15 11:50:44 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/19 15:52:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,8 @@ void	exec_shell(char *envp[])
 
 	ghost = init_shell(envp);
 	init_reins(&ghost);
-	// // ---------env---------
-	int i = 0;
-	while (envp[i])
-		i++;
-	ghost->env = (char **)malloc(sizeof(char *) * (i + 1));
-	int k = 0;
-	while (envp[k])
-	{
-		ghost->env[k] = ft_strdup(envp[k]);
-		k++;
-	}
-	ghost->env[k] = 0;
-	// ---------env---------
 	signal(SIGINT, ctrl);
-	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
+	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 
 	input = NULL;
 	while (ghost->status != INTERNAL_ERROR) // check for errors
@@ -73,10 +60,10 @@ void	exec_shell(char *envp[])
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
-		debug_loop(&ghost);
-		ft_putstr_fd("well it do be: ", 1);
-		ft_putnbr_fd(ghost->ret_stat, 1);
-		ft_putstr_fd("\n", 1);
+		// debug_loop(&ghost);
+		// ft_putstr_fd("well it do be: ", 1);
+		// ft_putnbr_fd(ghost->ret_stat, 1);
+		// ft_putstr_fd("\n", 1);
 		if (shell_exec(ghost->commands, &ghost) == 0)
 			break;
 		free(input);

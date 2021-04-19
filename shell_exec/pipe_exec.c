@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/15 11:54:25 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/15 12:47:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 		waitpid(pid, &w_status, WUNTRACED);
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
-		if (WIFSIGNALED(w_status))
+		else if (WIFSIGNALED(w_status))
 			(*ghost)->ret_stat = WTERMSIG(w_status);
 		close((*ghost)->pipefd[1]);
 		fd_in = (*ghost)->pipefd[0];
@@ -89,7 +89,6 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 
 int		pipe_exec(t_list *command, t_shell **ghost)
 {
-	// pid_t	pid;
 	int		fd_in;
 
 	fd_in = 0;

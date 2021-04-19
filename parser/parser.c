@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/22 14:51:10 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/19 15:57:27 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ char	**get_envp(char **envp)
 	while (envp[k])
 	{
 		env[k] = ft_strdup(envp[k]);
+		// free(envp[k]);
 		k++;
 	}
 	env[k] = 0;
+	// free(envp);
 	return (env);
 }
 

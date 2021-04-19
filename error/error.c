@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/02 12:54:49 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/15 12:30:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost)
 	{
 		(*ghost)->ret_stat = NOT_CMD;
 
-		// (*ghost)->ret_stat = NOT_CMD;
 		// ft_putnbr_fd((*ghost)->ret_stat, 1);
 		ft_putstr_fd(cmd->type, 1);
 		ft_putstr_fd(": command not found\n", 1);

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/01 16:10:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/19 15:59:04 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,23 @@ void	del_commands(void *list)
 
 void	restart_shell(t_shell *ghost)
 {
-	char **env;
+	// char **env;
 	t_reins *reins;
 
-	env = get_envp(ghost->env);
+	// env = get_envp(ghost->env);
 	reins = ghost->reins;
 	ft_lstclear(&ghost->tokens, del_list);
 	ft_lstclear(&ghost->commands, del_commands);
+	// for (int i = 0; ghost->env[i]; i++)
+	// 	free(ghost->env[i]);
+	// free(ghost->env);
 	ghost = malloc(sizeof(t_shell));
 	if (!ghost)
 	{
 		error_handler(&ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
 		return ;
 	}
-	ghost->env = env;
+	// ghost->env = env;
 	ghost->reins = reins;
 	ghost->commands = NULL;
 	ghost->tokens = NULL;
@@ -81,6 +84,7 @@ t_shell	*init_shell(char **env)
 	new_shell->pipefd[1] = -47;
 	new_shell->error = -46;
 	new_shell->ret_stat = 0;
+	new_shell->pid = -99;
 	return (new_shell);
 }
 

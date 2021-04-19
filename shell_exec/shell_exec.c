@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/15 11:49:48 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/19 15:55:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	while (str[i])
 	{
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-			&& str[i] != '=' && str[i] != '/')) || str[0] == '=')
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=')
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost);
 			return (1);
@@ -208,7 +208,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	if (!cmd->args)
 		return (1);
 	int len = ft_strlen(cmd->args->content);
-	while ((*ghost)->env[i]) // If the argument is there, find a way to delete it and resize the array (che palle);
+	while ((*ghost)->env[i])
 	{
 		if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
 			k = i;
@@ -228,8 +228,6 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	free((*ghost)->env);
 	(*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
-	// (void)command;
-	// (void)ghost;
 	return(1);
 }
 
@@ -237,11 +235,14 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
 	char *exit_code;
 
+	// ft_putnbr_fd((*ghost)->pid, 1);
 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
 	{
+		// free_all(ghost);
 		ft_putstr_fd("exit", 1);
 		ft_putstr_fd("\n", 1);
 	}
+	system("leaks ghostshell");
 	if (!cmd->args)
 		exit(0);
 	else

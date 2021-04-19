@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/14 16:23:42 by tmullan       ########   odam.nl          #
+#    Updated: 2021/04/19 14:57:55 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ ERR = error/error.c
 UTIL = struct_utils.c \
 		lst_utils.c \
 		history_utils.c \
-		arr_addback.c
+		arr_addback.c \
+		free_all.c
 
 LEX = read_input.c \
 		lexer.c
