@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/15 12:02:22 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/19 17:09:20 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,16 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 			path = ft_split(&(*ghost)->env[i][5], ':');
 			while (path[k])
 			{
-				path[k] = ft_strjoin(path[k], command);
+				path[k] = ft_strjoinfree(path[k], command);
 				k++;
 			}
 			path = arr_addback(path, cmd->type);
+			// free(command);
 			return(path);
 		}
 		i++;
 	}
+	// free(command);
 	return (0);
 }
 
@@ -108,8 +110,10 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 				(*ghost)->ret_stat = 1;
 				// printf("%s: errno %d\n", strerror(errno), errno);
 			}
+			// free(path[k]);
 			k++;
 		}
+		// free(path);
 		cmd_notfound(cmd, 0, ghost);
 		exit(0);
 	}
@@ -120,6 +124,12 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	else
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
+		// for (int i = 0; path[i]; i++)
+		// 	free(path[i]);
+		// free(path);
+		for (int i = 0; args[i]; i++)
+			free(args[i]);
+		free(args);
 		if (WIFSIGNALED(w_status))
 		{
 			(*ghost)->ret_stat = WTERMSIG(w_status);

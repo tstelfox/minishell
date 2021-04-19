@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/19 14:57:55 by tmullan       ########   odam.nl          #
+#    Updated: 2021/04/19 17:06:15 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ UTIL = struct_utils.c \
 		lst_utils.c \
 		history_utils.c \
 		arr_addback.c \
-		free_all.c
+		free_all.c \
+		ft_strjoinfree.c
 
 LEX = read_input.c \
 		lexer.c
