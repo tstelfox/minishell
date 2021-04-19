@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/17 15:18:08 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/19 17:15:00 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char 	*remove_quotes(t_shell **ghost, char *str, int len)
 	i = 0;
 	j = 0;
 	check = 0;
-	// printf("len:%i\n", len);
+	type = 0;
 	ret = malloc(sizeof(char) * (len + 1));
 	if (!ret)
 	{
@@ -56,6 +56,7 @@ char 	*remove_quotes(t_shell **ghost, char *str, int len)
 	{
 		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
 			type = str[i];
+			
 		if (type != 0 && str[i] == type)
 			check++;
 		if (type != str[i] || type == 0)
@@ -71,27 +72,63 @@ char 	*remove_quotes(t_shell **ghost, char *str, int len)
 	return (ret);
 }
 
-int		check_quote(t_shell **ghost, void **data)
+// int		check_quote(t_shell **ghost)
+// {
+// 	char	type;
+// 	int		check;
+// 	int		i;
+// 	char	*str;
+
+// 	type = 0;
+// 	check = 0;
+// 	i = 0;
+// 	check_env_quoted(ghost);
+// 	// printf("data:%s\n", (*ghost)->tokens->content);
+// 	str = (*ghost)->tokens->content;
+// 	while (str[i])
+// 	{
+// 		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+// 			type = str[i];
+// 		if (type != 0 && str[i] == type)
+// 			check++;
+// 		if (!(check % 2))
+// 			type = 0;
+// 		i++;
+// 	}
+// 	if (check % 2)
+// 	{
+// 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
+// 		return (-1);
+// 	}
+// 	// printf("data2:[%s],check[%i]\n", str, check);
+// 	str = remove_quotes(ghost, str, ft_strlen(str) - check);
+// 	// printf("data3:%s\n", str);
+// 	free((*ghost)->tokens->content);
+// 	(*ghost)->tokens->content = str;
+// 	return (0);
+// }
+
+int		check_quote(t_shell **ghost)
 {
 	char	type;
 	int		check;
 	int		i;
-	char	*str;
+	char	**str;
 
 	type = 0;
 	check = 0;
 	i = 0;
-	str = *data;
-	check_env_quoted(ghost, &(*ghost)->tokens->content);
-	
-	while (str[i])
+	str = (char **)&(*ghost)->tokens->content;
+	while ((*str)[i])
 	{
-		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
-			type = str[i];
-		if (type != 0 && str[i] == type)
+		if (((*str)[i] == '\"' || (*str)[i] == '\'') && type == 0)
+			type = (*str)[i];
+		if (type != 0 && (*str)[i] == type)
 			check++;
 		if (!(check % 2))
 			type = 0;
+		if ((*str)[i] == '$' && type != '\'')
+			i += replace_env_quoted(ghost, str, i + 1) - 1;
 		i++;
 	}
 	if (check % 2)
@@ -99,10 +136,11 @@ int		check_quote(t_shell **ghost, void **data)
 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 		return (-1);
 	}
-	// printf("DEBUG\n");
-	str = remove_quotes(ghost, str, ft_strlen(str) - check);
-	free(*data);
-	*data = str;
+	// printf("data2:[%s],check[%i]\n", str, check);
+	(*str) = remove_quotes(ghost, (*str), ft_strlen((*str)) - check);
+	// printf("data3:%s\n", str);
+	free((*ghost)->tokens->content);
+	(*ghost)->tokens->content = (*str);
 	return (0);
 }
 
@@ -180,22 +218,16 @@ void	parser(t_shell **ghost)
 	while ((*ghost)->tokens && (*ghost)->status == PARSE && !(*ghost)->status)
 	{
 		// if env token->content
-		if (check_quote(ghost, &(*ghost)->tokens->content))
-				break ;
+		if (check_quote(ghost))
+			break ;
 		command = new_command();
 		command->type = ft_strdup((*ghost)->tokens->content);
 		(*ghost)->tokens = (*ghost)->tokens->next;
 		while ((*ghost)->tokens && (*ghost)->status == PARSE) //parse command
 		{
 			// if env token->content
-			if (check_quote(ghost, &(*ghost)->tokens->content))
+			if (check_quote(ghost))
 				break ;
-			// else
-			// {
-			// 	free((*ghost)->tokens->content);
-			// 	(*ghost)->tokens->content) = 
-			// }
-			
 			if (check_colon(ghost, command))
 				return ;
 			if (check_seperator(ghost, command))

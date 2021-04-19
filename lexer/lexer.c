@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/12 15:18:16 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/19 16:30:05 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,27 +97,36 @@ int		handle_seperator(t_shell **ghost, char *input, int start, int i)
 
 void	lexer(t_shell **ghost)
 {
-	int i;
-	int start;
-	char *input;
+	int		i;
+	int		start;
+	char	*input;
+	int		type;
 
 	i = 0;
 	start = 0;
+	type = 0;
 	if (!(*ghost)->line)
 		return ;
 	input = (*ghost)->line;
 	while (input[i])
 	{
+		
+		if (input[i] == '\"' || input[i] == '\'')
+		{
+			type = input[i];
+			i++;
+			while (input[i] != type)
+				i++;
+			// printf("inpuut[%c]\n", input[i]);
+			// i = handle_quote(ghost, input, start, i);
+			// start = i + 1;
+
+		}
 		if (ft_strchr(" ><|;", input[i]))
 		{
 			i = handle_seperator(ghost, input, start, i);
 			start = i + 1;
 		}
-		// if (input[i] == '\"' || input[i] == '\'')
-		// {
-		// 	i = handle_quote(ghost, input, start, i);
-		// 	start = i + 1;
-		// }
 		i++;
 	}
 	if (i != start)

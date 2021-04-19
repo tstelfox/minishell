@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 15:51:49 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/17 15:07:57 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/19 16:15:02 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,13 @@ char		*ft_strjoin_free(char *s1, char *s2)
 	if (!ret)
 		return (NULL);
 	ft_memcpy(ret, s1, s1len);
-	ft_strlcpy(ret + s1len, s2, s2len + 1);
+	if (s2)
+	{
+		ft_strlcpy(ret + s1len, s2, s2len + 1);
+		free(s2);
+	}
+	else
+		ret[s1len] = '\0';
 	free(s1);
-	free(s2);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/12 12:13:03 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/17 15:11:53 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/19 17:33:21 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,56 +79,27 @@ char		*find_env_val(t_shell **ghost, char *str)
 	return (NULL);
 }
 
-void	replace_env(char **input, char *replace, int start)
-{
-	int i;
-	int j;
-	char	*str;
-
-	i = 0;
-	j = 0;
-	str = *input;
-	while (str[i])
-	{
-		if (i == start)
-		{
-			while (replace[j])
-			{
-				str[i] = replace[j];
-				i++;
-				j++;
-			}
-		}
-	}
-}
-
-// int		replace_env_quoted(t_shell **ghost, char **input, int i)
+// void	replace_env(char **input, char *replace, int start)
 // {
-// 	char 	*str = *input;
-// 	char 	*ret;
-// 	char	*env;
-// 	int		len;
+// 	int i;
+// 	int j;
+// 	char	*str;
 
-// 	len = 0;
-// 	while (ft_isalnum(str[i + len]) || str[i + len] == '_')
-// 		len++;
-// 	env = ft_substr(str, i, len);
-// 	printf("env->[%s][%i]\n", env, len);
-// 	if (find_env_val(ghost, env))
+// 	i = 0;
+// 	j = 0;
+// 	str = *input;
+// 	while (str[i])
 // 	{
-// 		ret = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(env) - len));
-// 		if (!ret)
+// 		if (i == start)
 // 		{
-// 			free(env);
-// 			error_handler(ghost, INTERNAL_ERROR, "Failed to malloc", NULL);
-// 			return (0);
+// 			while (replace[j])
+// 			{
+// 				str[i] = replace[j];
+// 				i++;
+// 				j++;
+// 			}
 // 		}
-// 		ft_memcpy(ret, str, i);
-// 		ft_memcpy(ret + i, env, ft_strlen(env));
-// 		ft_strlcpy(ret + i + ft_strlen(env), str + i + len, ft_strlen(str) - i - len + 1);
-// 		printf("ret->[%s]\n", ret);
 // 	}
-// 	return (len);
 // }
 
 int		replace_env_quoted(t_shell **ghost, char **input, int i)
@@ -141,57 +112,34 @@ int		replace_env_quoted(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = 0;
-	printf("[%c]\n", (*input)[i]);
+	// printf("[%c]\n", (*input)[i]);
 	while (ft_isalnum((*input)[i + len]) || (*input)[i + len] == '_')
 		len++;
 	temp = ft_substr((*input), i, len);
-	printf("env->[%s][%i]\n", temp, len);
+	// printf("env->[%s][%i]\n", temp, len);
 	env = find_env_val(ghost, temp);
 	free(temp);
-	printf("ret->[%s]\n", env);
+	// printf("ret->[%s]\n", env);
 	taillen = ft_strlen((*input)) - len - i;
-	if (env)
-	{
-		printf("str[%s]\n", (*input));
+	// if (env)
+	// {
+		// printf("str[%s]\n", (*input));
 		temp = ft_substr((*input), 0, ft_strlen((*input)) - len - taillen - 1);
-		printf("temp[%s]\n", temp);
+		// printf("temp[%s]\n", temp);
+		// printf("debug\n");
+		len = ft_strlen(env);
 		ret = ft_strjoin_free(temp, env);
-		printf("strjoin[%s]\n", ret);
+		// printf("ret[%s]\n", ret);
+		// printf("debug2\n");
+		// printf("strjoin[%s]\n", ret);
 		temp = ft_strdup((*input) + ft_strlen((*input)) - taillen);
 		ret = ft_strjoin_free(ret, temp);
-		printf("strjoin2[%s]\n", ret);
-		
-	}
-	// if (find_env_val(ghost, env))
-	// {
-	// 	ret = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(env) - len));
-	// 	if (!ret)
-	// 	{
-	// 		free(env);
-	// 		error_handler(ghost, INTERNAL_ERROR, "Failed to malloc", NULL);
-	// 		return (0);
-	// 	}
-	// 	ft_memcpy(ret, str, i);
-	// 	ft_memcpy(ret + i, env, ft_strlen(env));
-	// 	ft_strlcpy(ret + i + ft_strlen(env), str + i + len, ft_strlen(str) - i - len + 1);
-	// 	printf("ret->[%s]\n", ret);
+		// printf("strjoin2[%s]\n", ret);
+		*input = ret;
 	// }
+	
+	// printf("len:[%i]ret[%c]\n", len, ret[i + len]);
 	return (len);
-}
-
-void	check_env_quoted(t_shell **ghost, char **str)
-{
-	int i;
-	// char *str;
-
-	i = 0;
-	// str = *data;
-	while ((*str)[i])
-	{
-		if ((*str)[i] == '$')
-			replace_env_quoted(ghost, str, i + 1);
-		i++;
-	}
 }
 
 t_dlist	*split_env(char *str)
@@ -220,4 +168,31 @@ t_dlist	*split_env(char *str)
 		return (NULL);
 	ft_dlstadd_back(&new,ft_dlstnew(data));
 	return (new);
+}
+
+void	replace_env()
+{
+	int		i;
+	char	str;
+
+	i = 0;
+	str = (*ghost)->tokens->content;
+	while (ft_isalnum(str[i + len]) || str[i + len] == '_')
+		len++;
+	temp = ft_substr(str, i, len);
+	// printf("env->[%s][%i]\n", temp, len);
+	env = find_env_val(ghost, temp);
+}
+
+void	check_env(t_shell **ghost)
+{
+	int		i;
+	char	str;
+
+	i = 0;
+	str = (*ghost)->tokens->content;
+	while (str[i] != '$')
+		i++;
+	if (str[i] == '$')
+		replace_env()
 }
