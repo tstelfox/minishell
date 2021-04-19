@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/05 17:12:59 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/12 15:11:25 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/15 21:32:21 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,11 @@ void	env_test(t_dlist **list)
 	printf("\n");
 	ft_dlsreversetiter(ft_dlstlast(*list), print_data);
 	printf("\n");	
+}
+
+void	replace_env_test()
+{
+	
 }
 
 void	test()

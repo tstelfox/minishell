@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/12 14:27:34 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/17 15:17:36 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ void	edit_content(t_dlist **node, char *line, int size);
 int 	valid_val(char *str);
 int		valid_word(char *str);
 t_dlist	*split_env(char *str);
+void	check_env_quoted(t_shell **ghost, char **data);
 
 //debug
 void	print_data(void *data);

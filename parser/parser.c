@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/12 19:03:33 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/17 15:18:08 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char 	*remove_quotes(t_shell **ghost, char *str, int len)
 	i = 0;
 	j = 0;
 	check = 0;
-	printf("len:%i\n", len);
+	// printf("len:%i\n", len);
 	ret = malloc(sizeof(char) * (len + 1));
 	if (!ret)
 	{
@@ -82,6 +82,8 @@ int		check_quote(t_shell **ghost, void **data)
 	check = 0;
 	i = 0;
 	str = *data;
+	check_env_quoted(ghost, &(*ghost)->tokens->content);
+	
 	while (str[i])
 	{
 		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
@@ -97,7 +99,7 @@ int		check_quote(t_shell **ghost, void **data)
 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 		return (-1);
 	}
-	printf("DEBUG\n");
+	// printf("DEBUG\n");
 	str = remove_quotes(ghost, str, ft_strlen(str) - check);
 	free(*data);
 	*data = str;

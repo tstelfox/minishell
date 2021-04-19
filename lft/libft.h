@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/15 19:51:04 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/12 12:30:26 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/17 15:08:09 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char				*ft_strrchr(const char *s, int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strjoin_free(char *s1, char *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *str, int fd);
