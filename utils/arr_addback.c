@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/23 15:44:25 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 16:00:48 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 13:10:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**arr_addback(char **arr, char *str)
 	k = 0;
 	while (arr[i])
 		i++;
-	temp = (char **)malloc(sizeof(char *) * (i + 1));
+	temp = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
 	while (arr[i])
 	{

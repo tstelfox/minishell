@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/19 15:55:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:49:43 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,9 +238,9 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 	// ft_putnbr_fd((*ghost)->pid, 1);
 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
 	{
-		// free_all(ghost);
 		ft_putstr_fd("exit", 1);
 		ft_putstr_fd("\n", 1);
+		// free_all(ghost);
 	}
 	system("leaks ghostshell");
 	if (!cmd->args)

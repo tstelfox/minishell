@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 10:55:47 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 11:18:17 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct		s_shell
 	// comands
 	// status
 	pid_t	pid;
+	char	**path;
 	char	**env;
 	int		status;
 	int		ret_stat; // This is the $? or last exit value.

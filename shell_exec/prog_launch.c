@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/19 17:09:20 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 13:11:39 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 			return (0);
 	}
 	command = ft_strjoin("/", cmd->type);
+	if ((*ghost)->path != 0)
+	{
+		for (int i = 0; (*ghost)->path[i]; i++)
+			free((*ghost)->path[i]);
+		free((*ghost)->path);
+	}
 	while ((*ghost)->env[i])
 	{
 		if (ft_strnstr((*ghost)->env[i], "PATH", 4))
@@ -54,7 +60,8 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 				k++;
 			}
 			path = arr_addback(path, cmd->type);
-			// free(command);
+			// (*ghost)->path = (char**)malloc(sizeof(char *) * (k + 1));
+			free(command);
 			return(path);
 		}
 		i++;
@@ -65,15 +72,24 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 
 int	prog_launch(t_cmd *cmd, t_shell **ghost)
 {
-	// pid_t	pid;
-	char **path;
+	// char **path;
 	char **args;
 	int	w_status;
 
 	int k = 0;
-	// w_status = 0;
-	path = get_path(cmd, ghost);
-	if (path == NULL)
+	// if ((*ghost)->path)
+	// {
+	// 	for (int i = 0; (*ghost)->path[i]; i++)
+	// 	{
+	// 		ft_putstr_fd("|", 1);
+	// 		ft_putstr_fd((*ghost)->path[i], 1);
+	// 		ft_putstr_fd("|", 1);
+	// 		ft_putstr_fd("\n", 1);
+	// 	}	
+	// 	// ft_putstr_fd("\n", 1);
+	// }
+	(*ghost)->path = get_path(cmd, ghost);
+	if ((*ghost)->path == NULL)
 		cmd_notfound(cmd, (*ghost)->error, ghost); // Might need some work
 	int i = 0;
 	while (i < 7)
@@ -102,18 +118,18 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 			if (redirect(cmd, ghost) == -1)
 				exit(0);
 		}
-		while (path[k])
+		while ((*ghost)->path[k])
 		{
-			if (execve(path[k], args, NULL) == -1)
+			if (execve((*ghost)->path[k], args, NULL) == -1)
 			{
 				// ft_putnbr_fd(errno, 1);
 				(*ghost)->ret_stat = 1;
 				// printf("%s: errno %d\n", strerror(errno), errno);
 			}
-			// free(path[k]);
+			// free((*ghost)->path[k]);
 			k++;
 		}
-		// free(path);
+		// free((*ghost)->path);
 		cmd_notfound(cmd, 0, ghost);
 		exit(0);
 	}
@@ -124,9 +140,9 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	else
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
-		// for (int i = 0; path[i]; i++)
-		// 	free(path[i]);
-		// free(path);
+		// for (int i = 0; (*ghost)->path[i]; i++)
+		// 	free((*ghost)->path[i]);
+		// free((*ghost)->path);
 		for (int i = 0; args[i]; i++)
 			free(args[i]);
 		free(args);
