@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 13:56:38 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 12:01:28 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:36:26 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	debug_loop(t_shell **ghost)
 	ft_putchar_fd('\n', 1);
 	if ((*ghost)->status == 0)// debug
 	{
-		ft_lstiter((*ghost)->tokens, print_data);
+		ft_dlstiter((*ghost)->tokens, print_data);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_cmd_lstiter((*ghost)->commands, print_cmd);
 	}

@@ -6,33 +6,33 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 11:58:24 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:34:54 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-// char	**get_envp(char **envp)
-// {
-// 	char	**env;
-// 	int		i;
-// 	int		k;
+char	**get_envp(char **envp)
+{
+	char	**env;
+	int		i;
+	int		k;
 
-// 	i = 0;
-// 	k = 0;
-// 	while (envp[i])
-// 		i++;
-// 	env = (char **)malloc(sizeof(char *) * (i + 1));
-// 	if (!env)
-// 		return (NULL);
-// 	while (envp[k])
-// 	{
-// 		env[k] = ft_strdup(envp[k]);
-// 		k++;
-// 	}
-// 	env[k] = 0;
-// 	return (env);
-// }
+	i = 0;
+	k = 0;
+	while (envp[i])
+		i++;
+	env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!env)
+		return (NULL);
+	while (envp[k])
+	{
+		env[k] = ft_strdup(envp[k]);
+		k++;
+	}
+	env[k] = 0;
+	return (env);
+}
 
 char 	*remove_quotes(t_shell **ghost, char *str, int len)
 {

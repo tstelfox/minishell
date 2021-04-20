@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/20 12:03:05 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:32:59 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,10 @@ void	del_commands(void *list)
 
 void	del_darray(char **str)
 {
-	// char **env;
-	t_reins *reins;
+	int i;
 
-	// env = get_envp(ghost->env);
-	reins = ghost->reins;
-	ft_lstclear(&ghost->tokens, del_list);
-	ft_lstclear(&ghost->commands, del_commands);
-	// for (int i = 0; ghost->env[i]; i++)
-	// 	free(ghost->env[i]);
-	// free(ghost->env);
-	ghost = malloc(sizeof(t_shell));
-	if (!ghost)
+	i = 0;
+	if (str)
 	{
 		if (str[i])
 		{
@@ -66,34 +58,9 @@ void	del_darray(char **str)
 		}
 		free(str);
 	}
-	// ghost->env = env;
-	ghost->reins = reins;
-	ghost->commands = NULL;
-	ghost->tokens = NULL;
-	ghost->status = 0;
 }
 
-t_shell	*init_shell(char **env)
-{
-	t_shell *new_shell;
-	
-	new_shell = malloc(sizeof(t_shell));
-	ft_bzero(new_shell, sizeof(t_shell));
-	new_shell->reins = reins_init();
-	if (!new_shell->reins)
-		return (NULL);
-	new_shell->first_command = TRUE;
-	new_shell->current = new_shell->history;
-	new_shell->env = get_envp(env);
-	new_shell->status = 0;
-	new_shell->out = -42;
-	new_shell->pipefd[0] = -69;
-	new_shell->pipefd[1] = -47;
-	new_shell->error = -46;
-	new_shell->ret_stat = 0;
-	new_shell->pid = -99;
-	return (new_shell);
-}
+
 
 t_redir	*new_redir(t_shell **ghost, char *file, int type)
 {
@@ -226,9 +193,13 @@ t_shell	*init_shell(char **env)
 	}
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
-	get_env(&new_shell, env);
-	new_shell->status = PARSE;
-	new_shell->error = 0;
+	new_shell->env = get_envp(env);
+	new_shell->status = 0;
 	new_shell->out = -42;
+	new_shell->pipefd[0] = -69;
+	new_shell->pipefd[1] = -47;
+	new_shell->error = -46;
+	new_shell->ret_stat = 0;
+	new_shell->pid = -99;
 	return (new_shell);
 }

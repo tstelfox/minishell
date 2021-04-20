@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 11:59:17 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:35:35 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ typedef struct		s_shell
 	char	**env;
 	char	*line;
 	int		status;
-	int		error;
 	int		ret_stat; // This is the $? or last exit value.
 	int		out;
 	int		pipefd[2];
@@ -138,22 +137,6 @@ int		redirect(t_cmd *cmd, t_shell **ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		redir_muti(void *file_struct);
 
-// // lft_utils
-// size_t	ft_strlen(const char *s);
-// void	*ft_memcpy(void *dst, const void *src, size_t n);
-// void	ft_putstr_fd(char *str, int fd);
-// int		ft_strcmp(const char *str1, const char *str2);
-// void	ft_putnbr_fd(int n, int fd);
-// void	ft_putchar_fd(char c, int fd);
-// char	**ft_split(char const *s, char c);
-// char	*ft_strchr(const char *s, int c);
-// char	*ft_strdup(const char *s1);
-// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// char	*ft_strjoin(char const *s1, char const *s2);
-// int		ft_strncmp(const char *s1, const char *s2, size_t n);
-// char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-// void	ft_bzero(void *s, size_t n);
 // Piping
 int		pipe_exec(t_list *command, t_shell **ghost);
 int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
@@ -205,7 +188,7 @@ void	lexer(t_shell **shell);
 
 // parser
 void	parser(t_shell **ghost);
-// char	**get_envp(char **envp);
+char	**get_envp(char **envp);
 int		check_meta(char *str);
 void	handle_env(t_shell **ghost, char **content);
 
@@ -247,6 +230,7 @@ int 	valid_val(char *str);
 int		valid_word(char *str);
 t_dlist	*split_env(char *str);
 int		replace_env_quoted(t_shell **ghost, char **input, int i);
+
 // Utils
 char	**arr_addback(char **arr, char *str);
 void	free_all(t_shell **ghost);

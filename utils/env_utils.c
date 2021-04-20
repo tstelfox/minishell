@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/12 12:13:03 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/19 17:33:21 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/20 12:35:59 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,29 +170,29 @@ t_dlist	*split_env(char *str)
 	return (new);
 }
 
-void	replace_env()
-{
-	int		i;
-	char	str;
+// void	replace_env()
+// {
+// 	int		i;
+// 	char	str;
 
-	i = 0;
-	str = (*ghost)->tokens->content;
-	while (ft_isalnum(str[i + len]) || str[i + len] == '_')
-		len++;
-	temp = ft_substr(str, i, len);
-	// printf("env->[%s][%i]\n", temp, len);
-	env = find_env_val(ghost, temp);
-}
+// 	i = 0;
+// 	str = (*ghost)->tokens->content;
+// 	while (ft_isalnum(str[i + len]) || str[i + len] == '_')
+// 		len++;
+// 	temp = ft_substr(str, i, len);
+// 	// printf("env->[%s][%i]\n", temp, len);
+// 	env = find_env_val(ghost, temp);
+// }
 
-void	check_env(t_shell **ghost)
-{
-	int		i;
-	char	str;
+// void	check_env(t_shell **ghost)
+// {
+// 	int		i;
+// 	char	str;
 
-	i = 0;
-	str = (*ghost)->tokens->content;
-	while (str[i] != '$')
-		i++;
-	if (str[i] == '$')
-		replace_env()
-}
+// 	i = 0;
+// 	str = (*ghost)->tokens->content;
+// 	while (str[i] != '$')
+// 		i++;
+// 	if (str[i] == '$')
+// 		replace_env()
+// }

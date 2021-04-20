@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/20 12:04:07 by zenotan       ########   odam.nl          #
+#    Updated: 2021/04/20 12:26:31 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ ERR = error/error.c
 UTIL = struct_utils.c \
 		lst_utils.c \
 		history_utils.c \
-		env_utils.c
+		env_utils.c \
 		arr_addback.c \
 		free_all.c \
 		ft_strjoinfree.c

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 12:03:46 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:27:24 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	exec_shell(char *envp[])
 			// debug_loop(&ghost);
 			// printf("\nDEBUG2[%i]\n", ghost->status);
 			if (ghost->commands && !ghost->error)
-				if (shell_exec(ghost->commands, ghost) == 0)
+				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
 			// printf("\nDEBUG3[%i]\n", ghost->status);
 			debug_loop(&ghost);
