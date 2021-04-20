@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 17:43:44 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 18:42:03 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost)
 {
 	t_redir	*file;
 
-	if (flag >= 3 && flag <= 6)
+	// ft_putnbr_fd(flag, 1);
+	if (flag >= 3 && flag != 5)
 		ft_putstr_fd("ghostshell: ", 1);
 	if (flag == DIRECTORY)
 	{

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 17:19:25 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 18:46:32 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,9 +268,10 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 int	shell_exec(t_list *command, t_shell **ghost)
 {
 	int	i;
+	t_cmd	*cmd;
 
 	i = 0;
-	t_cmd	*cmd = command->content;
+	cmd = command->content;
 	if (command->content == NULL)
 		return (0);
 	while (1)
