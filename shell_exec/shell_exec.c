@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/22 16:56:51 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/19 15:55:37 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*g_builtin[7] = {
 		"export"
 };
 
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell *ghost) = {
+int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost) = {
 		&run_echo,
 		&run_cd,
 		&run_pwd,
@@ -43,7 +43,7 @@ void	print_echo(t_list *args)
 	ft_putstr_fd(args->content, STDOUT_FILENO);
 }
 
-int	run_echo(t_cmd *cmd, t_shell *ghost)
+int	run_echo(t_cmd *cmd, t_shell **ghost)
 {
 	(void)ghost;
 	// Some check to see if there's a Pipe or a redirection or some shiz
@@ -63,23 +63,42 @@ int	run_echo(t_cmd *cmd, t_shell *ghost)
 	return (1);
 }
 
-int	run_cd(t_cmd *cmd, t_shell *ghost)
+int	run_cd(t_cmd *cmd, t_shell **ghost)
 {
 	int i = 0;
-	if (cmd->args->content == NULL)
-		return (0);
-	else if (ft_strcmp(cmd->args->content, "~") == 0)
+	if (cmd->args == NULL)
+		return (1);
+	else if ((ft_strcmp(cmd->args->content, "~") == 0)) // || (ft_strcmp(cmd->args->content, "-") == 0))
 	{
-		while (ghost->env[i])
+		while ((*ghost)->env[i])
 		{
-			if (ft_strnstr(ghost->env[i], "HOME", ft_strlen("HOME")) != 0)
+			if (ft_strnstr((*ghost)->env[i], "HOME", ft_strlen("HOME")) 
+				!= 0 && (ft_strcmp(cmd->args->content, "~") == 0))
 			{
-				if (chdir(&ghost->env[i][5]) != 0)
+				if (chdir(&(*ghost)->env[i][5]) != 0)
 					strerror(errno);
 			}
+			// if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD"))
+			// 	!= 0 && (ft_strcmp(cmd->args->content, "-") == 0))
+			// {
+			// 	if (chdir(&(*ghost)->env[i][7]) != 0)
+			// 		strerror(errno);
+			// }
 			i++;
 		}
 	}
+	// else if (ft_strcmp(cmd->args->content, "-") == 0)
+	// {
+	// 	while ((*ghost)->env[i])
+	// 	{
+	// 		if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD")) != 0)
+	// 		{
+	// 			if (chdir(&(*ghost)->env[i][7]) != 0)
+	// 				strerror(errno);
+	// 		}
+	// 		i++;
+	// 	}
+	// }
 	else
 	{
 		if (chdir(cmd->args->content) != 0)
@@ -88,7 +107,7 @@ int	run_cd(t_cmd *cmd, t_shell *ghost)
 	return (1);
 }
 
-int	run_pwd(t_cmd *cmd, t_shell *ghost)
+int	run_pwd(t_cmd *cmd, t_shell **ghost)
 {
 	char	buff[1024];
 
@@ -101,56 +120,86 @@ int	run_pwd(t_cmd *cmd, t_shell *ghost)
 	{
 		ft_putstr_fd(buff, STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		if (ghost->out != -42)
-			dup2(ghost->out, STDOUT_FILENO);
+		if ((*ghost)->out != -42)
+			dup2((*ghost)->out, STDOUT_FILENO);
 		return (1);
 	}
 	return (0);
 }
 
-int	run_env(t_cmd *cmd, t_shell *ghost)
+int	run_env(t_cmd *cmd, t_shell **ghost)
 {
 	int i = 0;
 
 
 	if (cmd->args != NULL)
 		return (1);
-	while (ghost->env[i])
+	while ((*ghost)->env[i])
 	{
-		ft_putstr_fd(ghost->env[i], STDOUT_FILENO);
+		ft_putstr_fd((*ghost)->env[i], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
 	return (1);
 }
 
-int	run_export(t_cmd *cmd, t_shell *ghost)
+int	export_replace(char *str, t_shell **ghost)
 {
-	char	**temp; // If the argument has no '=' it shouldn't be made an env
+	int i;
+	char *var;
 
-	if (!cmd->args)
-		return (1);
-	int i = 0;
-	while (ghost->env[i])
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+		{
+			var = (char*)malloc(sizeof(char) * (i + 1));
+			ft_strlcpy(var, str, i + 1);
+			i = 0;
+			break;
+		}
 		i++;
-	temp = (char **)malloc(sizeof(char *) * (i + 2));
-	for (int k= 0; ghost->env[k]; k++)
-		temp[k] = ft_strdup(ghost->env[k]);
-	temp[i] = ft_strdup(cmd->args->content);
-	temp[i + 1] = 0;
-	for (int k= 0; ghost->env[k]; k++) //Just make a fucking freeing function FFS
-		free(ghost->env[k]);
-	free (ghost->env);
-	ghost->env = NULL;
-	ghost->env = (char **)malloc(sizeof(*temp));
-	ghost->env = temp;
-	// for (int k= 0; ghost->env[k]; k++)
-	// 	free(temp[k]);
-	// free(temp);
+	}
+	while ((*ghost)->env[i])
+	{
+		if (ft_strnstr((*ghost)->env[i], var, ft_strlen(var)))
+		{
+			free((*ghost)->env[i]);
+			(*ghost)->env[i] = ft_strdup(str);
+			free(var);
+			return (0);
+		}
+		i++;
+	}
+	free(var);
 	return (1);
 }
 
-int	run_unset(t_cmd *cmd, t_shell *ghost)
+int	run_export(t_cmd *cmd, t_shell **ghost)
+{
+	int i;
+	char *str;
+
+	i = 0;
+	str = cmd->args->content;
+	while (str[i])
+	{
+		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=')
+		{
+			cmd_notfound(cmd, EXPRT_FAIL, ghost);
+			return (1);
+		}
+		i++;
+	}
+	if (!cmd->args)
+		return (1);
+	if (export_replace(str, ghost))
+		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
+	return (1);
+}
+
+int	run_unset(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
 	int k = 0;
@@ -159,49 +208,78 @@ int	run_unset(t_cmd *cmd, t_shell *ghost)
 	if (!cmd->args)
 		return (1);
 	int len = ft_strlen(cmd->args->content);
-	while (ghost->env[i]) // If the argument is there, find a way to delete it and resize the array (che palle);
+	while ((*ghost)->env[i])
 	{
-		if (ft_strnstr(ghost->env[i], cmd->args->content, len))
+		if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
 			k = i;
 		i++;
 	}
 	char **temp;
 	temp = (char**)malloc(sizeof(char*) * (i - 1));
 	int j = 0;
-	for (int i = 0; ghost->env[i]; i++)
+	for (int i = 0; (*ghost)->env[i]; i++)
 	{
 		if (i != k)
 		{
-			temp[j] = ghost->env[i];
+			temp[j] = (*ghost)->env[i];
 			j++;
 		}
 	}
-	free(ghost->env);
-	ghost->env = (char**)malloc(sizeof(*temp));
-	ghost->env = temp;
-	// (void)command;
-	// (void)ghost;
+	free((*ghost)->env);
+	(*ghost)->env = (char**)malloc(sizeof(*temp));
+	(*ghost)->env = temp;
 	return(1);
 }
 
-int	run_exit(t_cmd *cmd, t_shell *ghost)
+int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
-	(void)cmd;
+	char *exit_code;
+
+	// ft_putnbr_fd((*ghost)->pid, 1);
+	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
+	{
+		// free_all(ghost);
+		ft_putstr_fd("exit", 1);
+		ft_putstr_fd("\n", 1);
+	}
+	system("leaks ghostshell");
+	if (!cmd->args)
+		exit(0);
+	else
+	{
+		exit_code = cmd->args->content;
+		if (ft_isdigit(exit_code[0])) // Need to perfect this tbh
+		{
+			exit(ft_atoi(exit_code));
+		}
+		else
+		{
+			ft_putstr_fd("ghostshell: ", 1);
+			ft_putstr_fd(exit_code, 1);
+			ft_putstr_fd(": numeric argument reguired\n", 1);
+			exit(0);
+		}
+	}
 	(void)ghost;
 	// system ("leaks ghostshell");
-	exit(1);
 }
 
-int	shell_exec(t_list *command, t_shell *ghost)
+int	shell_exec(t_list *command, t_shell **ghost)
 {
 	int	i;
 
+	i = 0;
+	// t_cmd	*cmd = (t_cmd*)command->content;
 	t_cmd	*cmd = command->content;
 	if (command->content == NULL)
 		return (0);
-	i = 0;
 	while (1)
 	{
+		if (cmd->seprator_type == PIPE)
+		{
+			pipe_exec(command, ghost);
+			return (1);
+		}
 		if (i != 0)
 		{
 			i = 0;
@@ -213,28 +291,30 @@ int	shell_exec(t_list *command, t_shell *ghost)
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
 			{
 				if (cmd->redirection)
-					ghost->out = redirect(cmd);
-				if (ghost->out == -1)
+					(*ghost)->out = redirect(cmd, ghost);
+				if ((*ghost)->out == -1)
 					return(1);
-				// if (!command->next)
-				// 	return (*g_builtin_f[i])(cmd, ghost);
-				// else
 				(*g_builtin_f[i])(cmd, ghost);
-				if (ghost->out != -42)
-					dup2(ghost->out, STDOUT_FILENO);
+				if ((*ghost)->out != -42)
+					dup2((*ghost)->out, STDOUT_FILENO);
 				if (!command->next)
+				{
+					if ((*ghost)->pipefd[0] != -69)
+						close((*ghost)->pipefd[0]);
 					return (1);
+				}
 			}
 			i++;
 		}
-		// if (!command->next)
-		// 	return (prog_launch(cmd, ghost));
-		// else
 		prog_launch(cmd, ghost);
-		if (ghost->out != -42)
-			dup2(ghost->out, STDOUT_FILENO);
+		if ((*ghost)->out != -42)
+			dup2((*ghost)->out, STDOUT_FILENO);
 		if (!command->next)
+		{
+			if ((*ghost)->pipefd[0] != -69)
+				close((*ghost)->pipefd[0]);
 			return (1);
+		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/19 19:35:18 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/20 12:03:46 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	ctrl(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("\b \b", 1);
-		ft_putstr_fd("\b \b", 1);
+		// ft_putstr_fd("\b \b", 1);
+		// ft_putstr_fd("\b \b", 1);
 	}
 }
 
@@ -45,10 +45,10 @@ void	exec_shell(char *envp[])
 	if (!ghost)
 		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
-
 	signal(SIGINT, ctrl);
-	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
-	while (ghost->error != INTERNAL_ERROR) // check for errors
+	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
+
+	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
 		head = ghost->tokens;
 		// print_env(ghost->env);

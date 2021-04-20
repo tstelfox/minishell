@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 13:56:38 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/10 14:42:08 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 12:01:28 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,14 @@ void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *))
 
 void	debug_loop(t_shell **ghost)
 {
-	if ((*ghost)->status > 0)// debug
+	ft_putstr_fd("----DEBUG----\n", STDOUT_FILENO);
+	ft_putstr_fd("Last command returned: ", 1);
+	ft_putnbr_fd((*ghost)->ret_stat, 1);
+	ft_putchar_fd('\n', 1);
+	if ((*ghost)->status == 0)// debug
 	{
-		ft_dlstiter((*ghost)->tokens, print_data);
-		// ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_lstiter((*ghost)->tokens, print_data);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		ft_cmd_lstiter((*ghost)->commands, print_cmd);
 	}
 	else//if error debug
@@ -92,5 +96,4 @@ void	debug_loop(t_shell **ghost)
 		ft_putnbr_fd((*ghost)->status, STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
-	ft_putstr_fd("----DEBUG----\n", STDOUT_FILENO);
 }

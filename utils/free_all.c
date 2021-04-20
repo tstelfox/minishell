@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   free_all.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 11:58:07 by tmullan       ########   odam.nl         */
+/*   Created: 2021/04/19 14:55:43 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/04/19 14:57:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	free_all(t_shell **ghost)
 {
-	// struct stat buf;
-	// lstat(argv[1], &buf);
-	// if (S_ISDIR(buf.st_mode))
-	printf("GNNNYYEEEET\n");
-	// printf("%s\n", buf);
-	return (0);
+	int	i;
+
+	i = 0;
+	while ((*ghost)->env[i])
+	{
+		free((*ghost)->env[i]);
+		i++;
+	}
+	free((*ghost)->env);
 }

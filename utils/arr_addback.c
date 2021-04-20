@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   arr_addback.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 11:58:07 by tmullan       ########   odam.nl         */
+/*   Created: 2021/03/23 15:44:25 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/03/23 16:00:48 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	**arr_addback(char **arr, char *str)
 {
-	// struct stat buf;
-	// lstat(argv[1], &buf);
-	// if (S_ISDIR(buf.st_mode))
-	printf("GNNNYYEEEET\n");
-	// printf("%s\n", buf);
-	return (0);
+	int i;
+	int k;
+	char **temp;
+
+	i = 0;
+	k = 0;
+	while (arr[i])
+		i++;
+	temp = (char **)malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (arr[i])
+	{
+		temp[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	temp[i] = ft_strdup(str);
+	temp[i + 1] = 0;
+	for (int i = 0; arr[i]; i++)
+		free(arr[i]);
+	free(arr);
+	return (temp);
 }

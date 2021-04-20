@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ghostshell.c                                       :+:    :+:            */
+/*   ft_strjoinfree.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/02/15 13:03:37 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/08 11:58:07 by tmullan       ########   odam.nl         */
+/*   Created: 2021/04/19 17:05:17 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/04/19 17:05:24 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "ghostshell.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#define BUFF_SIZE 77
+#include "ghostshell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char		*ft_strjoinfree(char *s1, char const *s2)
 {
-	// struct stat buf;
-	// lstat(argv[1], &buf);
-	// if (S_ISDIR(buf.st_mode))
-	printf("GNNNYYEEEET\n");
-	// printf("%s\n", buf);
-	return (0);
+	size_t	s1len;
+	size_t	s2len;
+	char	*ret;
+
+	if (!s1)
+		return (NULL);
+	s1len = ft_strlen(s1);
+	s2len = ft_strlen(s2);
+	ret = malloc(sizeof(char) * (s1len + s2len + 1));
+	if (!ret)
+		return (NULL);
+	ft_memcpy(ret, s1, s1len);
+	ft_strlcpy(ret + s1len, s2, s2len + 1);
+	free(s1);
+	return (ret);
 }

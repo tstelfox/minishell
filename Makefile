@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/12 19:21:45 by ztan          ########   odam.nl          #
+#    Updated: 2021/04/20 12:04:07 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,9 @@ UTIL = struct_utils.c \
 		lst_utils.c \
 		history_utils.c \
 		env_utils.c
+		arr_addback.c \
+		free_all.c \
+		ft_strjoinfree.c
 
 LEX = read_input.c \
 		lexer.c
@@ -52,6 +55,7 @@ PAR = parser.c
 SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
+		pipe_exec.c
 
 TEST = test.c
 
