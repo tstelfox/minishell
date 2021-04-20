@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/20 12:55:42 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 13:15:20 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	restart_shell(t_shell *ghost)
 	// for (int i = 0; ghost->env[i]; i++)
 	// 	free(ghost->env[i]);
 	// free(ghost->env);
+	// if (ghost)
+	// 	free(ghost);
 	ghost = malloc(sizeof(t_shell));
 	if (!ghost)
 	{
