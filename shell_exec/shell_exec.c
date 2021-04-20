@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 13:22:11 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:19:25 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	print_echo(t_list *args)
 int	run_echo(t_cmd *cmd, t_shell **ghost)
 {
 	(void)ghost;
-	// Some check to see if there's a Pipe or a redirection or some shiz
 	if (cmd->args == NULL)
 		return (1);
 	if (ft_strcmp(cmd->args->content, "-n") == 0)
@@ -222,7 +221,6 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 		if (i != k)
 		{
 			temp[j] = (*ghost)->env[i];
-			// free((*ghost)->env[i]);
 			j++;
 		}
 		else
@@ -245,7 +243,7 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 		ft_putstr_fd("\n", 1);
 		// free_all(ghost);
 	}
-	system("leaks ghostshell");
+	// system("leaks ghostshell");
 	if (!cmd->args)
 		exit(0);
 	else
@@ -272,7 +270,6 @@ int	shell_exec(t_list *command, t_shell **ghost)
 	int	i;
 
 	i = 0;
-	// t_cmd	*cmd = (t_cmd*)command->content;
 	t_cmd	*cmd = command->content;
 	if (command->content == NULL)
 		return (0);

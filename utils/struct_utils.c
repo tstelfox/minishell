@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/20 13:15:20 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:11:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,6 @@ void	restart_shell(t_shell *ghost)
 	reins = ghost->reins;
 	ft_lstclear(&ghost->tokens, del_list);
 	ft_lstclear(&ghost->commands, del_commands);
-	// if (ghost->path != 0)
-	// {
-	// 	for (int i = 0; ghost->path[i]; i++)
-	// 		free(ghost->path[i]);
-	// 	free(ghost->path);
-	// }
-	// for (int i = 0; ghost->env[i]; i++)
-	// 	free(ghost->env[i]);
-	// free(ghost->env);
-	// if (ghost)
-	// 	free(ghost);
 	ghost = malloc(sizeof(t_shell));
 	if (!ghost)
 	{
@@ -94,6 +83,7 @@ t_shell	*init_shell(char **env)
 	new_shell->ret_stat = 0;
 	new_shell->pid = -99;
 	new_shell->path = 0;
+	new_shell->out_pipe = -42;
 	return (new_shell);
 }
 

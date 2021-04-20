@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 10:53:42 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:19:46 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exec_shell(char *envp[])
 	ghost = init_shell(envp);
 	init_reins(&ghost);
 	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
+	signal(SIGQUIT, ctrl);
 
 	input = NULL;
 	while (ghost->status != INTERNAL_ERROR) // check for errors

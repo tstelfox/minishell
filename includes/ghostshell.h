@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 11:18:17 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:31:45 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ enum	e_types
 	SEPERATOR = 1,
 	PIPE = 2,
 	DIRECTORY = 3,
-	EXPRT_FAIL = 4
+	EXPRT_FAIL = 4,
+	ERR_PIPE = 5,
+	NO_FILE = 6
 };
 
 enum	e_return
@@ -101,6 +103,7 @@ typedef struct		s_shell
 	int		ret_stat; // This is the $? or last exit value.
 	int		out;
 	int		pipefd[2];
+	int		out_pipe;
 	int		error;
 }					t_shell;
 

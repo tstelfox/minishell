@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 13:11:39 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:40:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,6 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	int	w_status;
 
 	int k = 0;
-	// if ((*ghost)->path)
-	// {
-	// 	for (int i = 0; (*ghost)->path[i]; i++)
-	// 	{
-	// 		ft_putstr_fd("|", 1);
-	// 		ft_putstr_fd((*ghost)->path[i], 1);
-	// 		ft_putstr_fd("|", 1);
-	// 		ft_putstr_fd("\n", 1);
-	// 	}	
-	// 	// ft_putstr_fd("\n", 1);
-	// }
 	(*ghost)->path = get_path(cmd, ghost);
 	if ((*ghost)->path == NULL)
 		cmd_notfound(cmd, (*ghost)->error, ghost); // Might need some work
@@ -130,6 +119,10 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 			k++;
 		}
 		// free((*ghost)->path);
+		// if (cmd->redirection == INPUT)
+		// 	(*ghost)->error = NO_FILE;
+		// ft_putnbr_fd((*ghost)->error, 1);
+		// ft_putstr_fd("here?", 1);
 		cmd_notfound(cmd, 0, ghost);
 		exit(0);
 	}

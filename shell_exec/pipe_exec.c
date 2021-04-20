@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/15 12:47:11 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 17:22:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		}
 		k++;
 	}
-	cmd_notfound(cmd, 0, ghost);
+	// pipe_err_message(cmd, ghost)
+	cmd_notfound(cmd, ERR_PIPE, ghost);
 	exit(0);
 }
 
@@ -58,6 +59,7 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 	if (pid == 0)
 	{
 		dup2(fd_in, 0);
+		(*ghost)->out_pipe = dup(STDOUT_FILENO);
 		if (command->next != NULL)
 			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
 		close((*ghost)->pipefd[0]);
