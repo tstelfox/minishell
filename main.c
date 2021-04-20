@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/19 15:52:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/20 10:53:42 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ctrl(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("\b \b", 1);
-		ft_putstr_fd("\b \b", 1);
+		// ft_putstr_fd("\b \b", 1);
+		// ft_putstr_fd("\b \b", 1);
 	}
 }
 
