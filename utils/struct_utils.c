@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/20 12:32:59 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/21 22:42:38 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	del_darray(char **str)
 		free(str);
 	}
 }
-
-
 
 t_redir	*new_redir(t_shell **ghost, char *file, int type)
 {
@@ -120,35 +118,6 @@ void		del_ghost(t_shell **ghost)
 		free(*ghost);
 	}
 }
-
-// void	restart_shell(t_shell **ghost)
-// {
-// 	char **env;
-// 	t_reins *reins;
-// 	t_dlist	*history;
-// 	t_dlist	*current;
-
-// 	env = get_envp((*ghost)->env);
-// 	reins = (*ghost)->reins;
-// 	history = (*ghost)->history;
-// 	current = (*ghost)->current;
-// 	ft_lstclear(&(*ghost)->tokens, del_content);
-// 	ft_lstclear(&(*ghost)->commands, del_commands);
-// 	free((*ghost));
-// 	*ghost = malloc(sizeof(t_shell));
-// 	if (!*ghost)
-// 	{
-// 		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
-// 		return ;
-// 	}
-// 	(*ghost)->history = history;
-// 	(*ghost)->current = current;
-// 	(*ghost)->env = env;
-// 	(*ghost)->reins = reins;
-// 	(*ghost)->commands = NULL;
-// 	(*ghost)->tokens = NULL;
-// 	(*ghost)->status = PARSE;
-// }
 
 void	get_env(t_shell **ghost, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/12 12:13:03 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/20 12:35:59 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/20 23:25:12 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,32 +79,8 @@ char		*find_env_val(t_shell **ghost, char *str)
 	return (NULL);
 }
 
-// void	replace_env(char **input, char *replace, int start)
-// {
-// 	int i;
-// 	int j;
-// 	char	*str;
-
-// 	i = 0;
-// 	j = 0;
-// 	str = *input;
-// 	while (str[i])
-// 	{
-// 		if (i == start)
-// 		{
-// 			while (replace[j])
-// 			{
-// 				str[i] = replace[j];
-// 				i++;
-// 				j++;
-// 			}
-// 		}
-// 	}
-// }
-
 int		replace_env_quoted(t_shell **ghost, char **input, int i)
 {
-	// char 	*str = (*input);
 	char	*temp;
 	char 	*ret;
 	char	*env;
@@ -112,33 +88,19 @@ int		replace_env_quoted(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = 0;
-	// printf("[%c]\n", (*input)[i]);
 	while (ft_isalnum((*input)[i + len]) || (*input)[i + len] == '_')
 		len++;
 	temp = ft_substr((*input), i, len);
-	// printf("env->[%s][%i]\n", temp, len);
 	env = find_env_val(ghost, temp);
 	free(temp);
-	// printf("ret->[%s]\n", env);
 	taillen = ft_strlen((*input)) - len - i;
-	// if (env)
-	// {
-		// printf("str[%s]\n", (*input));
-		temp = ft_substr((*input), 0, ft_strlen((*input)) - len - taillen - 1);
-		// printf("temp[%s]\n", temp);
-		// printf("debug\n");
-		len = ft_strlen(env);
-		ret = ft_strjoin_free(temp, env);
-		// printf("ret[%s]\n", ret);
-		// printf("debug2\n");
-		// printf("strjoin[%s]\n", ret);
-		temp = ft_strdup((*input) + ft_strlen((*input)) - taillen);
-		ret = ft_strjoin_free(ret, temp);
-		// printf("strjoin2[%s]\n", ret);
-		*input = ret;
-	// }
-	
-	// printf("len:[%i]ret[%c]\n", len, ret[i + len]);
+	temp = ft_substr((*input), 0, ft_strlen((*input)) - len - taillen - 1);
+	len = ft_strlen(env);
+	ret = ft_strjoin_free(temp, env);
+	temp = ft_strdup((*input) + ft_strlen((*input)) - taillen);
+	ret = ft_strjoin_free(ret, temp);
+	*input = ret;
+
 	return (len);
 }
 

@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   arr_addback.c                                      :+:    :+:            */
+/*   tur_utils.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
+/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/03/23 15:44:25 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/23 16:00:48 by tmullan       ########   odam.nl         */
+/*   Created: 2021/04/21 22:30:58 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/04/21 22:41:12 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+void	free_all(t_shell **ghost)
+{
+	int	i;
+
+	i = 0;
+	while ((*ghost)->env[i])
+	{
+		free((*ghost)->env[i]);
+		i++;
+	}
+	free((*ghost)->env);
+}
 
 char	**arr_addback(char **arr, char *str)
 {
@@ -35,4 +48,23 @@ char	**arr_addback(char **arr, char *str)
 		free(arr[i]);
 	free(arr);
 	return (temp);
+}
+
+char		*ft_strjoinfree(char *s1, char const *s2)
+{
+	size_t	s1len;
+	size_t	s2len;
+	char	*ret;
+
+	if (!s1)
+		return (NULL);
+	s1len = ft_strlen(s1);
+	s2len = ft_strlen(s2);
+	ret = malloc(sizeof(char) * (s1len + s2len + 1));
+	if (!ret)
+		return (NULL);
+	ft_memcpy(ret, s1, s1len);
+	ft_strlcpy(ret + s1len, s2, s2len + 1);
+	free(s1);
+	return (ret);
 }

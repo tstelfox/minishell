@@ -6,37 +6,30 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/29 16:58:11 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/21 22:24:37 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char	*get_env(t_shell **ghost, char *name)
+char	**get_envp(char **envp)
 {
-	char **list;
-	int i;
-	int j;
+	char	**env;
+	int		i;
+	int		k;
 
-	if ((*ghost)->env)
-		list = (*ghost)->env;
 	i = 0;
-	while (list[i])
-	{
-		j = 0;
-		while (name[j] == list[i][j])
-			j++;
-		if (list[i][j] == '=')
-			return (ft_substr(list[i], j + 1, ft_strlen(list[i])));
+	k = 0;
+	while (envp[i])
 		i++;
+	env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!env)
+		return (NULL);
+	while (envp[k])
+	{
+		env[k] = ft_strdup(envp[k]);
+		k++;
 	}
-	return (NULL);
-}
-
-void	handle_env(t_shell **ghost, char **content)
-{
-	free(*content);
-	*content = get_env(ghost, *content);
-	if (!*content)
-		error_handler(ghost, INVALID_ENV,  "Failed to recognize env", *content);
+	env[k] = 0;
+	return (env);
 }
