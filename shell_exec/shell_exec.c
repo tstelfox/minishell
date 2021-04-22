@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 17:36:49 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 18:14:09 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 		i++;
 	}
 	char **temp;
-	temp = (char**)malloc(sizeof(char*) * (i - 1));
+	temp = (char**)malloc(sizeof(char*) * (i));
 	int j = 0;
 	for (int i = 0; (*ghost)->env[i]; i++)
 	{
@@ -226,6 +226,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 		else
 			free((*ghost)->env[i]);
 	}
+	temp[i] = 0;
 	free((*ghost)->env);
 	(*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
