@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:09:02 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 17:36:49 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,13 @@ int	shell_exec(t_list *command, t_shell **ghost)
 					return(1);
 				(*g_builtin_f[i])(cmd, ghost);
 				if ((*ghost)->out != -42)
+				{
+					// if ((*ghost)->out == 0)
+					// 	dup2((*ghost)->out, STDIN_FILENO);
+					// else
 					dup2((*ghost)->out, STDOUT_FILENO);
+					// ft_putstr_fd("In here?", 1);
+				}
 				if (!command->next)
 				{
 					if ((*ghost)->pipefd[0] != -69)
@@ -309,7 +315,13 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
+		{
+			// if ((*ghost)->out == 0)
+			// 	dup2((*ghost)->out, STDIN_FILENO);
+			// else
 			dup2((*ghost)->out, STDOUT_FILENO);
+			// ft_putstr_fd("In here?", 1);
+		}
 		if (!command->next)
 		{
 			if ((*ghost)->pipefd[0] != -69)

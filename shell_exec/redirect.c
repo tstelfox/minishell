@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:23:35 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 17:53:57 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,45 @@ int	redir_multi(void *file_struct)
 int	redirect(t_cmd *cmd, t_shell **ghost)
 {
 	t_redir	*file_struct;
+	t_redir *next_op;
 	int		fd;
 	int		original;
 
 	file_struct = (t_redir *)cmd->redirection->content;
+	// cmd->redirection = cmd->redirection->next;
+	// I think I need to wait til it's executed one command with the input redir
+	// and then I redirect all that shite into the last thing. ffs.
+	// cmd->redirection = cmd->redirection->next;
+	// next_op = (t_redir *)cmd->redirection->content;
 	if (file_struct->type == 1)
 	{
 		(*ghost)->error = NO_FILE;
 		// ft_putnbr_fd(fd, 1);
-		// fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
-		fd = open(file_struct->file, O_APPEND | O_RDWR);
+		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
+		// fd = open(file_struct->file, O_APPEND | O_RDWR);
 		// ft_putnbr_fd(fd, (*ghost)->out_pipe);
 		if (fd == -1)
 		{
 			// ft_putstr_fd("In here?", 1);
-			if (cmd->seprator_type == PIPE)
-			{
-				cmd_notfound(cmd, NO_FILE, ghost, ERR_PIPE);
-				exit(1);
-			}
-			else
+			// if (cmd->seprator_type == PIPE)
+			// {
+			// 	cmd_notfound(cmd, NO_FILE, ghost, ERR_PIPE);
+			// 	exit(1);
+			// }
+			// else
 			cmd_notfound(cmd, NO_FILE, ghost, 0);
 			return (-1);
 		}
 		original = dup(STDIN_FILENO);
 		dup2(fd, STDIN_FILENO);
+		cmd->redirection = cmd->redirection->next;
+		next_op = (t_redir *)cmd->redirection->content;
+		if (next_op->type == 0)
+		{
+			int fd2 = open(next_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+			dup2(fd2, STDOUT_FILENO);
+			close(fd2);
+		}
 	}
 	else
 	{
