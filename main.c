@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 17:19:46 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:13:19 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exec_shell(char *envp[])
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
-		// debug_loop(&ghost);
+		debug_loop(&ghost);
 		// ft_putstr_fd("well it do be: ", 1);
 		// ft_putnbr_fd(ghost->ret_stat, 1);
 		// ft_putstr_fd("\n", 1);

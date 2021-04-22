@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:10:36 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:23:35 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,20 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 	if (file_struct->type == 1)
 	{
 		(*ghost)->error = NO_FILE;
-		fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
+		// ft_putnbr_fd(fd, 1);
+		// fd = open(file_struct->file, O_APPEND | O_RDWR, 0666);
+		fd = open(file_struct->file, O_APPEND | O_RDWR);
+		// ft_putnbr_fd(fd, (*ghost)->out_pipe);
 		if (fd == -1)
 		{
+			// ft_putstr_fd("In here?", 1);
 			if (cmd->seprator_type == PIPE)
+			{
 				cmd_notfound(cmd, NO_FILE, ghost, ERR_PIPE);
+				exit(1);
+			}
 			else
-				cmd_notfound(cmd, NO_FILE, ghost, 0);
+			cmd_notfound(cmd, NO_FILE, ghost, 0);
 			return (-1);
 		}
 		original = dup(STDIN_FILENO);

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:08:52 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:25:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		if (cmd->redirection)
 		{
 			if (redirect(cmd, ghost) == -1)
-				exit(0);
+				exit(1);
 		}
 		while ((*ghost)->path[k])
 		{
