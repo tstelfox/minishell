@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 18:41:32 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:10:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, (*ghost)->error, ghost); // This might need some work. maybe exit
+		cmd_notfound(cmd, (*ghost)->error, ghost, ERR_PIPE); // This might need some work. maybe exit
 	k = 0;
 	if (cmd->args)
 	{
@@ -44,7 +44,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		k++;
 	}
 	// pipe_err_message(cmd, ghost)
-	cmd_notfound(cmd, ERR_PIPE, ghost);
+	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
 	exit(0);
 }
 

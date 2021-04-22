@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 17:31:45 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:09:19 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ char	**list_to_arr(t_list *tokens);
 
 // error
 void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
-void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost);
+void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 // lexer
 void	read_line(t_shell **ghost, char **input);
