@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/21 22:44:00 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/21 22:44:58 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/24 11:20:05 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *))
 	t_dlist	*temp;
 	t_dlist *copy;
 	
+	if (!*lst && insert)
+		*lst = insert;
 	if (!insert || !*lst || pos < 1)
 		return ;
 	temp = (*lst);

@@ -6,45 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 23:29:59 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/25 19:40:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-int		check_quote(t_shell **ghost)
-{
-	char	type;
-	int		check;
-	int		i;
-	char	**str;
-
-	type = 0;
-	check = 0;
-	i = 0;
-	str = (char **)&(*ghost)->tokens->content;
-	while ((*str)[i])
-	{
-		if (((*str)[i] == '\"' || (*str)[i] == '\'') && type == 0)
-			type = (*str)[i];
-		if (type != 0 && (*str)[i] == type)
-			check++;
-		if (!(check % 2))
-			type = 0;
-		if ((*str)[i] == '$' && type != '\'')
-			i += replace_env_quoted(ghost, str, i + 1) - 1;
-		i++;
-	}
-	if (check % 2)
-	{
-		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
-		return (-1);
-	}
-	(*str) = remove_quotes(ghost, (*str), ft_strlen((*str)) - check);
-	free((*ghost)->tokens->content);
-	(*ghost)->tokens->content = (*str);
-	return (0);
-}
 
 int		check_meta(char *str)
 {
@@ -54,7 +20,7 @@ int		check_meta(char *str)
 }
 
 // int		check_colon(t_shell **ghost, t_list **temp, t_cmd **command)
-int		check_colon(t_shell **ghost, t_cmd **command)
+int		handle_colon(t_shell **ghost, t_cmd **command)
 {
 	if (!ft_strcmp((*ghost)->tokens->content, ";"))
 	{
@@ -70,7 +36,7 @@ int		check_colon(t_shell **ghost, t_cmd **command)
 	return (0);
 }
 
-int		check_seperator(t_shell **ghost, t_cmd **command)
+int		handle_seperator(t_shell **ghost, t_cmd **command)
 {
 	if (!ft_strcmp((*ghost)->tokens->content, "|"))
 	{
@@ -82,10 +48,10 @@ int		check_seperator(t_shell **ghost, t_cmd **command)
 	return (0);
 }
 
-int		check_redir(t_shell **ghost, t_cmd **command)
+int		handle_redir(t_shell **ghost, t_cmd **command)
 {
 	t_redir *redir;
-	t_dlist	*tokens;
+	t_list	*tokens;
 
 	redir = NULL;
 	tokens = (*ghost)->tokens;
@@ -111,4 +77,76 @@ int		check_redir(t_shell **ghost, t_cmd **command)
 	else
 		return (0);
 	return (1);
+}
+
+char 	*handle_quotes(t_shell **ghost, char *str, int len)
+{
+	char *ret;
+	int i;
+	int j;
+	int type;
+	int check;
+
+	i = -1;
+	j = 0;
+	check = 0;
+	type = 0;
+	if (!(ret = malloc(sizeof(char) * (len + 1))))
+		return (error_handler(ghost, INTERNAL_ERROR, "failed malloc", NULL));
+	while (str[(i++) + 1])
+	{
+		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+			type = str[i];
+		if (type != 0 && str[i] == type)
+			check++;
+		if (type != str[i] || type == 0)
+			ret[j++] = str[i];
+		if (!(check % 2))
+			type = 0;
+	}
+	ret[j++] = '\0';
+	return (ret);
+}
+
+int		count_quotes(char *str)
+{
+	int type;
+	int check;
+	int i;
+
+	i = 0;
+	type = 0;
+	check = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+			type = str[i];
+		if (type != 0 && str[i] == type)
+			check++;
+		if (!(check % 2))
+			type = 0;
+		i++;
+	}
+	return (check);
+}
+
+void	remove_quotes(t_shell **ghost, t_list **list)
+{
+	char	*str;
+	int		qts;
+	t_list	*temp;
+
+	temp = NULL;
+	if (*list)
+		temp = *list;
+	while (temp)
+	{
+		str = temp->content;
+		if ((qts = count_quotes(str)))
+		{
+			temp->content = handle_quotes(ghost, str, ft_strlen(str) - qts);
+			free(str);
+		}
+		temp = temp->next;
+	}
 }

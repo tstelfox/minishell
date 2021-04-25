@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 23:33:57 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/25 19:43:11 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ctrl(int sig)
 void	exec_shell(char *envp[])
 {
 	t_shell *ghost;
-	t_dlist *head;
+	t_list *head;
 
 	ghost = init_shell(envp);
 	if (!ghost)
@@ -47,7 +47,6 @@ void	exec_shell(char *envp[])
 	init_reins(&ghost);
 	signal(SIGINT, ctrl);
 	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
-
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
 		head = ghost->tokens;
@@ -55,22 +54,21 @@ void	exec_shell(char *envp[])
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		read_line(&ghost);
-		// printf("\nDEBUG\n");
-		lexer(&ghost);
-		ft_dlstiter(ghost->tokens, print_data);
+		ghost->tokens = lexer(&ghost, ghost->line, " ><|;");
+		ft_lstiter(ghost->tokens, print_data);
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		// printf("\nDEBUG_AFTER\n");
 		while (ghost->status != FINISHED)
 		{
-			printf("DEBUG\n");
-			parser_loop(&ghost);
-			printf("DEBUG\n");
+			// printf("DEBUG\n");
+			parser(&ghost);
+			// printf("DEBUG\n");
 			// printf("\nDEBUG2\n");
 			// debug_loop(&ghost);
 			// printf("\nDEBUG2[%i]\n", ghost->status);
-			// if (ghost->commands && !ghost->error)
-			// 	if (shell_exec(ghost->commands, &ghost) == 0)
-			// 		return ;
+			if (ghost->commands && !ghost->error)
+				if (shell_exec(ghost->commands, &ghost) == 0)
+					return ;
 			// printf("\nDEBUG3[%i]\n", ghost->status);
 			debug_loop(&ghost);
 			if (ghost->status == EXECUTE)

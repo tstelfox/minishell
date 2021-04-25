@@ -6,13 +6,13 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/20 12:01:37 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/24 19:59:53 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg)
+void	*error_handler(t_shell **ghost, int error_code, char *error_message, char *arg)
 {
 	write(STDERR_FILENO, "ghostshell: ", 12);
 	write(STDERR_FILENO, error_message, ft_strlen(error_message));
@@ -29,6 +29,7 @@ void	error_handler(t_shell **ghost, int error_code, char *error_message, char *a
 		exit(1);
 	}
 	(*ghost)->error = error_code;
+	return (NULL);
 }
 
 void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost)

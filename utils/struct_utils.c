@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/21 22:42:38 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/25 22:57:54 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->tokens)
 		{
-			ft_dlstclear(&(*ghost)->tokens, del_content);
+			ft_lstclear(&(*ghost)->tokens, del_content);
 			free((*ghost)->tokens);
 		}
 		if ((*ghost)->env)
@@ -138,7 +138,7 @@ void	get_env(t_shell **ghost, char **envp)
 
 void	restart_shell(t_shell **ghost)
 {
-	ft_dlstclear(&(*ghost)->tokens, del_content);
+	ft_lstclear(&(*ghost)->tokens, del_content);
 	ft_lstclear(&(*ghost)->commands, del_commands);
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;
@@ -167,7 +167,8 @@ t_shell	*init_shell(char **env)
 	new_shell->out = -42;
 	new_shell->pipefd[0] = -69;
 	new_shell->pipefd[1] = -47;
-	new_shell->error = -46;
+	// new_shell->error = -46;
+	new_shell->error = 0;
 	new_shell->ret_stat = 0;
 	new_shell->pid = -99;
 	return (new_shell);

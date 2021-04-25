@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/21 22:47:46 by zenotan       ########   odam.nl          #
+#    Updated: 2021/04/24 11:14:52 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,7 @@ UTIL = struct_utils.c \
 		lst_utils.c \
 		history_utils.c \
 		env_utils.c \
-		arr_addback.c \
-		free_all.c \
-		ft_strjoinfree.c
+		tur_utils.c
 
 PAR = parser.c \
 		parser_utils.c \
@@ -50,7 +48,7 @@ SRC = main.c \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		debug/printlists.c \
-		$(TEST) \
+		# $(TEST) \
 		# $(LFT_PREFIX)
 
 OBJ = $(SRC:.c=.o)

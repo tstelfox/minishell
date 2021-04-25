@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/21 22:50:31 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/25 22:04:56 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ typedef struct		s_shell
 	t_dlist	*current;
 	int		first_command;
 	t_list	*commands;
-	t_dlist	*tokens;
+	// t_dlist	*tokens;
+	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
 	char	**env;
@@ -134,30 +135,30 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
 
 //-----------------------------------error------------------------------------//
 //error.c
-void	error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
+void	*error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
 void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost);
 
 //-----------------------------------parser-----------------------------------//
 //parser.c
-void	parser_loop(t_shell **ghost);
-char 	*remove_quotes(t_shell **ghost, char *str, int len);
+void	parser(t_shell **ghost);
 
 //lexer.c
 void	read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
-void	lexer(t_shell **shell);
+// void	lexer(t_shell **shell);
+t_list	*lexer(t_shell **ghost, char *input, char *seperators);
 
 //handle_env.c
 char	**get_envp(char **envp);
 void	handle_env(t_shell **ghost, char **content);
 
 //parser_utils.c
+void	remove_quotes(t_shell **ghost, t_list **list);
 int		check_meta(char *str);
-int		check_quote(t_shell **ghost);
-int		check_colon(t_shell **ghost, t_cmd **command);
-int		check_seperator(t_shell **ghost, t_cmd **command);
-int		check_redir(t_shell **ghost, t_cmd **command);
+int		handle_colon(t_shell **ghost, t_cmd **command);
+int		handle_seperator(t_shell **ghost, t_cmd **command);
+int		handle_redir(t_shell **ghost, t_cmd **command);
 
 //------------------------------------utils-----------------------------------//
 //struct_utils.c
@@ -173,6 +174,8 @@ void	del_darray(char **str);
 void	*copy_data(void	*data);
 char	**list_to_arr(t_list *tokens);
 
+void	ft_joinlist(t_list **alst, t_list *new);
+
 //history_utils.c
 void	store_command(t_shell **ghost, char *line);
 void	init_reins(t_shell **ghost);
@@ -183,7 +186,10 @@ void	edit_content(t_dlist **node, char *line, int size);
 int 	valid_val(char *str);
 int		valid_word(char *str);
 t_dlist	*split_env(char *str);
-int		replace_env_quoted(t_shell **ghost, char **input, int i);
+int		replace_env(t_shell **ghost, char **input, int i);
+t_dlist	*tokenize_env(t_shell **ghost, t_dlist **temp);
+int		find_env(t_shell **ghost, t_list **temp);
+void	expand_env(t_shell **ghost, t_list **temp);
 
 //dlist.c
 t_dlist	*ft_dlstnew(void *content);

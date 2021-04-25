@@ -6,130 +6,82 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/19 16:30:05 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/25 23:07:02 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-// rules
-// echo "\"", echo "\'" are possible
-// echo '\"' is possible
-// echo '\'' is not possible -> a single quote cannot appear in single quotes
-
-// method
-// when a quote is met, read untill valid ending quote (so not \")
-// everything is part of the same token untill seperator (;, |, <, >, <<, >>)
-// todo:
-// - check if opening quote
-// - if quote read untill valid end quote
-// - check for invalid ( \") -> check if valid "\", so not "\\"
-
-void	add_token(t_shell **ghost, char *input, int start, int len)
+void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
 {
 	char	*result;
-	t_dlist	*new;
+	t_list	*new;
 	result = ft_substr(input, start, len);
-	new = ft_dlstnew(ft_strdup(result));
+	new = ft_lstnew(ft_strdup(result));
 	if (!new)
-		error_handler(ghost, INTERNAL_ERROR, "something went wrong with tokenizing", NULL);
-	ft_dlstadd_back(&(*ghost)->tokens, new);
+		error_handler(ghost, INTERNAL_ERROR, \
+		"something went wrong with tokenizing", NULL);
+	ft_lstadd_back(ret, new);
 	free(result);
 }
 
-// int		handle_quote(t_shell **ghost, char *input, int start, int current)
-// {
-// 	int i;
-// 	char type;
-
-// 	i = current + 1;
-// 	type = input[current];
-// 	if (start !=  current && input[current - 1] != '=')
-// 		add_token(ghost, input, start, current - start);
-// 	if (input[current - 1] == '=')
-// 		current = start;
-// 	while (input[i])
-// 	{
-// 		if (input[i] == type)
-// 		{
-// 			add_token(ghost, input, current, i - current + 1);
-// 			return (i);
-// 		}
-// 		i++;
-// 	}
-// 	return (i);
-// }
-
-// int		handle_quote(t_shell **ghost, char *input, int start, int current)
-// {
-// 	int i;
-// 	char type;
-
-// 	i = current + 1;
-// 	type = input[current];
-// 	if (input[current - 1] == '=')
-// 		current = start;
-// 	while (input[i])
-// 	{
-// 		if (input[i] == type)
-// 		{
-// 			add_token(ghost, input, current, i - current + 1);
-// 			return (i);
-// 		}
-// 		i++;
-// 	}
-// 	return (i);
-// }
-
-int		handle_seperator(t_shell **ghost, char *input, int start, int i)
+int		tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)
 {
 	int len;
 	
 	len = i - start;
 	if (i == start) // if nothing before seperator
 		len = 1;
-	if (input[start] != ' ') // ignore spaces
-		add_token(ghost, input, start, len); // if input before separator or esparator, tokenize it
-	if (i != start && input[i] != ' ') // if input before separator, tokenize seperator
-		add_token(ghost, input, i, 1);
+	if (str[start] != ' ') // ignore spaces
+		add_tkn(ghost, ret, str, start, len); // if input before separator or esparator, tokenize it
+	if (i != start && str[i] != ' ') // if input before separator, tokenize seperator
+		add_tkn(ghost, ret, str, i, 1);
 	return (i);
 }
 
-void	lexer(t_shell **ghost)
+t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 {
 	int		i;
 	int		start;
-	char	*input;
+	char	*str;
 	int		type;
+	t_list	*ret;
 
 	i = 0;
 	start = 0;
 	type = 0;
-	if (!(*ghost)->line)
-		return ;
-	input = (*ghost)->line;
-	while (input[i])
+	ret = NULL;
+	// printf("INPUT:[%s][%s]\n", input, seperators);
+	if (!input)
+		return (NULL);
+	str = input;
+	// printf("INPUT2:[%s][%s]\n", str, seperators);
+	printf("str1: %s\n", str);
+	while (str[i])
 	{
-		
-		if (input[i] == '\"' || input[i] == '\'')
+		// printf("str: %s\n", str);
+		// printf("{%c}", str[i]);
+		if (str[i] == '\"' || str[i] == '\'')
 		{
-			type = input[i];
+			type = str[i];
 			i++;
-			while (input[i] != type)
+			while (str[i] != type)
 				i++;
-			// printf("inpuut[%c]\n", input[i]);
-			// i = handle_quote(ghost, input, start, i);
-			// start = i + 1;
-
 		}
-		if (ft_strchr(" ><|;", input[i]))
+		if (ft_strchr(seperators, str[i]))
 		{
-			i = handle_seperator(ghost, input, start, i);
+			// printf("-[%c]-", str[i]);
+			i = tknise_sep(ghost, &ret, str, start, i);
+			// printf("(%c %i)", str[i + 1], i);
 			start = i + 1;
 		}
 		i++;
 	}
 	if (i != start)
-		add_token(ghost, input, start, i - start);
+		add_tkn(ghost, &ret, str, start, i - start);
+	printf("str2: %s\n", str);
+	ft_putstr_fd("LEXER: ", STDOUT_FILENO);
+	ft_lstiter(ret, print_data);
+	printf("\n");
+	return (ret);
 }
-
