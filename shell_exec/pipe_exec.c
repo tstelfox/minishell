@@ -122,19 +122,7 @@ int		pipe_exec(t_list *command, t_shell **ghost)
 	// // Execute first in a fork()
 	while (command)
 	{
-		// if ((*ghost)->pipefd[0] != -69)
-		// {
-		// 	pipe_old[0] = (*ghost)->pipefd[0];
-		// 	pipe_old[1] = (*ghost)->pipefd[1];
-		// 	close(pipe_old[0]);
-		// 	close(pipe_old[1]);
-		// }
-		// if ((*ghost)->pipefd[1] != -47)
-		// 	close((*ghost)->pipefd[1]);
 		pipe((*ghost)->pipefd);
-		// ft_putnbr_fd(i, 1);
-		// if (i == 0)
-		// 	close((*ghost)->pipefd[0]);
 		(*ghost)->pid = fork();
 		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in, i);
 		command = command->next;

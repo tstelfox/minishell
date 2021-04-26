@@ -43,13 +43,16 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 		}
 		original = dup(STDIN_FILENO);
 		dup2(fd, STDIN_FILENO);
-		cmd->redirection = cmd->redirection->next;
-		next_op = (t_redir *)cmd->redirection->content;
-		if (next_op->type == 0)
+		if (cmd->redirection->next)
 		{
-			int fd2 = open(next_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
-			dup2(fd2, STDOUT_FILENO);
-			close(fd2);
+			cmd->redirection = cmd->redirection->next;
+			next_op = (t_redir *)cmd->redirection->content;
+			if (next_op->type == 0)
+			{
+				int fd2 = open(next_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+				dup2(fd2, STDOUT_FILENO);
+				close(fd2);
+			}
 		}
 	}
 	else
