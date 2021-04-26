@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/04 15:26:16 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/03/16 13:21:05 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@
 // - if quote read untill valid end quote
 // - check for invalid ( \") -> check if valid "\", so not "\\"
 
-void	add_token(t_list **ptr, char *input, int start, int len)
+void	add_token(t_shell **ghost, char *input, int start, int len)
 {
 	char	*result;
 	t_list	*new;
 	result = ft_substr(input, start, len);
 	new = ft_lstnew(ft_strdup(result));
 	if (!new)
-		error_handler("something went wrong with tokenizing");
-	ft_lstadd_back(ptr, new);
+		error_handler(ghost, INTERNAL_ERROR, "something went wrong with tokenizing", NULL);
+	ft_lstadd_back(&(*ghost)->tokens, new);
 	free(result);
 }
 
-int		handle_quote(char *input, int current)
+int		handle_quote(t_shell **ghost, char *input, int current)
 {
 	int i;
 	char type;
@@ -47,14 +47,14 @@ int		handle_quote(char *input, int current)
 	while (input[i])
 	{
 		if (input[i] == type)
-			return (i + 1);
+			return (i);
 		i++;
 	}
-	error_handler("no multiline");
+	error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 	return (i);
 }
 
-int		handle_seperator(t_list **ptr, char *input, int start, int i)
+int		handle_seperator(t_shell **ghost, char *input, int start, int i)
 {
 	int len;
 	
@@ -62,16 +62,14 @@ int		handle_seperator(t_list **ptr, char *input, int start, int i)
 	if (i == start) // if nothing before seperator
 		len = 1;
 	if (input[start] != ' ') // ignore spaces
-		add_token(ptr, input, start, len); // if input before separator or esparator, tokenize it
+		add_token(ghost, input, start, len); // if input before separator or esparator, tokenize it
 	if (i != start && input[i] != ' ') // if input before separator, tokenize seperator
-		add_token(ptr, input, i, 1);
+		add_token(ghost, input, i, 1);
 	return (i);
 }
 
-t_list	*split_literal_tokens(char *input)
+void	lexer(t_shell **ghost, char *input)
 {
-	t_list *ptr = NULL;
-
 	int i;
 	int start;
 	
@@ -82,26 +80,16 @@ t_list	*split_literal_tokens(char *input)
 		if (ft_strchr(" ><|;", input[i]))
 		{
 			if (input[i] == '>' && input[i + 1] == '>')
-				i = handle_seperator(&ptr, input, start, i);
+				i = handle_seperator(ghost, input, start, i);
 			else
-				i = handle_seperator(&ptr, input, start, i);
+				i = handle_seperator(ghost, input, start, i);
 			start = i + 1;
 		}
 		if (input[i] == '\"' || input[i] == '\'')
-			i = handle_quote(input, i);
+			i = handle_quote(ghost, input, i);
 		i++;
 	}
 	if (i != start)
-		add_token(&ptr, input, start, i - start);
-	return (ptr);
+		add_token(ghost, input, start, i - start);
 }
 
-t_list	*lexer(char *input)
-{
-	t_list *literal_tokens;
-
-	literal_tokens = split_literal_tokens(input);
-	// ft_lstiter(literal_tokens, print_data);
-	// ft_putstr_fd("\n", STDOUT_FILENO);
-	return (literal_tokens);
-}

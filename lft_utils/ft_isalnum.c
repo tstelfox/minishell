@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strjoin.c                                       :+:    :+:            */
+/*   ft_isalnum.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/03 15:51:49 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/19 17:03:22 by tmullan       ########   odam.nl         */
+/*   Created: 2019/10/30 14:28:40 by ztan          #+#    #+#                 */
+/*   Updated: 2021/03/31 18:12:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char		*ft_strjoin(char *s1, char const *s2)
+int	ft_isalnum(int c)
 {
-	size_t	s1len;
-	size_t	s2len;
-	char	*ret;
-
-	if (!s1)
-		return (NULL);
-	s1len = ft_strlen(s1);
-	s2len = ft_strlen(s2);
-	ret = malloc(sizeof(char) * (s1len + s2len + 1));
-	if (!ret)
-		return (NULL);
-	ft_memcpy(ret, s1, s1len);
-	ft_strlcpy(ret + s1len, s2, s2len + 1);
-	// free(s1);
-	return (ret);
+	if (ft_isdigit(c) || ft_isalpha(c))
+		return (1);
+	return (0);
 }

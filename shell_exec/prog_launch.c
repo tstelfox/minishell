@@ -6,13 +6,29 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/03/15 13:03:16 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/22 16:25:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char	**get_path(t_cmd *cmd, t_shell *ghost)
+int		check_dir(t_cmd *cmd, t_shell **ghost)
+{
+	struct stat buf;
+
+	lstat(cmd->type, &buf);
+	if (S_ISDIR(buf.st_mode))
+	{
+	// 	ft_putstr_fd("ghostshell: ", 1);
+	// 	ft_putstr_fd(cmd->type, 1);
+	// 	ft_putstr_fd(": is a directory\n", 1);
+		(*ghost)->error = DIRECTORY;
+		return(0);
+	}
+	return (1);
+}
+
+char	**get_path(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
 	int k;
@@ -21,34 +37,49 @@ char	**get_path(t_cmd *cmd, t_shell *ghost)
 
 	i = 0;
 	k = 0;
-	command = ft_strjoin("/", cmd->type);
-	while (ghost->env[i])
+	if (cmd->type[0] == '.' || cmd->type[0] == '/')
 	{
-		if (ft_strnstr(ghost->env[i], "PATH", 4))
+		if (!check_dir(cmd, ghost))
+			return (0);
+	}
+	command = ft_strjoin("/", cmd->type);
+	if ((*ghost)->path != 0)
+	{
+		for (int i = 0; (*ghost)->path[i]; i++)
+			free((*ghost)->path[i]);
+		free((*ghost)->path);
+	}
+	while ((*ghost)->env[i])
+	{
+		if (ft_strnstr((*ghost)->env[i], "PATH", 4))
 		{
-			path = ft_split(&ghost->env[i][5], ':');
+			path = ft_split(&(*ghost)->env[i][5], ':');
 			while (path[k])
 			{
-				path[k] = ft_strjoin(path[k], command);
+				path[k] = ft_strjoinfree(path[k], command);
 				k++;
 			}
+			path = arr_addback(path, cmd->type);
+			// (*ghost)->path = (char**)malloc(sizeof(char *) * (k + 1));
+			free(command);
 			return(path);
 		}
 		i++;
 	}
+	// free(command);
 	return (0);
 }
 
-int	prog_launch(t_cmd *cmd, t_shell *ghost)
+int	prog_launch(t_cmd *cmd, t_shell **ghost)
 {
-	pid_t	pid;
-	char **path;
+	// char **path;
 	char **args;
-	int k = 0;
+	int	w_status;
 
-	path = get_path(cmd, ghost);
-	if (path == NULL)
-		cmd_notfound(cmd);
+	int k = 0;
+	(*ghost)->path = get_path(cmd, ghost);
+	if ((*ghost)->path == NULL)
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0); // Might need some work
 	int i = 0;
 	while (i < 7)
 	{
@@ -58,7 +89,7 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 	}
 	if (cmd->args)
 	{
-		t_list	*fucker = ft_lstnew(cmd->type);
+		t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
 		ft_lstadd_front(&cmd->args, fucker);
 		args = list_to_arr(cmd->args);
 	}
@@ -68,38 +99,57 @@ int	prog_launch(t_cmd *cmd, t_shell *ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
-	// for (int i = 0; args[i]; i++)
-	// {
-	// 	ft_putstr_fd(args[i], 1);
-	// 	ft_putstr_fd("\n", 1);
-	// }
-	pid = fork();
-	if (pid == 0) //child process
+	(*ghost)->pid = fork();
+	if ((*ghost)->pid == 0) //child process
 	{
 		if (cmd->redirection)
 		{
-			if (redirect(cmd) == -1)
-				exit(0);
+			if (redirect(cmd, ghost) == -1)
+				exit(1);
 		}
-		while (path[k])
+		while ((*ghost)->path[k])
 		{
-			if (execve(path[k], args, NULL) == -1)
+			if (execve((*ghost)->path[k], args, NULL) == -1)
 			{
-				(void)pid;
+				// ft_putnbr_fd(errno, 1);
+				(*ghost)->ret_stat = 1;
 				// printf("%s: errno %d\n", strerror(errno), errno);
 			}
+			// free((*ghost)->path[k]);
 			k++;
 		}
-		cmd_notfound(cmd);
+		// free((*ghost)->path);
+		// if (cmd->redirection == INPUT)
+		// 	(*ghost)->error = NO_FILE;
+		// ft_putnbr_fd((*ghost)->error, 1);
+		// ft_putstr_fd("here?", 1);
+		cmd_notfound(cmd, 0, ghost, 0);
 		exit(0);
 	}
-	else if (pid < 0)
+	else if ((*ghost)->pid < 0)
 	{
 		strerror(errno);
 	}
 	else
 	{
-		waitpid(pid, &ghost->status, 0);
+		waitpid((*ghost)->pid, &w_status, WUNTRACED);
+		// for (int i = 0; (*ghost)->path[i]; i++)
+		// 	free((*ghost)->path[i]);
+		// free((*ghost)->path);
+		for (int i = 0; args[i]; i++)
+			free(args[i]);
+		free(args);
+		if (WIFSIGNALED(w_status))
+		{
+			(*ghost)->ret_stat = WTERMSIG(w_status);
+			// ft_putstr_fd("the motherfucking thing is: ", 1);
+			// ft_putnbr_fd((*ghost)->ret_stat, 1);
+			// ft_putstr_fd("\n", 1);
+		}
+		if (WIFEXITED(w_status))
+		{
+			(*ghost)->ret_stat = WEXITSTATUS(w_status);
+		}
 	}
 	return (1);
 }
