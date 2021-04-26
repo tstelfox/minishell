@@ -62,20 +62,20 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_n
 	// 	close(fd_in);
 	if (pid == 0)
 	{
-		if (cmd->redirection) // Here goes nothing
-			(*ghost)->out = redirect(cmd, ghost);
 		if (cmd_num != 0)
 		{
 			dup2(fd_in, 0);
 			close(fd_in);
 		}
 		(*ghost)->out_pipe = dup(STDOUT_FILENO);
-		if (command->next != NULL && !cmd->redirection)
+		if (command->next != NULL)
 		{
 			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
 			close((*ghost)->pipefd[1]);
 		}
 		close((*ghost)->pipefd[0]);
+		if (cmd->redirection) // Here goes nothing
+			(*ghost)->out = redirect(cmd, ghost);
 		while (i < 7)
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
