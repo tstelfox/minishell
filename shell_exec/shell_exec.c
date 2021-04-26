@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 10:34:39 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/26 11:22:15 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	print_echo(t_list *args)
 int	run_echo(t_cmd *cmd, t_shell **ghost)
 {
 	(void)ghost;
-	// Some check to see if there's a Pipe or a redirection or some shiz
 	if (cmd->args == NULL)
 	{
 		ft_putstr_fd("\n", STDOUT_FILENO);
@@ -190,7 +189,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=')
 		{
-			cmd_notfound(cmd, EXPRT_FAIL, ghost);
+			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 			return (1);
 		}
 		i++;
@@ -218,7 +217,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 		i++;
 	}
 	char **temp;
-	temp = (char**)malloc(sizeof(char*) * (i - 1));
+	temp = (char**)malloc(sizeof(char*) * (i));
 	int j = 0;
 	for (int i = 0; (*ghost)->env[i]; i++)
 	{
@@ -227,7 +226,10 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 			temp[j] = (*ghost)->env[i];
 			j++;
 		}
+		else
+			free((*ghost)->env[i]);
 	}
+	temp[i] = 0;
 	free((*ghost)->env);
 	(*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
@@ -241,11 +243,11 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 	// ft_putnbr_fd((*ghost)->pid, 1);
 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
 	{
-		// free_all(ghost);
 		ft_putstr_fd("exit", 1);
 		ft_putstr_fd("\n", 1);
+		// free_all(ghost);
 	}
-	system("leaks ghostshell");
+	// system("leaks ghostshell");
 	if (!cmd->args)
 		exit(0);
 	else
@@ -270,10 +272,10 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 int	shell_exec(t_list *command, t_shell **ghost)
 {
 	int	i;
+	t_cmd	*cmd;
 
 	i = 0;
-	// t_cmd	*cmd = (t_cmd*)command->content;
-	t_cmd	*cmd = command->content;
+	cmd = command->content;
 	if (command->content == NULL)
 		return (0);
 	while (1)
@@ -299,7 +301,13 @@ int	shell_exec(t_list *command, t_shell **ghost)
 					return(1);
 				(*g_builtin_f[i])(cmd, ghost);
 				if ((*ghost)->out != -42)
+				{
+					// if ((*ghost)->out == 0)
+					// 	dup2((*ghost)->out, STDIN_FILENO);
+					// else
 					dup2((*ghost)->out, STDOUT_FILENO);
+					// ft_putstr_fd("In here?", 1);
+				}
 				if (!command->next)
 				{
 					if ((*ghost)->pipefd[0] != -69)
@@ -311,7 +319,13 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
+		{
+			// if ((*ghost)->out == 0)
+			// 	dup2((*ghost)->out, STDIN_FILENO);
+			// else
 			dup2((*ghost)->out, STDOUT_FILENO);
+			// ft_putstr_fd("In here?", 1);
+		}
 		if (!command->next)
 		{
 			if ((*ghost)->pipefd[0] != -69)

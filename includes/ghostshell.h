@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 11:04:04 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/26 11:24:27 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ enum	e_types
 	SEPERATOR = 1,
 	PIPE = 2,
 	DIRECTORY = 3,
-	EXPRT_FAIL = 4
+	EXPRT_FAIL = 4,
+	ERR_PIPE = 5,
+	NO_FILE = 6
 };
 
 enum	e_return
@@ -94,12 +96,14 @@ typedef struct		s_shell
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
+	char	**path;
 	char	**env;
 	char	*line;
 	int		status;
 	int		ret_stat; // This is the $? or last exit value.
 	int		out;
 	int		pipefd[2];
+	int		out_pipe;
 	int		error;
 }					t_shell;
 
@@ -135,7 +139,7 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
 //-----------------------------------error------------------------------------//
 //error.c
 void	*error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
-void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost);
+void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
 //parser.c
