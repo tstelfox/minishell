@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/25 23:07:02 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/26 10:28:57 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,12 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	start = 0;
 	type = 0;
 	ret = NULL;
-	// printf("INPUT:[%s][%s]\n", input, seperators);
 	if (!input)
 		return (NULL);
 	str = input;
-	// printf("INPUT2:[%s][%s]\n", str, seperators);
-	printf("str1: %s\n", str);
+	// printf("str1: %s\n", str);
 	while (str[i])
 	{
-		// printf("str: %s\n", str);
-		// printf("{%c}", str[i]);
 		if (str[i] == '\"' || str[i] == '\'')
 		{
 			type = str[i];
@@ -70,18 +66,15 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 		}
 		if (ft_strchr(seperators, str[i]))
 		{
-			// printf("-[%c]-", str[i]);
 			i = tknise_sep(ghost, &ret, str, start, i);
-			// printf("(%c %i)", str[i + 1], i);
 			start = i + 1;
 		}
 		i++;
 	}
 	if (i != start)
 		add_tkn(ghost, &ret, str, start, i - start);
-	printf("str2: %s\n", str);
-	ft_putstr_fd("LEXER: ", STDOUT_FILENO);
-	ft_lstiter(ret, print_data);
-	printf("\n");
+	// ft_putstr_fd("LEXER: ", STDOUT_FILENO);
+	// ft_lstiter(ret, print_data);
+	// printf("\n");
 	return (ret);
 }
