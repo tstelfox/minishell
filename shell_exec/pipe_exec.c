@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:10:54 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/26 17:49:12 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
+	// close(fd_in);
 	while (path[k])
 	{
 		if (execve(path[k], args, NULL) == -1)
@@ -43,6 +44,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		}
 		k++;
 	}
+	// close((*ghost)->pipefd[0]);
 	// pipe_err_message(cmd, ghost)
 	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
 	exit(0);
@@ -56,11 +58,15 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 
 	i = 0;
 	cmd = command->content;
+	// if (fd_in != 0)
+	// 	close(fd_in);
 	if (pid == 0)
 	{
+		if (cmd->redirection) // Here goes nothing
+			(*ghost)->out = redirect(cmd, ghost);
 		dup2(fd_in, 0);
 		(*ghost)->out_pipe = dup(STDOUT_FILENO);
-		if (command->next != NULL)
+		if (command->next != NULL && !cmd->redirection)
 			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
 		close((*ghost)->pipefd[0]);
 		while (i < 7)
@@ -68,6 +74,7 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
 			{
 				(*g_builtin_f[i])(cmd, ghost);
+				// close(fd_in);
 				exit(0);
 			}
 			i++;
@@ -84,6 +91,8 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 		else if (WIFSIGNALED(w_status))
 			(*ghost)->ret_stat = WTERMSIG(w_status);
 		close((*ghost)->pipefd[1]);
+		// close((*ghost)->pipefd[0]);
+		// close(fd_in);
 		fd_in = (*ghost)->pipefd[0];
 	}
 	return (fd_in);
@@ -92,11 +101,21 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 int		pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
+	// int		pipe_old[2];
 
 	fd_in = 0;
 	// // Execute first in a fork()
 	while (command)
 	{
+		// if ((*ghost)->pipefd[0] != -69)
+		// {
+		// 	pipe_old[0] = (*ghost)->pipefd[0];
+		// 	pipe_old[1] = (*ghost)->pipefd[1];
+		// 	close(pipe_old[0]);
+		// 	close(pipe_old[1]);
+		// }
+		// if ((*ghost)->pipefd[1] != -47)
+		// 	close((*ghost)->pipefd[1]);
 		pipe((*ghost)->pipefd);
 		(*ghost)->pid = fork();
 		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in);
