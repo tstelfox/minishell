@@ -134,7 +134,7 @@ int		redir_muti(void *file_struct);
 
 // Piping
 int		pipe_exec(t_list *command, t_shell **ghost);
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 
 //-----------------------------------error------------------------------------//
 //error.c

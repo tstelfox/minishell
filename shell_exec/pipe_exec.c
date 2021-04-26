@@ -50,7 +50,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	exit(0);
 }
 
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num)
 {
 	int i;
 	t_cmd *cmd;
@@ -64,10 +64,17 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 	{
 		if (cmd->redirection) // Here goes nothing
 			(*ghost)->out = redirect(cmd, ghost);
-		dup2(fd_in, 0);
+		if (cmd_num != 0)
+		{
+			dup2(fd_in, 0);
+			close(fd_in);
+		}
 		(*ghost)->out_pipe = dup(STDOUT_FILENO);
 		if (command->next != NULL && !cmd->redirection)
+		{
 			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
+			close((*ghost)->pipefd[1]);
+		}
 		close((*ghost)->pipefd[0]);
 		while (i < 7)
 		{
@@ -85,12 +92,18 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 		strerror(errno);
 	else
 	{
-		waitpid(pid, &w_status, WUNTRACED);
-		if (WIFEXITED(w_status))
-			(*ghost)->ret_stat = WEXITSTATUS(w_status);
-		else if (WIFSIGNALED(w_status))
-			(*ghost)->ret_stat = WTERMSIG(w_status);
+		if (!command->next)
+		{
+			waitpid(pid, &w_status, WUNTRACED);
+			close((*ghost)->pipefd[0]);
+			if (WIFEXITED(w_status))
+				(*ghost)->ret_stat = WEXITSTATUS(w_status);
+			else if (WIFSIGNALED(w_status))
+				(*ghost)->ret_stat = WTERMSIG(w_status);
+		}
 		close((*ghost)->pipefd[1]);
+		if (cmd_num != 0)
+			close(fd_in);
 		// close((*ghost)->pipefd[0]);
 		// close(fd_in);
 		fd_in = (*ghost)->pipefd[0];
@@ -101,9 +114,11 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 int		pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
+	int		i;
 	// int		pipe_old[2];
 
 	fd_in = 0;
+	i = 0;
 	// // Execute first in a fork()
 	while (command)
 	{
@@ -117,9 +132,13 @@ int		pipe_exec(t_list *command, t_shell **ghost)
 		// if ((*ghost)->pipefd[1] != -47)
 		// 	close((*ghost)->pipefd[1]);
 		pipe((*ghost)->pipefd);
+		// ft_putnbr_fd(i, 1);
+		// if (i == 0)
+		// 	close((*ghost)->pipefd[0]);
 		(*ghost)->pid = fork();
-		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in);
+		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in, i);
 		command = command->next;
+		i++;
 	}
 	// // Close write pipe
 	// close(ghost->pipefd[1]);
