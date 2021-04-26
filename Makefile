@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/24 11:14:52 by zenotan       ########   odam.nl          #
+#    Updated: 2021/04/26 10:38:35 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ UTIL = struct_utils.c \
 		dlist.c \
 		lst_utils.c \
 		history_utils.c \
-		env_utils.c \
 		tur_utils.c
 
 PAR = parser.c \

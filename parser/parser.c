@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/25 23:00:55 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/26 10:37:39 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,12 @@ void	parser(t_shell **ghost)
 				break ;
 			(*ghost)->tokens = (*ghost)->tokens->next;
 		}
-		
 		expand_env(ghost, &new_lst);
 		remove_quotes(ghost, &new_lst);
-	
-		// ft_putstr_fd("list after parsing: ", STDOUT_FILENO);
-		// ft_lstiter(new_lst, print_data);
-		// printf("\n");
-		// print_cmd(command);
 		command->type = ft_strdup(new_lst->content);
 		command->args = new_lst->next;
 		ft_lstdelone(new_lst, del_content);
 		ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
-		// print_cmd((*ghost)->commands->content);
 		if (!(*ghost)->tokens)
 			break ;
 		(*ghost)->tokens = (*ghost)->tokens->next;

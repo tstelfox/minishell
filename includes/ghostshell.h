@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/25 22:04:56 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/26 10:45:19 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ typedef struct		s_shell
 	t_dlist	*current;
 	int		first_command;
 	t_list	*commands;
-	// t_dlist	*tokens;
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
@@ -142,23 +141,25 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost);
 //parser.c
 void	parser(t_shell **ghost);
 
-//lexer.c
-void	read_line(t_shell **ghost);
-int		up_function(t_input *line, char *buf, t_hook *hook);
-int		down_function(t_input *line, char *buf, t_hook *hook);
-// void	lexer(t_shell **shell);
-t_list	*lexer(t_shell **ghost, char *input, char *seperators);
-
-//handle_env.c
-char	**get_envp(char **envp);
-void	handle_env(t_shell **ghost, char **content);
-
 //parser_utils.c
 void	remove_quotes(t_shell **ghost, t_list **list);
 int		check_meta(char *str);
 int		handle_colon(t_shell **ghost, t_cmd **command);
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
+
+//read_input.c
+void	read_line(t_shell **ghost);
+int		up_function(t_input *line, char *buf, t_hook *hook);
+int		down_function(t_input *line, char *buf, t_hook *hook);
+
+//lexer.c
+t_list	*lexer(t_shell **ghost, char *input, char *seperators);
+
+//handle_env.c
+char	**get_envp(char **envp);
+// int		replace_env(t_shell **ghost, char **input, int i); //TEST.C
+void	expand_env(t_shell **ghost, t_list **temp);
 
 //------------------------------------utils-----------------------------------//
 //struct_utils.c
@@ -181,15 +182,6 @@ void	store_command(t_shell **ghost, char *line);
 void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
 void	edit_content(t_dlist **node, char *line, int size);
-
-//env_utils.c
-int 	valid_val(char *str);
-int		valid_word(char *str);
-t_dlist	*split_env(char *str);
-int		replace_env(t_shell **ghost, char **input, int i);
-t_dlist	*tokenize_env(t_shell **ghost, t_dlist **temp);
-int		find_env(t_shell **ghost, t_list **temp);
-void	expand_env(t_shell **ghost, t_list **temp);
 
 //dlist.c
 t_dlist	*ft_dlstnew(void *content);

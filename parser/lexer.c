@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 10:28:57 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/26 10:37:13 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	if (!input)
 		return (NULL);
 	str = input;
-	// printf("str1: %s\n", str);
 	while (str[i])
 	{
 		if (str[i] == '\"' || str[i] == '\'')
@@ -73,8 +72,5 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	}
 	if (i != start)
 		add_tkn(ghost, &ret, str, start, i - start);
-	// ft_putstr_fd("LEXER: ", STDOUT_FILENO);
-	// ft_lstiter(ret, print_data);
-	// printf("\n");
 	return (ret);
 }
