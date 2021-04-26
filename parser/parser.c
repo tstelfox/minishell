@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 10:37:39 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/26 15:21:14 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ void	parser(t_shell **ghost)
 		(*ghost)->tokens = (*ghost)->tokens->next;
 		while ((*ghost)->tokens && (*ghost)->status == PARSE) //parse command
 		{
-			if (handle_colon(ghost, &command)) //parse shit in here
+			if (handle_colon(ghost, &new_lst, &command))
+			{
+				ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 				return ;
+			} //parse shit in here
 			if (handle_seperator(ghost, &command))
 				break ;
 			if (!handle_redir(ghost, &command))
@@ -39,8 +42,8 @@ void	parser(t_shell **ghost)
 		expand_env(ghost, &new_lst);
 		remove_quotes(ghost, &new_lst);
 		command->type = ft_strdup(new_lst->content);
-		command->args = new_lst->next;
-		ft_lstdelone(new_lst, del_content);
+		command->args = ft_lstmap(new_lst->next, copy_data, del_content);
+		ft_lstclear(&new_lst, del_content);
 		ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 		if (!(*ghost)->tokens)
 			break ;

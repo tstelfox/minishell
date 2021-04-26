@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 11:24:27 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/26 15:24:13 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	parser(t_shell **ghost);
 //parser_utils.c
 void	remove_quotes(t_shell **ghost, t_list **list);
 int		check_meta(char *str);
-int		handle_colon(t_shell **ghost, t_cmd **command);
+int		handle_colon(t_shell **ghost, t_list **new_lst, t_cmd **command);
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
 
