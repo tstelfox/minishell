@@ -60,7 +60,7 @@ void	exec_shell(char *envp[])
 		lexer(&ghost, input);
 		if (ghost->status == 0)
 			parser(&ghost);
-		debug_loop(&ghost);
+		// debug_loop(&ghost);
 		// ft_putstr_fd("well it do be: ", 1);
 		// ft_putnbr_fd(ghost->ret_stat, 1);
 		// ft_putstr_fd("\n", 1);
