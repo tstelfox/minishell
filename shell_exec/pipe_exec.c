@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 17:49:12 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/27 15:48:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_n
 
 	i = 0;
 	cmd = command->content;
-	// if (fd_in != 0)
-	// 	close(fd_in);
 	if (pid == 0)
 	{
 		if (cmd_num != 0)

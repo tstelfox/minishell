@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 17:03:58 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/27 16:05:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ enum	e_types
 	EXPRT_FAIL = 4,
 	ERR_PIPE = 5,
 	NO_FILE = 6,
-	BAD_ARG_EXIT = 7
+	BAD_ARG_EXIT = 7,
+	NO_ACCESS = 8
 };
 
 enum	e_return
