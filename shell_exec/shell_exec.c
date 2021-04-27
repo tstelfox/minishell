@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 15:34:03 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/27 18:09:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	while (str[i])
 	{
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=')
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=') // Think about spaces between quotes.
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 			return (1);
