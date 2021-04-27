@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 15:21:14 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/27 17:03:18 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parser(t_shell **ghost)
 			{
 				ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 				return ;
-			} //parse shit in here
+			}
 			if (handle_seperator(ghost, &command))
 				break ;
 			if (!handle_redir(ghost, &command))

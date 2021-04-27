@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 15:24:13 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/27 17:57:35 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,12 @@ void	parser(t_shell **ghost);
 //parser_utils.c
 void	remove_quotes(t_shell **ghost, t_list **list);
 int		check_meta(char *str);
+int		check_redir(char *str);
 int		handle_colon(t_shell **ghost, t_list **new_lst, t_cmd **command);
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
+char 	*handle_quotes(t_shell **ghost, char *str, int len);
+int		count_quotes(char *str);
 
 //read_input.c
 void	read_line(t_shell **ghost);
@@ -164,6 +167,7 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators);
 char	**get_envp(char **envp);
 // int		replace_env(t_shell **ghost, char **input, int i); //TEST.C
 void	expand_env(t_shell **ghost, t_list **temp);
+char	*find_env(t_shell **ghost, char *str);
 
 //------------------------------------utils-----------------------------------//
 //struct_utils.c
@@ -178,8 +182,6 @@ void	del_darray(char **str);
 //lst_utils.c
 void	*copy_data(void	*data);
 char	**list_to_arr(t_list *tokens);
-
-void	ft_joinlist(t_list **alst, t_list *new);
 
 //history_utils.c
 void	store_command(t_shell **ghost, char *line);
