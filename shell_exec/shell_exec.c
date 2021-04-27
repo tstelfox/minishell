@@ -304,13 +304,10 @@ int	shell_exec(t_list *command, t_shell **ghost)
 				if ((*ghost)->out == -1)
 					return(1);
 				(*g_builtin_f[i])(cmd, ghost);
+				(*ghost)->ret_stat = 0;
 				if ((*ghost)->out != -42)
 				{
-					// if ((*ghost)->out == 0)
-					// 	dup2((*ghost)->out, STDIN_FILENO);
-					// else
 					dup2((*ghost)->out, STDOUT_FILENO);
-					// ft_putstr_fd("In here?", 1);
 				}
 				if (!command->next)
 				{
@@ -324,11 +321,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
 		{
-			// if ((*ghost)->out == 0)
-			// 	dup2((*ghost)->out, STDIN_FILENO);
-			// else
 			dup2((*ghost)->out, STDOUT_FILENO);
-			// ft_putstr_fd("In here?", 1);
 		}
 		if (!command->next)
 		{

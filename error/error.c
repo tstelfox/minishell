@@ -42,15 +42,13 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 	output = STDOUT_FILENO;
 	if (pipe == ERR_PIPE)
 		output = (*ghost)->out_pipe;
-	// ft_putnbr_fd(flag, 1);
-	// if (flag >= 3 && flag != 5)
 	ft_putstr_fd("ghostshell: ", output);
 	if (flag == DIRECTORY)
 	{
-		// ft_putstr_fd
 		(*ghost)->ret_stat = EXEC_FAIL;
 		ft_putstr_fd(cmd->type, output);
 		ft_putstr_fd(": is a directory\n", output);
+		// ft_putstr_fd(strerror(errno), output);
 	}
 	else if (flag == EXPRT_FAIL)
 	{
@@ -80,12 +78,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		file = (t_redir *)cmd->redirection->content;
 		ft_putstr_fd(file->file, output);
 		ft_putstr_fd(": No such file or directory\n", output);
+		// ft_putstr_fd(strerror(errno), output);
 	}
 }
-	// else if (flag == ERR_PIPE)
-	// {
-	// 	(*ghost)->ret_stat = NOT_CMD;
-	// 	ft_putstr_fd("ghostshell: ", (*ghost)->out_pipe);
-	// 	ft_putstr_fd(cmd->type, (*ghost)->out_pipe);
-	// 	ft_putstr_fd(": command not found\n", (*ghost)->out_pipe);
-	// }
