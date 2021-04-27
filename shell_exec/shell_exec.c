@@ -263,10 +263,10 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, ERR_PIPE);
 			else
 				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
+			exit(255);
 			// ft_putstr_fd("ghostshell: ", 1);
 			// ft_putstr_fd(exit_code, 1);
 			// ft_putstr_fd(": numeric argument reguired\n", 1);
-			exit(0);
 		}
 	}
 	(void)ghost;
