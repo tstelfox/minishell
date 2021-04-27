@@ -60,6 +60,12 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		ft_putstr_fd(cmd->args->content, output);
 		ft_putstr_fd("': not a valid identifier\n", output);
 	}
+	else if (flag == BAD_ARG_EXIT)
+	{
+		ft_putstr_fd("ghostshell: ", output);
+		ft_putstr_fd((char*)cmd->args->content, output);
+		ft_putstr_fd(": numeric argument reguired\n", output);
+	}
 	else if (!cmd->redirection)
 	{
 		(*ghost)->ret_stat = NOT_CMD;

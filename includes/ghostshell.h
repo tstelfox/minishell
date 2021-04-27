@@ -54,7 +54,8 @@ enum	e_types
 	DIRECTORY = 3,
 	EXPRT_FAIL = 4,
 	ERR_PIPE = 5,
-	NO_FILE = 6
+	NO_FILE = 6,
+	BAD_ARG_EXIT = 7
 };
 
 enum	e_return
