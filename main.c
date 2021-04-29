@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:17:15 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 18:57:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	exec_shell(char *envp[])
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		read_line(&ghost);
 		ghost->tokens = lexer(&ghost, ghost->line, " ><|;");
+		// ft_lstiter(ghost->tokens, print_data);
+		// ft_putchar_fd('\n', STDOUT_FILENO);
 		while (ghost->tokens)
 		{
 			parser(&ghost);

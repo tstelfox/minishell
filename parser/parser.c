@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:18:36 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 18:57:20 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	parser(t_shell **ghost)
 			(*ghost)->tokens = (*ghost)->tokens->next;
 		}
 		expand_env(ghost, &new_lst);
+		if (!new_lst)
+			return ;
 		remove_quotes(ghost, &new_lst);
 		command->type = ft_strdup(new_lst->content);
 		command->args = ft_lstmap(new_lst->next, copy_data, del_content);
@@ -48,7 +50,5 @@ void	parser(t_shell **ghost)
 			break ;
 		}
 		(*ghost)->tokens = (*ghost)->tokens->next;
-		
 	}
-	
 }
