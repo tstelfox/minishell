@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/27 17:57:27 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 14:06:11 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,21 @@
 
 int		check_redir(char *str)
 {
-	if (ft_strchr(str, 10) || ft_strchr(str, 9) || ft_strchr(str, 32))
-		return (1);
+	int i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if (str[i - 1] == '\'')
+			while (str[i] != '\'' && str[i])
+				i++;
+		if (str[i - 1] == '"')
+			while (str[i] != '"' && str[i])
+				i++;
+		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
+			return (1);
+		i++;
+	}
 	return (0);
 }
 

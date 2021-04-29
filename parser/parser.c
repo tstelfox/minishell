@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/27 17:03:18 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 16:02:05 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,18 @@ void	parser(t_shell **ghost)
 			if (handle_seperator(ghost, &command))
 				break ;
 			if (!handle_redir(ghost, &command))
-				ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
+				ft_lstadd_back(&new_lst, ft_ltnew(ft_strdup((*ghost)->tokens->content)));
 			if (!(*ghost)->tokens)
 				break ;
 			(*ghost)->tokens = (*ghost)->tokens->next;
 		}
-		expand_env(ghost, &new_lst);
-		remove_quotes(ghost, &new_lst);
+		if (!(*ghost)->error)
+		{
+			printf("DABUG\n");
+			expand_env(ghost, &new_lst);
+			remove_quotes(ghost, &new_lst);
+			
+		}
 		command->type = ft_strdup(new_lst->content);
 		command->args = ft_lstmap(new_lst->next, copy_data, del_content);
 		ft_lstclear(&new_lst, del_content);
@@ -48,6 +53,7 @@ void	parser(t_shell **ghost)
 		if (!(*ghost)->tokens)
 			break ;
 		(*ghost)->tokens = (*ghost)->tokens->next;
+		(*ghost)->error = 0;
 	}
 	(*ghost)->status = FINISHED;
 }
