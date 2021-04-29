@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/27 17:31:12 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 16:54:24 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void	expand_env(t_shell **ghost, t_list **lst)
 	t_list *head = NULL;
 	t_list *temp = NULL;
 	
+	if ((*ghost)->error)
+		return ;
 	temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
 	ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
 	free(temp);

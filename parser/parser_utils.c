@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 14:06:11 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 18:19:01 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,6 @@ int		check_meta(char *str)
 {
 	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|"))
 		return (1);
-	return (0);
-}
-
-int		handle_colon(t_shell **ghost, t_list **new_lst, t_cmd **command)
-{
-	t_list *temp;
-
-	temp = NULL;
-	
-	if (!ft_strcmp((*ghost)->tokens->content, ";"))
-	{
-		temp = ft_lstmap(*new_lst, copy_data, del_content);
-		expand_env(ghost, &temp);
-		remove_quotes(ghost, &temp);
-		(*command)->type = ft_strdup(temp->content);
-		(*command)->args = ft_lstmap(temp->next, copy_data, del_content);
-		(*ghost)->status = EXECUTE;
-		if ((*ghost)->tokens->next)
-			(*ghost)->tokens = (*ghost)->tokens->next;
-		else
-			(*ghost)->status = FINISHED;
-		return (1);
-	}
 	return (0);
 }
 
@@ -162,6 +139,8 @@ void	remove_quotes(t_shell **ghost, t_list **list)
 	t_list	*temp;
 
 	temp = NULL;
+	if ((*ghost)->error)
+		return ;
 	if (*list)
 		temp = *list;
 	while (temp)
