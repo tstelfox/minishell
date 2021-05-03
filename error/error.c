@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 14:26:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 15:26:58 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 	output = STDOUT_FILENO;
 	if (pipe == ERR_PIPE)
 		output = (*ghost)->out_pipe;
-	ft_putstr_fd("ghostshell: ", output);
+	if (!cmd->redirection)
+		ft_putstr_fd("ghostshell: ", output);
 	if (flag == DIRECTORY)
 	{
 		(*ghost)->ret_stat = EXEC_FAIL;
