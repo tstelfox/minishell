@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 15:04:46 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 16:24:15 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,6 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 			free((*ghost)->path[i]);
 		free((*ghost)->path);
 	}
-	// if (cmd->type[0] == '.' && cmd->type[1] == '/')
-	// {
-
-	// }
 	while ((*ghost)->env[i])
 	{
 		if (ft_strnstr((*ghost)->env[i], "PATH", 4))
@@ -167,6 +163,8 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		if (ft_strchr(cmd->type, '/'))
 		{
 			path_launch(cmd, ghost);
+			if ((*ghost)->error == DIRECTORY)
+				exit(126);
 			exit(127);
 		}
 		else
@@ -178,7 +176,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 				k++;
 			}
 			cmd_notfound(cmd, 0, ghost, 0);
-			exit(0);
+			exit(127);
 		}
 	}
 	else if ((*ghost)->pid < 0)

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/27 15:48:23 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 16:24:53 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,29 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		args[1] = NULL;
 	}
 	// close(fd_in);
-	while (path[k])
+	if (ft_strchr(cmd->type, '/'))
 	{
-		if (execve(path[k], args, NULL) == -1)
+		path_launch(cmd, ghost);
+		if ((*ghost)->error == DIRECTORY)
+			exit(126);
+		exit(127);
+	}
+	else
+	{
+		while (path[k])
 		{
-			// ft_putnbr_fd(errno, 1);
-			(*ghost)->ret_stat = 1;
+			if (execve(path[k], args, NULL) == -1)
+			{
+				// ft_putnbr_fd(errno, 1);
+				(*ghost)->ret_stat = 1;
+			}
+			k++;
 		}
-		k++;
 	}
 	// close((*ghost)->pipefd[0]);
 	// pipe_err_message(cmd, ghost)
 	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
-	exit(0);
+	exit(127);
 }
 
 int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num)

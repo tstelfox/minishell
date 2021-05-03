@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 15:26:58 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 16:17:36 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		ft_putstr_fd(":", output);
 		if (errno == EACCES)
 		{
-			// ft_putnbr_fd((*ghost)->error, output);
 			ft_putchar_fd(' ', output);
 			ft_putstr_fd(strerror(errno), output);
 		}
