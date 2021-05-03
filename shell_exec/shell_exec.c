@@ -229,7 +229,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 		else
 			free((*ghost)->env[i]);
 	}
-	temp[i] = 0;
+	temp[j] = 0;
 	free((*ghost)->env);
 	(*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
