@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/27 16:57:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 14:26:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		ft_putstr_fd(": is a directory\n", output);
 		// ft_putstr_fd(strerror(errno), output);
 	}
-	else if (flag == NO_ACCESS)
-	{
-		(*ghost)->ret_stat = EXEC_FAIL;
-		ft_putstr_fd(cmd->type, output);
-		ft_putstr_fd(": ", 1);
-		ft_putstr_fd(strerror(errno), output);
-		ft_putstr_fd("\n", 1);
-	}
+	// else if (flag == NO_ACCESS)
+	// {
+	// 	ft_putstr_fd("IN HERE MOTHERFUCKS\n", 1);
+	// 	(*ghost)->ret_stat = EXEC_FAIL;
+	// 	ft_putstr_fd(cmd->type, output);
+	// 	ft_putstr_fd(": ", 1);
+	// 	ft_putstr_fd(strerror(errno), output);
+	// 	ft_putstr_fd("\n", 1);
+	// }
 	else if (flag == EXPRT_FAIL)
 	{
 		(*ghost)->ret_stat = ERR;
@@ -79,9 +80,19 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		// ft_putstr_fd("ghostshell: ", output);
 		// ft_putnbr_fd((*ghost)->ret_stat, output);
 		ft_putstr_fd(cmd->type, output);
-		ft_putstr_fd(": ", output);
-		ft_putstr_fd(strerror(errno), output);
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd(":", output);
+		if (errno == EACCES)
+		{
+			// ft_putnbr_fd((*ghost)->error, output);
+			ft_putchar_fd(' ', output);
+			ft_putstr_fd(strerror(errno), output);
+		}
+		else
+		{
+			// ft_putstr_fd("fucking\n", 1);
+			ft_putstr_fd(" command not found", output);
+		}
+		ft_putstr_fd("\n", output);
 	}
 	else if (flag == NO_FILE)
 	{

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/27 17:01:26 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 15:04:46 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,36 +54,6 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 
 	i = 0;
 	k = 0;
-	if (cmd->type[0] == '.' || cmd->type[0] == '/')
-	{
-		if (!check_dir(cmd, ghost))
-		{
-			// cmd_notfound(cmd, (*ghost)->error, ghost, 0);
-			return (0);
-		}
-		if (cmd->type[0] == '.' && cmd->type[1] == '/')
-		{
-			char **args;
-			if (cmd->args)
-			{
-				t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
-				ft_lstadd_front(&cmd->args, fucker);
-				args = list_to_arr(cmd->args);
-			}
-			else
-			{
-				args = (char**)malloc(sizeof(char *) * 2);
-				args[0] = ft_strdup(cmd->type);
-				args[1] = NULL;
-			}
-			path = (char**)malloc(sizeof(char*) * 2);
-			path[0] = ft_strdup(cmd->type);
-			path[1] = NULL;
-			return(path);
-			// if (execve(cmd->type, args, NULL) == -1)
-			// 	(*ghost)->error = NO_ACCESS;
-		}
-	}
 	command = ft_strjoin("/", cmd->type);
 	if ((*ghost)->path != 0)
 	{
@@ -105,7 +75,7 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 				path[k] = ft_strjoinfree(path[k], command);
 				k++;
 			}
-			path = arr_addback(path, cmd->type);
+			// path = arr_addback(path, cmd->type);
 			// (*ghost)->path = (char**)malloc(sizeof(char *) * (k + 1));
 			free(command);
 			return(path);
@@ -117,6 +87,41 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 	return (0);
 }
 
+void	path_launch(t_cmd *cmd, t_shell **ghost)
+{
+	if (!check_dir(cmd, ghost))
+	{
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
+		return ;
+	}
+	if (cmd->type[0] == '.' && cmd->type[1] == '/')
+	{
+		char **args;
+		if (cmd->args)
+		{
+			t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
+			ft_lstadd_front(&cmd->args, fucker);
+			args = list_to_arr(cmd->args);
+		}
+		else
+		{
+			args = (char**)malloc(sizeof(char *) * 2);
+			args[0] = ft_strdup(cmd->type);
+			args[1] = NULL;
+		}
+		execve(cmd->type, args, (*ghost)->env);
+		cmd_notfound(cmd, 0, ghost, 0);
+		// exit(127);
+		// path = (char**)malloc(sizeof(char*) * 2);
+		// path[0] = ft_strdup(cmd->type);
+		// path[1] = NULL;
+		// if ((*ghost)->error != DIRECTORY)
+		// 	(*ghost)->error = NO_ACCESS; // This needs to catch properly
+		// if (execve(cmd->type, args, NULL) == -1)
+		// 	(*ghost)->error = NO_ACCESS;
+	}
+}
+
 int	prog_launch(t_cmd *cmd, t_shell **ghost)
 {
 	// char **path;
@@ -124,33 +129,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	int	w_status;
 
 	int k = 0;
-	// if (cmd->type[0] == '.' && cmd->type[1] == '/')
-	// {
-	// 	char **args;
-	// 	if (cmd->args)
-	// 	{
-	// 		t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
-	// 		ft_lstadd_front(&cmd->args, fucker);
-	// 		args = list_to_arr(cmd->args);
-	// 	}
-	// 	else
-	// 	{
-	// 		args = (char**)malloc(sizeof(char *) * 2);
-	// 		args[0] = ft_strdup(cmd->type);
-	// 		args[1] = NULL;
-	// 	}
-	// 	if (execve(cmd->type, args, NULL) == -1)
-	// 	{
-	// 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
-	// 		return(1);
-	// 	}
-	// }
 	(*ghost)->path = get_path(cmd, ghost);
-	// if ((*ghost)->error == NO_ACCESS)
-	// {
-	// 	cmd_notfound(cmd, (*ghost)->error, ghost, 0);
-	// 	return(1);
-	// }
 	if ((*ghost)->path == NULL)
 	{
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0); // Might need some work
@@ -175,6 +154,8 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
+	// else
+	// 	args = NULL;
 	(*ghost)->pid = fork();
 	if ((*ghost)->pid == 0) //child process
 	{
@@ -183,14 +164,22 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 			if (redirect(cmd, ghost) == -1)
 				exit(1);
 		}
-		while ((*ghost)->path[k])
+		if (ft_strchr(cmd->type, '/'))
 		{
-			if (execve((*ghost)->path[k], args, NULL) == -1)
-				(*ghost)->ret_stat = 1;
-			k++;
+			path_launch(cmd, ghost);
+			exit(127);
 		}
-		cmd_notfound(cmd, 0, ghost, 0);
-		exit(0);
+		else
+		{
+			while ((*ghost)->path[k])
+			{
+				if (execve((*ghost)->path[k], args, NULL) == -1)
+					(*ghost)->ret_stat = 1;
+				k++;
+			}
+			cmd_notfound(cmd, 0, ghost, 0);
+			exit(0);
+		}
 	}
 	else if ((*ghost)->pid < 0)
 		strerror(errno);
