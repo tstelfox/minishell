@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/03 15:30:08 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/03 18:40:13 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	del_content(void *content)
 {
-	if (content)
-		free(content);
+	free(content);
 	content = NULL;
 }
 
@@ -40,7 +39,6 @@ void	del_commands(void *list)
 	free(commands->args);
 	ft_lstclear(&commands->redirection, del_redir);
 	free(commands->redirection);
-	// ft_bzero(commands, sizeof(t_cmd));
 	commands->seprator_type = 0;
 	free(commands);
 }
@@ -111,7 +109,7 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->commands)
 		{
-			// ft_lstclear(&(*ghost)->commands, del_commands);
+			ft_lstclear(&(*ghost)->commands, del_commands);
 			free((*ghost)->commands);
 		}
 		if ((*ghost)->tokens)
@@ -146,8 +144,10 @@ void	get_env(t_shell **ghost, char **envp)
 
 void	restart_shell(t_shell **ghost)
 {
-	ft_lstclear(&(*ghost)->tokens, del_content);
-	ft_lstclear(&(*ghost)->commands, del_commands);
+	ft_lstclear(&((*ghost)->tokens), del_content);
+	free((*ghost)->tokens);
+	ft_lstclear(&((*ghost)->commands), del_commands);
+	free((*ghost)->commands);
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
