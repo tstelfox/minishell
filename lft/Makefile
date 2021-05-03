@@ -6,7 +6,7 @@
 #    By: ztan <ztan@student.codam.nl>                 +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/06 18:10:05 by ztan          #+#    #+#                  #
-#    Updated: 2020/09/09 13:14:01 by zenotan       ########   odam.nl          #
+#    Updated: 2021/04/12 12:30:04 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC = ft_atoi.c \
 	ft_strlcat.c \
 	ft_strlcpy.c \
 	ft_strlen.c \
+	ft_strcmp.c \
 	ft_strncmp.c \
 	ft_strnstr.c \
 	ft_strrchr.c \

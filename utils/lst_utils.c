@@ -6,56 +6,34 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/19 19:52:06 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/04/26 16:20:17 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	ft_dlstdelone(t_dlist *lst)
+void	*copy_data(void	*data)
 {
-	if (!lst)
-		return ;
-	free(lst->content);
-	lst->content = NULL;
-	free(lst);
+	char *str;
+
+	str = data;
+	return (ft_strdup(str));
 }
 
-void	ft_dlstclear(t_dlist **lst)
+int		ft_lstredir(t_list *lst, int (*f)(void *))
 {
-	t_dlist *temp;
+	t_list *temp;
+	int		fd;
 
 	if (!lst)
-		return ;
-	while (*lst)
+		return (-1);
+	temp = lst;
+	while (temp)
 	{
-		temp = (*lst)->next;
-		ft_dlstdelone(*lst);
-		*lst = temp;
+		fd = f(temp->content);
+		temp = temp->next;
 	}
-}
-
-void	ft_dlstadd_front(t_dlist **alst, t_dlist *new)
-{
-	if (!new || !alst)
-		return ;
-	new->next = *alst;
-	if (*alst)
-		(*alst)->prev = new;
-	*alst = new;
-}
-
-t_dlist	*ft_dlstnew(void *content)
-{
-	t_dlist *new_node;
-
-	new_node = (t_dlist *)malloc(sizeof(t_dlist));
-	if (!new_node)
-		return (NULL);
-	new_node->content = content;
-	new_node->prev = NULL;
-	new_node->next = NULL;
-	return (new_node);
+	return (fd);
 }
 
 char	**list_to_arr(t_list *tokens)

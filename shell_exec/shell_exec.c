@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 18:14:09 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/26 15:21:02 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int	run_echo(t_cmd *cmd, t_shell **ghost)
 {
 	(void)ghost;
 	if (cmd->args == NULL)
+	{
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		return (1);
+	}
 	if (ft_strcmp(cmd->args->content, "-n") == 0)
 	{
 		cmd->args = cmd->args->next;

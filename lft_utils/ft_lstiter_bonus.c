@@ -6,7 +6,11 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/07 15:22:14 by ztan          #+#    #+#                 */
+<<<<<<< HEAD
+/*   Updated: 2021/04/12 12:34:36 by ztan          ########   odam.nl         */
+=======
 /*   Updated: 2021/04/08 19:01:42 by tmullan       ########   odam.nl         */
+>>>>>>> a36cc42d552835b80593c58651af008d9bf91fcb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +29,8 @@ void	ft_lstiter(t_list *lst, void (*f)(void *))
 		temp = temp->next;
 	}
 }
+<<<<<<< HEAD
+=======
 
 int		ft_lstredir(t_list *lst, int (*f)(void *))
 {
@@ -43,3 +49,4 @@ int		ft_lstredir(t_list *lst, int (*f)(void *))
 	}
 	return (fd);
 }
+>>>>>>> a36cc42d552835b80593c58651af008d9bf91fcb

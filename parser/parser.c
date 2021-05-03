@@ -6,122 +6,49 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/19 15:57:27 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/29 18:57:20 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char	**get_envp(char **envp)
-{
-	char	**env;
-	int		i;
-	int		k;
-
-	i = 0;
-	k = 0;
-	while (envp[i])
-		i++;
-	env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!env)
-		return (NULL);
-	while (envp[k])
-	{
-		env[k] = ft_strdup(envp[k]);
-		// free(envp[k]);
-		k++;
-	}
-	env[k] = 0;
-	// free(envp);
-	return (env);
-}
-
-int		check_meta(char *str)
-{
-	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|") ||\
-		!ft_strcmp(str, ";"))
-		return (1);
-	return (0);
-}
-
-int		check_seperator(t_shell **ghost, t_cmd *command)
-{
-	t_list	*tokens;
-
-	tokens = (*ghost)->tokens;
-	if (!ft_strcmp(tokens->content, "|"))
-	{
-		command->seprator_type = PIPE;
-		if (!ft_strcmp(tokens->next->content, "|"))
-			error_handler(ghost, PARSE_ERROR, "ghostshell does not support double pipes", NULL);
-		return (1);
-	}
-	if (!ft_strcmp(tokens->content, ";"))
-	{
-		command->seprator_type = SEPERATOR;
-		return (1);
-	}
-	return (0);
-}
-
-int		check_redir(t_shell **ghost, t_cmd *command)
-{
-	t_redir *redir;
-	t_list	*tokens;
-
-	redir = NULL;
-	tokens = (*ghost)->tokens;
-
-	if (!ft_strcmp(tokens->content, ">"))
-	{
-		if (!ft_strcmp(tokens->next->content, ">")) // check for ">>"
-		{
-			tokens = tokens->next;
-			redir = new_redir(ghost, tokens->next->content, OUTPUT_ADD);
-		}
-		else
-			redir = new_redir(ghost, tokens->next->content, OUTPUT);
-		ft_lstadd_back(&command->redirection, ft_lstnew(redir));
-		(*ghost)->tokens = tokens->next;
-	}
-	else if (!ft_strcmp(tokens->content, "<"))
-	{
-		redir = new_redir(ghost, tokens->next->content, INPUT);
-		ft_lstadd_back(&command->redirection, ft_lstnew(redir));
-		(*ghost)->tokens = tokens->next;
-	}
-	else
-		return (0);
-	return (1);
-}
-
 void	parser(t_shell **ghost)
 {
 	t_cmd	*command;
-	t_list 	*head;
+	t_list	*new_lst = NULL;
 
-	head = (*ghost)->tokens;
-	
-	while ((*ghost)->tokens && (*ghost)->status == 0)
+	if ((*ghost)->commands)
+		ft_lstclear(&(*ghost)->commands, del_commands);
+	while ((*ghost)->tokens)
 	{
-		command = new_command();
-		command->type = ft_strdup((*ghost)->tokens->content);
+		command = new_command(); // NULL
+		ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 		(*ghost)->tokens = (*ghost)->tokens->next;
-		while ((*ghost)->tokens && (*ghost)->status == 0) //parse command
+		while ((*ghost)->tokens && ft_strcmp((*ghost)->tokens->content, ";")) //parse command
 		{
-			if (check_seperator(ghost, command))
+			if (handle_seperator(ghost, &command) && !(*ghost)->error)
 				break ;
-			if (!check_redir(ghost, command))
-				if ((*ghost)->status == 0)
-					ft_lstadd_back(&command->args, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
+			if (!handle_redir(ghost, &command) && !(*ghost)->error)
+				ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 			if (!(*ghost)->tokens)
 				break ;
 			(*ghost)->tokens = (*ghost)->tokens->next;
 		}
+		expand_env(ghost, &new_lst);
+		if (!new_lst)
+			return ;
+		remove_quotes(ghost, &new_lst);
+		command->type = ft_strdup(new_lst->content);
+		command->args = ft_lstmap(new_lst->next, copy_data, del_content);
+		ft_lstclear(&new_lst, del_content);
 		ft_lstadd_back(&(*ghost)->commands, ft_lstnew(command));
 		if (!(*ghost)->tokens)
 			break ;
+		if (!ft_strcmp((*ghost)->tokens->content, ";"))
+		{
+			(*ghost)->tokens = (*ghost)->tokens->next;
+			break ;
+		}
 		(*ghost)->tokens = (*ghost)->tokens->next;
 	}
-	(*ghost)->tokens = head;
 }

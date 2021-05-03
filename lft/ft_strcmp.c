@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   free_all.c                                         :+:    :+:            */
+/*   ft_strcmp.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/04/19 14:55:43 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/20 12:48:03 by tmullan       ########   odam.nl         */
+/*   Created: 2021/02/16 13:38:18 by tmullan       #+#    #+#                 */
+/*   Updated: 2021/04/26 11:22:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-void	free_all(t_shell **ghost)
+int		ft_strcmp(const char *str1, const char *str2)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	while ((*ghost)->path[i])
+	if (!str1 || !str2)
+		return (-1);
+	while (str1[i] && str2[i])
 	{
-		free((*ghost)->path[i]);
-		i++;
+		if (str1[i] == str2[i])
+			i++;
+		else
+			return((unsigned char)str1[i] - (unsigned char)str2[i]);
 	}
-	// free((*ghost)->path);
+	return((unsigned char)str1[i] - (unsigned char)str2[i]);
 }

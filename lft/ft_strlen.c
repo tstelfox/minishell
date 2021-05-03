@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/28 14:47:01 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:44 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/19 16:14:07 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);

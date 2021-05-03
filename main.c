@@ -6,11 +6,20 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:13:19 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/04/29 18:57:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+void print_env(char **str)
+{
+	while (*str)
+	{
+		printf("[%s]\n", *str);
+		str++;
+	}
+}
 
 void	ctrl(int sig)
 {
@@ -27,47 +36,37 @@ void	ctrl(int sig)
 	}
 }
 
-void	init_reins(t_shell **ghost)
-{
-	if (!(*ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to initialize structs", NULL);
-	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_UP, up_function))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_UP, &pass_param, ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, ghost))
-		error_handler(ghost, INTERNAL_ERROR, "failed to bind key", NULL);
-}
-
 void	exec_shell(char *envp[])
 {
-	char	*input;
 	t_shell *ghost;
+	t_list *head;
 
 	ghost = init_shell(envp);
+	if (!ghost)
+		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
 	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl);
-
-	input = NULL;
+	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		head = ghost->tokens;
+		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
-		read_line(&ghost, &input);
-		lexer(&ghost, input);
-		if (ghost->status == 0)
+		read_line(&ghost);
+		ghost->tokens = lexer(&ghost, ghost->line, " ><|;");
+		// ft_lstiter(ghost->tokens, print_data);
+		// ft_putchar_fd('\n', STDOUT_FILENO);
+		while (ghost->tokens)
+		{
 			parser(&ghost);
-		// debug_loop(&ghost);
-		// ft_putstr_fd("well it do be: ", 1);
-		// ft_putnbr_fd(ghost->ret_stat, 1);
-		// ft_putstr_fd("\n", 1);
-		if (shell_exec(ghost->commands, &ghost) == 0)
-			break;
-		free(input);
-		restart_shell(ghost);
+			if (ghost->commands && !ghost->error)
+				if (shell_exec(ghost->commands, &ghost) == 0)
+					return ;
+			ghost->error = 0;
+		}
+		ghost->tokens = head;
+		restart_shell(&ghost);
 	}
 	reins_destroy(ghost->reins);
 }
@@ -78,5 +77,8 @@ int	main(int argc, char *args[], char *envp[])
 	(void)args;
 
 	exec_shell(envp);
+
+	// test();
+	// (void)envp;
 	return (0);
 }
