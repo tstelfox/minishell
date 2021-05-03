@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 16:24:15 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/03 16:34:41 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		if (ft_strchr(cmd->type, '/'))
 		{
 			path_launch(cmd, ghost);
-			if ((*ghost)->error == DIRECTORY)
+			if ((*ghost)->error == DIRECTORY || errno == EACCES)
 				exit(126);
 			exit(127);
 		}
