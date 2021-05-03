@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/29 14:44:32 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/03 15:30:08 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@ void	del_redir(void *list)
 	free(redir->file);
 	redir->file = NULL;
 	redir->type = 0;
+	free(redir);
 }
 
 void	del_commands(void *list)
 {
 	t_cmd *commands;
 
-	commands = list;
+	commands = (t_cmd *)list;
 	free(commands->type);
 	ft_lstclear(&commands->args, del_content);
+	free(commands->args);
 	ft_lstclear(&commands->redirection, del_redir);
-	ft_bzero(commands, sizeof(t_cmd));
+	free(commands->redirection);
+	// ft_bzero(commands, sizeof(t_cmd));
 	commands->seprator_type = 0;
+	free(commands);
 }
 
 void	del_darray(char **str)
@@ -107,7 +111,7 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->commands)
 		{
-			ft_lstclear(&(*ghost)->commands, del_commands);
+			// ft_lstclear(&(*ghost)->commands, del_commands);
 			free((*ghost)->commands);
 		}
 		if ((*ghost)->tokens)
@@ -117,8 +121,6 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->env)
 			del_darray((*ghost)->env);
-		if ((*ghost)->line)
-			free((*ghost)->line);
 		if ((*ghost)->reins)
 			reins_destroy((*ghost)->reins);
 		free(*ghost);

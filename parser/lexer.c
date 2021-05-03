@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:56:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/03 13:36:49 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
 	t_list	*new;
 
 	result = ft_substr(input, start, len);
-	new = ft_lstnew(ft_strdup(result));
+	new = ft_lstnew(result);
 	if (!new)
 		error_handler(ghost, INTERNAL_ERROR, \
 		"something went wrong with tokenizing", NULL);
 	ft_lstadd_back(ret, new);
-	free(result);
 }
 
 int		tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)

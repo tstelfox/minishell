@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/26 10:38:35 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/03 11:44:20 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,13 +55,15 @@ OBJ = $(SRC:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
-# CC = clang
+# CC = clang++
 
 INCLUDES = -Iincludes
 
 REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
 
 LIBFT = -Ilft/
+
+LEAKS = -fsanitize=leak
 
 TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
 
@@ -70,12 +72,12 @@ all: $(NAME)
 $(NAME): $(OBJ)
 		@make -C reins_termcap/
 		@make bonus -C lft/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@$(CC) $(FLAGS) $(OBJ)  $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft -lreins -Lreins_termcap $(TAIL) -g -o $(NAME)
 		
 test: $(OBJ)
 		@make -C reins_termcap/
 		@make bonus -C lft/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@$(CC) $(FLAGS) $(LEAKS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft -lreins -Lreins_termcap $(TAIL) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@

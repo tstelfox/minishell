@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:19:08 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/03 14:05:32 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ typedef struct		s_shell
 	pid_t	pid;
 	char	**path;
 	char	**env;
-	char	*line;
 	int		status;
 	int		ret_stat; // This is the $? or last exit value.
 	int		out;
@@ -143,7 +142,7 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
 //parser.c
-void	parser(t_shell **ghost);
+t_list	*parser(t_shell **ghost);
 
 //parser_utils.c
 void	remove_quotes(t_shell **ghost, t_list **list);
@@ -155,7 +154,7 @@ char 	*handle_quotes(t_shell **ghost, char *str, int len);
 int		count_quotes(char *str);
 
 //read_input.c
-void	read_line(t_shell **ghost);
+char	*read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
 

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 16:54:24 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/03 13:48:27 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,13 @@ void	expand_env(t_shell **ghost, t_list **lst)
 		return ;
 	temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
 	ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
-	free(temp);
+	ft_lstclear(&temp, del_content);
 	(*lst) = (*lst)->next;
 	while ((*lst) && (*ghost)->status == PARSE)
 	{
 		temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
 		ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
-		free(temp);
+		ft_lstclear(&temp, del_content);
 		(*lst) = (*lst)->next;
 	}
 	if ((*ghost)->error)
