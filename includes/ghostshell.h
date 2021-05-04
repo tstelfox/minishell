@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 16:25:30 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/04 16:41:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,12 @@ typedef struct		s_shell
 	char	**env;
 	char	*line;
 	int		status;
-	int		ret_stat; // This is the $? or last exit value.
+	int		ret_stat;
 	int		out;
 	int		pipefd[2];
 	int		out_pipe;
 	int		error;
+	int		(*g_builtin_f[7])(t_cmd *cmd, struct s_shell **ghost);
 }					t_shell;
 
 //---------------------------------shell_exec---------------------------------//
@@ -122,7 +123,6 @@ void	print_echo(t_list *args);
 
 //globals
 char	*g_builtin[7];
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost);
 
 // Programs
 int		prog_launch(t_cmd *cmd, t_shell **ghost);

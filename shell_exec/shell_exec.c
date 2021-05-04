@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/27 18:09:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/04 16:40:15 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ char	*g_builtin[7] = {
 		"export"
 };
 
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost) = {
-		&run_echo,
-		&run_cd,
-		&run_pwd,
-		&run_exit,
-		&run_env,
-		&run_unset,
-		&run_export
-};
+// int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost) = {
+// 		&run_echo,
+// 		&run_cd,
+// 		&run_pwd,
+// 		&run_exit,
+// 		&run_env,
+// 		&run_unset,
+// 		&run_export
+// };
 
 void	print_echo(t_list *args)
 {
@@ -303,7 +303,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 					(*ghost)->out = redirect(cmd, ghost);
 				if ((*ghost)->out == -1)
 					return(1);
-				(*g_builtin_f[i])(cmd, ghost);
+				(*ghost)->g_builtin_f[i](cmd, ghost);
 				(*ghost)->ret_stat = 0;
 				if ((*ghost)->out != -42)
 				{

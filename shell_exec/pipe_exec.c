@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 16:35:10 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/04 16:40:50 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_n
 		{
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
 			{
-				(*g_builtin_f[i])(cmd, ghost);
+				(*ghost)->g_builtin_f[i](cmd, ghost);
 				// close(fd_in);
 				exit(0);
 			}

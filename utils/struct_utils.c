@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/26 17:03:55 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/04 16:41:33 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,15 @@ void	restart_shell(t_shell **ghost)
 t_shell	*init_shell(char **env)
 {
 	t_shell *new_shell;
+	// int	(*func_arr[7])(t_cmd *cmd, t_shell **ghost) = {
+	// 	&run_echo,
+	// 	&run_cd,
+	// 	&run_pwd,
+	// 	&run_exit,
+	// 	&run_env,
+	// 	&run_unset,
+	// 	&run_export
+	// };
 	
 	new_shell = malloc(sizeof(t_shell));
 	if (!new_shell)
@@ -167,11 +176,15 @@ t_shell	*init_shell(char **env)
 	new_shell->out = -42;
 	new_shell->pipefd[0] = -69;
 	new_shell->pipefd[1] = -47;
-	// new_shell->pipefd[1][0] = -69;
-	// new_shell->pipefd[1][1] = -47;
-	// new_shell->error = -46;
 	new_shell->error = 0;
 	new_shell->ret_stat = 0;
 	new_shell->pid = -99;
+	new_shell->g_builtin_f[0] = &run_echo;
+	new_shell->g_builtin_f[1] = &run_cd;
+	new_shell->g_builtin_f[2] = &run_pwd;
+	new_shell->g_builtin_f[3] = &run_exit;
+	new_shell->g_builtin_f[4] = &run_env;
+	new_shell->g_builtin_f[5] = &run_unset;
+	new_shell->g_builtin_f[6] = &run_export;
 	return (new_shell);
 }
