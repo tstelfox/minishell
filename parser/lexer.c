@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 10:37:13 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 18:56:01 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
 {
 	char	*result;
 	t_list	*new;
+
 	result = ft_substr(input, start, len);
 	new = ft_lstnew(ft_strdup(result));
 	if (!new)
@@ -60,8 +61,10 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 		{
 			type = str[i];
 			i++;
-			while (str[i] != type)
+			while (str[i] != type && str[i])
 				i++;
+			if (!str[i])
+				break ;
 		}
 		if (ft_strchr(seperators, str[i]))
 		{
