@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/29 14:06:51 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/04 17:10:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 			if (next_op->type == 0)
 			{
 				int fd2 = open(next_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
+				dup2(fd2, STDOUT_FILENO);
+				close(fd2);
+			}
+			else if (next_op->type == 2)
+			{
+				int fd2 = open(next_op->file, O_CREAT | O_APPEND | O_RDWR, 0666);
 				dup2(fd2, STDOUT_FILENO);
 				close(fd2);
 			}
