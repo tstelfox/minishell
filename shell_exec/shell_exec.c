@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/04 16:40:15 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/04 17:48:30 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,23 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	str = cmd->args->content;
 	while (str[i])
 	{
+		// ft_putchar_fd(str[i], 1);
+		// if (str[i] == '"')
+		// {
+		// 	ft_putstr_fd("In here at all?\n", 1);
+		// 	i++;
+		// 	while (str[i] != '"' && str[i + 1])
+		// 	{
+		// 		i++;
+		// 		if (str[i] == '"' && !str[i + 1])
+		// 			break; //Need to cut whatever comes after {export var="this stays" not this}
+		// 	}
+		// 	if (str[i + 1] == '\0')
+		// 	{
+		// 		ft_putstr_fd("No multiline bro\n", 1);
+		// 		return(1);
+		// 	}
+		// }
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=') // Think about spaces between quotes.
 		{
