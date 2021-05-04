@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 20:35:53 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/04 18:49:37 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_list	*parser(t_shell **ghost)
 
 	if ((*ghost)->commands)
 	{
-		printf("DEUG\n");
 		ft_lstclear(&((*ghost)->commands), del_commands);
 		free((*ghost)->commands);
 	}
@@ -41,7 +40,10 @@ t_list	*parser(t_shell **ghost)
 		}
 		expand_env(ghost, &new_lst);
 		if (!new_lst)
+		{
+			free(command);
 			return (NULL);
+		}
 		remove_quotes(ghost, &new_lst);
 		command->type = ft_strdup(new_lst->content);
 		command->args = ft_lstmap(new_lst->next, copy_data, del_content);

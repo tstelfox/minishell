@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 18:37:45 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/04 16:58:47 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ void	exec_shell(char *envp[])
 		// printf("DEBUG\n");
 		// ft_lstiter(ghost->tokens, print_data);
 		// ft_putchar_fd('\n', STDOUT_FILENO);
-		printf("LEXED\n");
+		// printf("LEXED\n");
 		while (ghost->tokens)
 		{
 			ghost->commands = parser(&ghost);
-			printf("LOOOOOOL\n");
+			// printf("LOOOOOOL\n");
 			// if (ghost->commands && !ghost->error)
 			// 	if (shell_exec(ghost->commands, &ghost) == 0)
 			// 		return ;

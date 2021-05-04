@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/03 18:40:13 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/04 18:16:10 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,25 @@ void	del_darray(char **str)
 t_redir	*new_redir(t_shell **ghost, char *file, int type)
 {
 	t_redir *new_redir;
-	int qts;
+	char	*temp;
+	int		qts;
 
 	if (check_meta(file))
 		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
-	file = find_env(ghost, file);
-	if (check_redir(file)) // quotesssssssssssss
+	temp = find_env(ghost, file);
+	if (check_redir(temp)) // quotesssssssssssss
 		error_handler(ghost, PARSE_ERROR, "ambiguous redirect", NULL);
-	qts = count_quotes(file);
-	if (qts)
-		file = handle_quotes(ghost, file, ft_strlen(file) - qts);
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
-	new_redir->file = ft_strdup(file);
+	qts = count_quotes(temp);
+	if (qts)
+	{
+		new_redir->file = handle_quotes(ghost, temp, ft_strlen(temp) - qts);
+		free(temp);
+	}
+	else
+		new_redir->file = temp;
 	new_redir->type = type;
 	return (new_redir);
 }
