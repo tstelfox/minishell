@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 15:23:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/04/29 16:54:24 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,32 +85,30 @@ int		replace_env(t_shell **ghost, char **input, int i)
 	return (len);
 }
 
-int		find_env(t_shell **ghost, t_list **temp)
+char	*find_env(t_shell **ghost, char *str)
 {
 	char	type;
 	int		check;
 	int		i;
-	char	**str;
 
 	type = 0;
 	check = 0;
 	i = 0;
-	str = (char **)&(*temp)->content;
-	while ((*str)[i])
+	while (str[i])
 	{
-		if (((*str)[i] == '\"' || (*str)[i] == '\'') && type == 0)
-			type = (*str)[i];
-		if (type != 0 && (*str)[i] == type)
+		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
+			type = str[i];
+		if (type != 0 && str[i] == type)
 			check++;
 		if (!(check % 2))
 			type = 0;
-		if ((*str)[i] == '$' && type != '\'')
-			i += replace_env(ghost, str, i + 1) - 1;
+		if (str[i] == '$' && type != '\'')
+			i += replace_env(ghost, &str, i + 1) - 1;
 		i++;
 	}
 	if (check % 2)
 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
-	return (check);
+	return (str);
 }
 
 void	expand_env(t_shell **ghost, t_list **lst)
@@ -118,16 +116,16 @@ void	expand_env(t_shell **ghost, t_list **lst)
 	t_list *head = NULL;
 	t_list *temp = NULL;
 	
-	find_env(ghost, lst);
-	temp = lexer(ghost, (*lst)->content, " ");
-	ft_joinlist(&head, ft_lstmap(temp, copy_data, del_content));
+	if ((*ghost)->error)
+		return ;
+	temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
+	ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
 	free(temp);
 	(*lst) = (*lst)->next;
 	while ((*lst) && (*ghost)->status == PARSE)
 	{
-		find_env(ghost, lst);
-		temp = lexer(ghost, (*lst)->content, " ");
-		ft_joinlist(&head, ft_lstmap(temp, copy_data, del_content));
+		temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
+		ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
 		free(temp);
 		(*lst) = (*lst)->next;
 	}

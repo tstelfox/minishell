@@ -63,15 +63,21 @@ void	del_darray(char **str)
 t_redir	*new_redir(t_shell **ghost, char *file, int type)
 {
 	t_redir *new_redir;
+	int qts;
 
 	if (check_meta(file))
 		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
+	file = find_env(ghost, file);
+	if (check_redir(file)) // quotesssssssssssss
+		error_handler(ghost, PARSE_ERROR, "ambiguous redirect", NULL);
+	qts = count_quotes(file);
+	if (qts)
+		file = handle_quotes(ghost, file, ft_strlen(file) - qts);
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
 	new_redir->file = ft_strdup(file);
 	new_redir->type = type;
-
 	return (new_redir);
 }
 

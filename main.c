@@ -55,15 +55,15 @@ void	exec_shell(char *envp[])
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 		read_line(&ghost);
 		ghost->tokens = lexer(&ghost, ghost->line, " ><|;");
-		while (ghost->status != FINISHED)
+		// ft_lstiter(ghost->tokens, print_data);
+		// ft_putchar_fd('\n', STDOUT_FILENO);
+		while (ghost->tokens)
 		{
 			parser(&ghost);
 			if (ghost->commands && !ghost->error)
 				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
-			// debug_loop(&ghost);
-			if (ghost->status == EXECUTE)
-				ghost->status = PARSE;
+			ghost->error = 0;
 		}
 		ghost->tokens = head;
 		restart_shell(&ghost);
