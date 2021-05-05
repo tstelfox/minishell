@@ -6,23 +6,24 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/04 18:49:37 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/05 13:30:56 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
+// void	add_
+
 t_list	*parser(t_shell **ghost)
 {
 	t_cmd	*command;
-	t_list	*new_lst = NULL;
-	t_list	*lst = NULL;
+	t_list	*new_lst;
+	t_list	*lst;
 
+	new_lst = NULL;
+	lst = NULL;
 	if ((*ghost)->commands)
-	{
-		ft_lstclear(&((*ghost)->commands), del_commands);
-		free((*ghost)->commands);
-	}
+		free_list(&((*ghost)->commands), del_commands);	
 	while ((*ghost)->tokens)
 	{
 		command = new_command(); // NULL
@@ -47,16 +48,12 @@ t_list	*parser(t_shell **ghost)
 		remove_quotes(ghost, &new_lst);
 		command->type = ft_strdup(new_lst->content);
 		command->args = ft_lstmap(new_lst->next, copy_data, del_content);
-		// ft_lstclear(&new_lst, del_content);
 		ft_lstadd_back(&lst, ft_lstnew(command));
 		if (!(*ghost)->tokens)
 			break ;
-		if (!ft_strcmp((*ghost)->tokens->content, ";"))
-		{
-			(*ghost)->tokens = (*ghost)->tokens->next;
-			break ;
-		}
 		(*ghost)->tokens = (*ghost)->tokens->next;
+		if (!ft_strcmp((*ghost)->tokens->content, ";"))
+			break ;
 	}
 	// ft_cmd_lstiter(lst, print_cmd);
 	ft_lstclear(&new_lst, del_content);

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 14:05:32 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/05 00:23:39 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void	del_content(void *content);
 void	del_darray(char **str);
 
 //lst_utils.c
+void	free_list(t_list **lst, void (*del)(void *));
 void	*copy_data(void	*data);
 char	**list_to_arr(t_list *tokens);
 
