@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 15:40:59 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 16:00:55 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	}
 	else
 	{
-		// ft_putstr_fd("in here?", 1);
 		args = (char **)malloc(sizeof(char *) * 2);
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
@@ -163,16 +162,15 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	// {
 	// 	ft_lstadd_front(&cmd->args, fucker);
 	// 	(*ghost)->args = list_to_arr(cmd->args);
-	// 	// for (int i = 0; (*ghost)->args[i]; i++)
-	// 	// 	ft_putstr_fd((*ghost)->args[i], 1);
 	// }
 	// else
 	// {
-	// 	// ft_putstr_fd("in here?", 1);
 	// 	(*ghost)->args = (char **)malloc(sizeof(char *) * 2);
 	// 	(*ghost)->args[0] = ft_strdup(cmd->type);
 	// 	(*ghost)->args[1] = NULL;
 	// }
+	// for (int i = 0; (*ghost)->args[i]; i++)
+	// 	ft_putstr_fd((*ghost)->args[i], 1);
 	(*ghost)->pid = fork();
 	signal(SIGINT, ctrl_process);
 	signal(SIGQUIT, ctrl_process);
@@ -212,5 +210,11 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
 	}
+	// if ((*ghost)->args)
+	// {
+	// 	for (int i = 0; (*ghost)->args[i]; i++)
+	// 		free((*ghost)->args[i]);
+	// 	free((*ghost)->args);
+	// }
 	return (1);
 }
