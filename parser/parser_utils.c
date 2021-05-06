@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:19:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/05 13:52:47 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,15 @@ void	remove_quotes(t_shell **ghost, t_list **list)
 		return ;
 	if (*list)
 		temp = *list;
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	while (temp)
 	{
 		str = temp->content;
 		qts = count_quotes(str);
 		if (qts)
 		{
+			free(temp->content);
 			temp->content = handle_quotes(ghost, str, ft_strlen(str) - qts);
-			free(str);
 		}
 		temp = temp->next;
 	}

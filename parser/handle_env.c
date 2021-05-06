@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 16:54:24 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/04 18:34:31 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char		*find_env_val(t_shell **ghost, char *str)
 	j = 0;
 	envs = (*ghost)->env;
 	if (!ft_strcmp("?", str))
-		return (ft_strdup(ft_itoa((*ghost)->ret_stat)));
+		return (ft_itoa((*ghost)->ret_stat));
 	while (envs[j])
 	{
 		i = 0;
@@ -81,6 +81,7 @@ int		replace_env(t_shell **ghost, char **input, int i)
 	ret = ft_strjoin_free(temp, env);
 	temp = ft_strdup((*input) + ft_strlen((*input)) - taillen);
 	ret = ft_strjoin_free(ret, temp);
+	free(*input);
 	*input = ret;
 	return (len);
 }
@@ -88,52 +89,70 @@ int		replace_env(t_shell **ghost, char **input, int i)
 char	*find_env(t_shell **ghost, char *str)
 {
 	char	type;
+	char	*temp;
 	int		check;
 	int		i;
 
 	type = 0;
 	check = 0;
 	i = 0;
-	while (str[i])
+	temp = ft_strdup(str);
+	// printf("temp[%s]\n", temp);
+	while (temp[i])
 	{
-		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
-			type = str[i];
-		if (type != 0 && str[i] == type)
+		if ((temp[i] == '\"' || temp[i] == '\'') && type == 0)
+			type = temp[i];
+		if (type != 0 && temp[i] == type)
 			check++;
 		if (!(check % 2))
 			type = 0;
-		if (str[i] == '$' && type != '\'')
-			i += replace_env(ghost, &str, i + 1) - 1;
+		if (temp[i] == '$' && type != '\'')
+			i += replace_env(ghost, &temp, i + 1) - 1;
 		i++;
 	}
+	// printf("check[%i]\n", check);
 	if (check % 2)
-		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
-	return (str);
+		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL); // doesnt free input
+	return (temp);
 }
 
 void	expand_env(t_shell **ghost, t_list **lst)
 {
-	t_list *head = NULL;
-	t_list *temp = NULL;
+	t_list	*head = NULL;
+	t_list	*temp = NULL;
+	t_list	*og = NULL;
+	char	*tmp = NULL;
 	
 	if ((*ghost)->error)
 		return ;
-	temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
+	og = *lst;
+	tmp = find_env(ghost, (*lst)->content);
+	temp = lexer(ghost, tmp, " ");
+	free(tmp);
 	ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
+	ft_lstclear(&temp, del_content);
 	free(temp);
 	(*lst) = (*lst)->next;
 	while ((*lst) && (*ghost)->status == PARSE)
 	{
-		temp = lexer(ghost, find_env(ghost, (*lst)->content), " ");
+		tmp = find_env(ghost, (*lst)->content);
+		temp = lexer(ghost, tmp, " ");
+		free(tmp);
 		ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
+		ft_lstclear(&temp, del_content);
 		free(temp);
 		(*lst) = (*lst)->next;
 	}
 	if ((*ghost)->error)
 	{
+		printf("hier\n");
 		ft_lstclear(&head, del_content);
+		free(head);
+		ft_lstclear(&og, del_content);
+		free(og);
 		return ;
 	}
-	ft_lstclear(lst, del_content);
+	ft_lstclear(&og, del_content);
+	free(og);
 	*lst = head;
 }

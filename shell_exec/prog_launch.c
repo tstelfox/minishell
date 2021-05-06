@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 12:29:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:00:59 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,13 @@
 int		check_dir(t_cmd *cmd, t_shell **ghost)
 {
 	struct stat buf;
-	// int		fd;
 
 	lstat(cmd->type, &buf);
-	// ft_putstr_fd("ma porcoddio \n", 1);
-	// ft_putstr_fd(strerror(errno), 1);
 	if (S_ISDIR(buf.st_mode))
 	{
-		// ft_putstr_fd("ma porcoddio cane \n", 1);
-	// 	ft_putstr_fd("ghostshell: ", 1);
-	// 	ft_putstr_fd(cmd->type, 1);
-	// 	ft_putstr_fd(": is a directory\n", 1);
 		(*ghost)->error = DIRECTORY;
 		return(0);
 	}
-	// else
-	// {
-	// 	fd = open(cmd->type, O_TRUNC);
-	// 	// ft_putnbr_fd(fd, 1);
-	// 	if (fd == -1)
-	// 	{
-	// 		ft_putstr_fd("ma porcoddio \n", 1);
-	// 		(*ghost)->error = NO_ACCESS;
-	// 		return(0);
-	// 	}
-	// 	else
-	// 		close(fd);
-	// }
 	return (1);
 }
 
@@ -71,15 +51,11 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 				path[k] = ft_strjoinfree(path[k], command);
 				k++;
 			}
-			// path = arr_addback(path, cmd->type);
-			// (*ghost)->path = (char**)malloc(sizeof(char *) * (k + 1));
 			free(command);
 			return(path);
 		}
 		i++;
 	}
-	// free(command);
-	// cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	return (0);
 }
 
@@ -107,14 +83,6 @@ void	path_launch(t_cmd *cmd, t_shell **ghost)
 		}
 		execve(cmd->type, args, (*ghost)->env);
 		cmd_notfound(cmd, 0, ghost, 0);
-		// exit(127);
-		// path = (char**)malloc(sizeof(char*) * 2);
-		// path[0] = ft_strdup(cmd->type);
-		// path[1] = NULL;
-		// if ((*ghost)->error != DIRECTORY)
-		// 	(*ghost)->error = NO_ACCESS; // This needs to catch properly
-		// if (execve(cmd->type, args, NULL) == -1)
-		// 	(*ghost)->error = NO_ACCESS;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/04 16:41:33 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:21:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	del_content(void *content)
 {
-	if (content)
-		free(content);
+	free(content);
 	content = NULL;
 }
 
@@ -27,18 +26,21 @@ void	del_redir(void *list)
 	free(redir->file);
 	redir->file = NULL;
 	redir->type = 0;
+	free(redir);
 }
 
 void	del_commands(void *list)
 {
 	t_cmd *commands;
 
-	commands = list;
+	commands = (t_cmd *)list;
 	free(commands->type);
 	ft_lstclear(&commands->args, del_content);
+	free(commands->args);
 	ft_lstclear(&commands->redirection, del_redir);
-	ft_bzero(commands, sizeof(t_cmd));
+	free(commands->redirection);
 	commands->seprator_type = 0;
+	free(commands);
 }
 
 void	del_darray(char **str)
@@ -63,20 +65,25 @@ void	del_darray(char **str)
 t_redir	*new_redir(t_shell **ghost, char *file, int type)
 {
 	t_redir *new_redir;
-	int qts;
+	char	*temp;
+	int		qts;
 
 	if (check_meta(file))
 		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
-	file = find_env(ghost, file);
-	if (check_redir(file)) // quotesssssssssssss
+	temp = find_env(ghost, file);
+	if (check_redir(temp)) // quotesssssssssssss
 		error_handler(ghost, PARSE_ERROR, "ambiguous redirect", NULL);
-	qts = count_quotes(file);
-	if (qts)
-		file = handle_quotes(ghost, file, ft_strlen(file) - qts);
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
 		error_handler(ghost, INTERNAL_ERROR, "failed to allocate space", NULL);
-	new_redir->file = ft_strdup(file);
+	qts = count_quotes(temp);
+	if (qts)
+	{
+		new_redir->file = handle_quotes(ghost, temp, ft_strlen(temp) - qts);
+		free(temp);
+	}
+	else
+		new_redir->file = temp;
 	new_redir->type = type;
 	return (new_redir);
 }
@@ -117,8 +124,6 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->env)
 			del_darray((*ghost)->env);
-		if ((*ghost)->line)
-			free((*ghost)->line);
 		if ((*ghost)->reins)
 			reins_destroy((*ghost)->reins);
 		free(*ghost);
@@ -144,8 +149,10 @@ void	get_env(t_shell **ghost, char **envp)
 
 void	restart_shell(t_shell **ghost)
 {
-	ft_lstclear(&(*ghost)->tokens, del_content);
-	ft_lstclear(&(*ghost)->commands, del_commands);
+	ft_lstclear(&((*ghost)->tokens), del_content);
+	free((*ghost)->tokens);
+	ft_lstclear(&((*ghost)->commands), del_commands);
+	free((*ghost)->commands);
 	(*ghost)->commands = NULL;
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
