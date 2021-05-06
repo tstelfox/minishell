@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:21:10 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:34:59 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ char	*read_line(t_shell **ghost)
 	if (ft_strcmp(input, ""))
 		store_command(ghost, input);
 	reins_disable((*ghost)->reins);
-	ft_putchar_fd('\n', STDOUT_FILENO);
+	// ft_putchar_fd('\n', STDOUT_FILENO);
 	return (input);
 }

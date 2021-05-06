@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 12:39:18 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:34:47 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	}
 	temp[j] = 0;
 	free((*ghost)->env);
-	(*ghost)->env = (char**)malloc(sizeof(*temp));
+	// (*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
 	return(1);
 }

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:20:11 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:36:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	exec_shell(char *envp[])
 				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
 			ghost->error = 0;
-			ft_cmd_lstiter(ghost->commands, print_cmd);
+			// ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");
@@ -96,7 +96,7 @@ void	exec_shell(char *envp[])
 		ghost->tokens = head;
 		// ft_lstiter(ghost->tokens, print_data);
 		restart_shell(&ghost);
-		printf("RESET\n");
+		// printf("RESET\n");
 	}
 	reins_destroy(ghost->reins);
 }
