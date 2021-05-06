@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 11:15:02 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 12:39:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 	int i = 0;
 	if (cmd->args == NULL)
 		return (1);
+	if (ft_strcmp(cmd->args->content, "-") == 0)
+	{
+		ft_putstr_fd("The ghostshell does not support this variable expansion\n", 1);
+		return (1);
+	}
 	else if ((ft_strcmp(cmd->args->content, "~") == 0)) // || (ft_strcmp(cmd->args->content, "-") == 0))
 	{
 		while ((*ghost)->env[i])

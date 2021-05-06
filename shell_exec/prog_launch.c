@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 12:14:14 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 12:29:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,6 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
-	// else
-	// 	args = NULL;
 	(*ghost)->pid = fork();
 	signal(SIGINT, ctrl_process);
 	signal(SIGQUIT, ctrl_process);
