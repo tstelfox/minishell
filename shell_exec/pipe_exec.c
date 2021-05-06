@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/04 16:40:50 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 11:44:55 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	{
 		while (path[k])
 		{
-			if (execve(path[k], args, NULL) == -1)
+			if (execve(path[k], args, (*ghost)->env) == -1)
 			{
 				// ft_putnbr_fd(errno, 1);
 				(*ghost)->ret_stat = 1;

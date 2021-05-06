@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/03 16:34:41 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 12:14:14 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	// else
 	// 	args = NULL;
 	(*ghost)->pid = fork();
+	signal(SIGINT, ctrl_process);
+	signal(SIGQUIT, ctrl_process);
 	if ((*ghost)->pid == 0) //child process
 	{
 		if (cmd->redirection)
@@ -171,7 +173,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		{
 			while ((*ghost)->path[k])
 			{
-				if (execve((*ghost)->path[k], args, NULL) == -1)
+				if (execve((*ghost)->path[k], args, (*ghost)->env) == -1)
 					(*ghost)->ret_stat = 1;
 				k++;
 			}
@@ -184,6 +186,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	else
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
+		// signal(SIGINT, ctrl_process);
 		for (int i = 0; args[i]; i++)
 			free(args[i]);
 		free(args);

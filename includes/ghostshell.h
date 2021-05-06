@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/04 16:41:51 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 11:38:10 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ int		redir_muti(void *file_struct);
 int		pipe_exec(t_list *command, t_shell **ghost);
 int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
+
+// Signals
+void	ctrl_process(int sig);
 
 //-----------------------------------error------------------------------------//
 //error.c

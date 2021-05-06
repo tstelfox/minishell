@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/04 17:48:30 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 11:15:02 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,39 +180,38 @@ int	export_replace(char *str, t_shell **ghost)
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
+	int flag = 0;
 	char *str;
 
 	i = 0;
+	if (!cmd->args)
+		return (1); //Actually here it needs to print the whole fuckin thing
+	// if (cmd->args->next)
+	// {
+	// 	cmd->args = cmd->args->next;
+	// 	cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+	// 	return(1);
+	// }
 	str = cmd->args->content;
 	while (str[i])
 	{
-		// ft_putchar_fd(str[i], 1);
-		// if (str[i] == '"')
-		// {
-		// 	ft_putstr_fd("In here at all?\n", 1);
-		// 	i++;
-		// 	while (str[i] != '"' && str[i + 1])
-		// 	{
-		// 		i++;
-		// 		if (str[i] == '"' && !str[i + 1])
-		// 			break; //Need to cut whatever comes after {export var="this stays" not this}
-		// 	}
-		// 	if (str[i + 1] == '\0')
-		// 	{
-		// 		ft_putstr_fd("No multiline bro\n", 1);
-		// 		return(1);
-		// 	}
-		// }
+		if (str[i] == '=')
+			flag = 1;
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=') // Think about spaces between quotes.
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 			return (1);
 		}
 		i++;
 	}
-	if (!cmd->args)
-		return (1);
+	// if (flag != 1)
+	// {
+	// 	if (cmd->args->next)
+	// 		cmd->args = cmd->args->next;
+	// 	cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+	// 	return (1);
+	// }
 	if (export_replace(str, ghost))
 		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
 	return (1);
