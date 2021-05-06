@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:42:19 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 15:35:43 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	exec_shell(char *envp[])
 				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
 			ghost->error = 0;
+			// ghost->args = 0;
 			// ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {

@@ -6,31 +6,21 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:34:47 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 15:41:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char	*g_builtin[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		"exit",
-		"env",
-		"unset",
-		"export"
+char 	*g_builtin[7] = {
+	"echo",
+	"cd",
+	"pwd",
+	"exit",
+	"env",
+	"unset",
+	"export"
 };
-
-// int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost) = {
-// 		&run_echo,
-// 		&run_cd,
-// 		&run_pwd,
-// 		&run_exit,
-// 		&run_env,
-// 		&run_unset,
-// 		&run_export
-// };
 
 void	print_echo(t_list *args)
 {
@@ -85,27 +75,9 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 				if (chdir(&(*ghost)->env[i][5]) != 0)
 					strerror(errno);
 			}
-			// if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD"))
-			// 	!= 0 && (ft_strcmp(cmd->args->content, "-") == 0))
-			// {
-			// 	if (chdir(&(*ghost)->env[i][7]) != 0)
-			// 		strerror(errno);
-			// }
 			i++;
 		}
 	}
-	// else if (ft_strcmp(cmd->args->content, "-") == 0)
-	// {
-	// 	while ((*ghost)->env[i])
-	// 	{
-	// 		if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD")) != 0)
-	// 		{
-	// 			if (chdir(&(*ghost)->env[i][7]) != 0)
-	// 				strerror(errno);
-	// 		}
-	// 		i++;
-	// 	}
-	// }
 	else
 	{
 		if (chdir(cmd->args->content) != 0)
@@ -318,6 +290,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		while (i < 7)
 		{
+			// ft_putstr_fd("not in here surelu?", 1);
 			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
 			{
 				if (cmd->redirection)

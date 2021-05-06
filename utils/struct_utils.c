@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/06 13:21:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 15:41:26 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,6 @@ void	restart_shell(t_shell **ghost)
 t_shell	*init_shell(char **env)
 {
 	t_shell *new_shell;
-	// int	(*func_arr[7])(t_cmd *cmd, t_shell **ghost) = {
-	// 	&run_echo,
-	// 	&run_cd,
-	// 	&run_pwd,
-	// 	&run_exit,
-	// 	&run_env,
-	// 	&run_unset,
-	// 	&run_export
-	// };
 	
 	new_shell = malloc(sizeof(t_shell));
 	if (!new_shell)
@@ -185,6 +176,8 @@ t_shell	*init_shell(char **env)
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
 	new_shell->env = get_envp(env);
+	// new_shell->path = 0;
+	// new_shell->args = NULL;
 	new_shell->status = 0;
 	new_shell->out = -42;
 	new_shell->pipefd[0] = -69;

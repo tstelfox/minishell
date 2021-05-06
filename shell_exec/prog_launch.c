@@ -6,41 +6,52 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:00:59 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 15:40:59 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-int		check_dir(t_cmd *cmd, t_shell **ghost)
+int	check_dir(t_cmd *cmd, t_shell **ghost)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	lstat(cmd->type, &buf);
 	if (S_ISDIR(buf.st_mode))
 	{
 		(*ghost)->error = DIRECTORY;
-		return(0);
+		return (0);
 	}
 	return (1);
 }
 
+void	free_path(t_shell **ghost)
+{
+	int		i;
+
+	i = 0;
+	if ((*ghost)->path != 0)
+	{
+		while ((*ghost)->path[i])
+		{
+			free((*ghost)->path[i]);
+			i++;
+		}
+		free((*ghost)->path);
+	}
+}
+
 char	**get_path(t_cmd *cmd, t_shell **ghost)
 {
-	int i;
-	int k;
-	char **path;
-	char *command;
+	int		i;
+	int		k;
+	char	**path;
+	char	*command;
 
 	i = 0;
 	k = 0;
 	command = ft_strjoin("/", cmd->type);
-	if ((*ghost)->path != 0)
-	{
-		for (int i = 0; (*ghost)->path[i]; i++)
-			free((*ghost)->path[i]);
-		free((*ghost)->path);
-	}
+	free_path(ghost);
 	while ((*ghost)->env[i])
 	{
 		if (ft_strnstr((*ghost)->env[i], "PATH", 4))
@@ -52,7 +63,7 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 				k++;
 			}
 			free(command);
-			return(path);
+			return (path);
 		}
 		i++;
 	}
@@ -61,6 +72,10 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 
 void	path_launch(t_cmd *cmd, t_shell **ghost)
 {
+	char	**args;
+	t_list	*fucker;
+
+	fucker = ft_lstnew(ft_strdup(cmd->type));
 	if (!check_dir(cmd, ghost))
 	{
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
@@ -68,60 +83,100 @@ void	path_launch(t_cmd *cmd, t_shell **ghost)
 	}
 	if (cmd->type[0] == '.' && cmd->type[1] == '/')
 	{
-		char **args;
 		if (cmd->args)
 		{
-			t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
 			ft_lstadd_front(&cmd->args, fucker);
 			args = list_to_arr(cmd->args);
 		}
 		else
 		{
-			args = (char**)malloc(sizeof(char *) * 2);
+			args = (char **)malloc(sizeof(char *) * 2);
 			args[0] = ft_strdup(cmd->type);
 			args[1] = NULL;
 		}
 		execve(cmd->type, args, (*ghost)->env);
+		// for (int i = 0; args[i]; i++)
+		// 	free(args[i]);
+		// free(args);
 		cmd_notfound(cmd, 0, ghost, 0);
 	}
 }
 
-int	prog_launch(t_cmd *cmd, t_shell **ghost)
+char	**get_args(t_cmd *cmd, t_shell **ghost, t_list *fucker)
 {
-	// char **path;
-	char **args;
-	int	w_status;
+	char	**args;
+	(void)ghost;
 
-	int k = 0;
-	(*ghost)->path = get_path(cmd, ghost);
-	if ((*ghost)->path == NULL)
-	{
-		cmd_notfound(cmd, (*ghost)->error, ghost, 0); // Might need some work
-		// ft_putnbr_fd((*ghost)->error, 1);
-	}
-	int i = 0;
-	while (i < 7)
-	{
-		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
-			return(1);
-		i++;
-	}
 	if (cmd->args)
 	{
-		t_list	*fucker = ft_lstnew(ft_strdup(cmd->type));
 		ft_lstadd_front(&cmd->args, fucker);
 		args = list_to_arr(cmd->args);
+		// for (int i = 0; (*ghost)->args[i]; i++)
+		// 	ft_putstr_fd((*ghost)->args[i], 1);
 	}
 	else
 	{
-		args = (char**)malloc(sizeof(char *) * 2);
+		// ft_putstr_fd("in here?", 1);
+		args = (char **)malloc(sizeof(char *) * 2);
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
+	return (args);
+}
+
+int	prog_launch(t_cmd *cmd, t_shell **ghost)
+{
+	int		w_status;
+	int		k;
+	int		i;
+	t_list	*fucker;
+	char	**args;
+
+	fucker = ft_lstnew(ft_strdup(cmd->type));
+	i = 0;
+	k = 0;
+	(*ghost)->path = get_path(cmd, ghost);
+	if ((*ghost)->path == NULL)
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
+	while (i < 7)
+	{
+		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			return (1);
+		i++;
+	}
+	// (*ghost)->args = get_args(cmd, ghost, fucker);
+	if (cmd->args)
+	{
+		ft_lstadd_front(&cmd->args, fucker);
+		args = list_to_arr(cmd->args);
+		// for (int i = 0; (*ghost)->args[i]; i++)
+		// 	ft_putstr_fd((*ghost)->args[i], 1);
+	}
+	else
+	{
+		// ft_putstr_fd("in here?", 1);
+		args = (char **)malloc(sizeof(char *) * 2);
+		args[0] = ft_strdup(cmd->type);
+		args[1] = NULL;
+	}
+	// if (cmd->args)
+	// {
+	// 	ft_lstadd_front(&cmd->args, fucker);
+	// 	(*ghost)->args = list_to_arr(cmd->args);
+	// 	// for (int i = 0; (*ghost)->args[i]; i++)
+	// 	// 	ft_putstr_fd((*ghost)->args[i], 1);
+	// }
+	// else
+	// {
+	// 	// ft_putstr_fd("in here?", 1);
+	// 	(*ghost)->args = (char **)malloc(sizeof(char *) * 2);
+	// 	(*ghost)->args[0] = ft_strdup(cmd->type);
+	// 	(*ghost)->args[1] = NULL;
+	// }
 	(*ghost)->pid = fork();
 	signal(SIGINT, ctrl_process);
 	signal(SIGQUIT, ctrl_process);
-	if ((*ghost)->pid == 0) //child process
+	if ((*ghost)->pid == 0)
 	{
 		if (cmd->redirection)
 		{
@@ -152,10 +207,6 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	else
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
-		// signal(SIGINT, ctrl_process);
-		for (int i = 0; args[i]; i++)
-			free(args[i]);
-		free(args);
 		if (WIFSIGNALED(w_status))
 			(*ghost)->ret_stat = WTERMSIG(w_status);
 		if (WIFEXITED(w_status))

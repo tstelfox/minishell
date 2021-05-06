@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:20:25 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 15:40:02 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct		s_shell
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
+	// char	**args;
 	char	**path;
 	char	**env;
 	int		status;
