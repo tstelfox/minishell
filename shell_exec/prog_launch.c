@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 16:00:55 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 17:22:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	int		k;
 	int		i;
 	t_list	*fucker;
-	char	**args;
+	// char	**args;
 
 	fucker = ft_lstnew(ft_strdup(cmd->type));
 	i = 0;
@@ -140,37 +140,41 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	while (i < 7)
 	{
-		if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+		// ft_putstr_fd("In here?", 1);
+		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 			return (1);
 		i++;
 	}
 	// (*ghost)->args = get_args(cmd, ghost, fucker);
-	if (cmd->args)
-	{
-		ft_lstadd_front(&cmd->args, fucker);
-		args = list_to_arr(cmd->args);
-		// for (int i = 0; (*ghost)->args[i]; i++)
-		// 	ft_putstr_fd((*ghost)->args[i], 1);
-	}
-	else
-	{
-		args = (char **)malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(cmd->type);
-		args[1] = NULL;
-	}
 	// if (cmd->args)
 	// {
 	// 	ft_lstadd_front(&cmd->args, fucker);
-	// 	(*ghost)->args = list_to_arr(cmd->args);
+	// 	args = list_to_arr(cmd->args);
+	// 	// for (int i = 0; (*ghost)->args[i]; i++)
+	// 	// 	ft_putstr_fd((*ghost)->args[i], 1);
 	// }
 	// else
 	// {
-	// 	(*ghost)->args = (char **)malloc(sizeof(char *) * 2);
-	// 	(*ghost)->args[0] = ft_strdup(cmd->type);
-	// 	(*ghost)->args[1] = NULL;
+	// 	args = (char **)malloc(sizeof(char *) * 2);
+	// 	args[0] = ft_strdup(cmd->type);
+	// 	args[1] = NULL;
 	// }
+	if (cmd->args)
+	{
+		ft_lstadd_front(&cmd->args, fucker);
+		(*ghost)->args = list_to_arr(cmd->args);
+	}
+	else
+	{
+		(*ghost)->args = (char **)malloc(sizeof(char *) * 2);
+		(*ghost)->args[0] = ft_strdup(cmd->type);
+		(*ghost)->args[1] = NULL;
+	}
 	// for (int i = 0; (*ghost)->args[i]; i++)
+	// {
 	// 	ft_putstr_fd((*ghost)->args[i], 1);
+	// 	ft_putstr_fd("\n", 1);
+	// }
 	(*ghost)->pid = fork();
 	signal(SIGINT, ctrl_process);
 	signal(SIGQUIT, ctrl_process);
@@ -192,7 +196,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		{
 			while ((*ghost)->path[k])
 			{
-				if (execve((*ghost)->path[k], args, (*ghost)->env) == -1)
+				if (execve((*ghost)->path[k], (*ghost)->args, (*ghost)->env) == -1)
 					(*ghost)->ret_stat = 1;
 				k++;
 			}

@@ -6,21 +6,21 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 15:41:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 17:24:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char 	*g_builtin[7] = {
-	"echo",
-	"cd",
-	"pwd",
-	"exit",
-	"env",
-	"unset",
-	"export"
-};
+// char 	*g_builtin[7] = {
+// 	"echo",
+// 	"cd",
+// 	"pwd",
+// 	"exit",
+// 	"env",
+// 	"unset",
+// 	"export"
+// };
 
 void	print_echo(t_list *args)
 {
@@ -290,8 +290,11 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		while (i < 7)
 		{
-			// ft_putstr_fd("not in here surelu?", 1);
-			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			// ft_putstr_fd((*ghost)->built_in[i], 1);
+			// ft_putstr_fd("\n", 1);
+			// ft_putnbr_fd(i, 1);
+			// ft_putstr_fd("\n", 1);
+			if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 			{
 				if (cmd->redirection)
 					(*ghost)->out = redirect(cmd, ghost);

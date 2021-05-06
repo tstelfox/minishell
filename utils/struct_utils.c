@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/06 16:00:47 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 17:20:52 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,13 @@ t_shell	*init_shell(char **env)
 	new_shell->error = 0;
 	new_shell->ret_stat = 0;
 	new_shell->pid = -99;
+	new_shell->built_in[0] = "echo";
+	new_shell->built_in[1] = "cd";
+	new_shell->built_in[2] = "pwd";
+	new_shell->built_in[3] = "exit";
+	new_shell->built_in[4] = "env";
+	new_shell->built_in[5] = "unset";
+	new_shell->built_in[6] = "export";
 	new_shell->g_builtin_f[0] = &run_echo;
 	new_shell->g_builtin_f[1] = &run_cd;
 	new_shell->g_builtin_f[2] = &run_pwd;

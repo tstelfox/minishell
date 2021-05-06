@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 16:00:44 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 17:18:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct		s_shell
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
+	char	**args;
 	char	**path;
 	char	**env;
 	int		status;
@@ -106,7 +107,7 @@ typedef struct		s_shell
 	int		pipefd[2];
 	int		out_pipe;
 	int		error;
-	// char	**args;
+	char	*built_in[7];
 	int		(*g_builtin_f[7])(t_cmd *cmd, struct s_shell **ghost);
 }					t_shell;
 
