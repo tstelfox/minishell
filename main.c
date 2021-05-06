@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/06 13:36:11 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:42:19 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	exec_shell(char *envp[])
 	if (!ghost)
 		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
-	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		signal(SIGINT, ctrl);
+		signal(SIGQUIT, SIG_IGN);
 		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);

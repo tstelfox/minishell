@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 16:31:16 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/06 13:48:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 	}
 	else if (flag == NO_FILE)
 	{
+		ft_putstr_fd("bruh in here?\n", output);
 		file = (t_redir *)cmd->redirection->content;
 		ft_putstr_fd(file->file, output);
 		ft_putstr_fd(": No such file or directory\n", output);
