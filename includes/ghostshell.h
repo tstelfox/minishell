@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/05 00:23:39 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/08 20:32:34 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ enum	e_errors
 	NO_MULTI_LINE = 1,
 	INVALID_ENV = 2,
 	PARSE_ERROR = 3,
+	SYNTAX_ERROR = 4,
 };
 
 enum	e_types

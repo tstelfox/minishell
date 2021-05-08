@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/04 18:34:31 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/08 18:10:34 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	expand_env(t_shell **ghost, t_list **lst)
 	t_list	*og = NULL;
 	char	*tmp = NULL;
 	
-	if ((*ghost)->error)
+	if ((*ghost)->error || !lst || !*lst)
 		return ;
 	og = *lst;
 	tmp = find_env(ghost, (*lst)->content);
@@ -133,7 +133,7 @@ void	expand_env(t_shell **ghost, t_list **lst)
 	ft_lstclear(&temp, del_content);
 	free(temp);
 	(*lst) = (*lst)->next;
-	while ((*lst) && (*ghost)->status == PARSE)
+	while ((*lst))
 	{
 		tmp = find_env(ghost, (*lst)->content);
 		temp = lexer(ghost, tmp, " ");

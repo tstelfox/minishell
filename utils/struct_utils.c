@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/04 18:16:10 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/08 21:18:43 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,18 @@ void	del_commands(void *list)
 	t_cmd *commands;
 
 	commands = (t_cmd *)list;
-	free(commands->type);
-	ft_lstclear(&commands->args, del_content);
-	free(commands->args);
-	ft_lstclear(&commands->redirection, del_redir);
-	free(commands->redirection);
+	if (commands->type)
+	{
+		free(commands->type);
+		ft_lstclear(&commands->args, del_content);
+	}
+	if (commands->args)
+		free(commands->args);
+	if (commands->redirection)
+	{
+		ft_lstclear(&commands->redirection, del_redir);
+		free(commands->redirection);
+	}
 	commands->seprator_type = 0;
 	free(commands);
 }
@@ -69,7 +76,7 @@ t_redir	*new_redir(t_shell **ghost, char *file, int type)
 	int		qts;
 
 	if (check_meta(file))
-		error_handler(ghost, PARSE_ERROR, "syntax error near unexpected token", file);
+		error_handler(ghost, SYNTAX_ERROR, "syntax error near unexpected token", file);
 	temp = find_env(ghost, file);
 	if (check_redir(temp)) // quotesssssssssssss
 		error_handler(ghost, PARSE_ERROR, "ambiguous redirect", NULL);
