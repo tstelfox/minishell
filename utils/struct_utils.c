@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/10 13:43:54 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 14:51:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ void	restart_shell(t_shell **ghost)
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
 	(*ghost)->error = 0;
-	// free_arr((*ghost)->args);
 }
 
 t_shell	*init_shell(char **env)

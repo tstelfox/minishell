@@ -6,21 +6,11 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 13:34:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 14:54:41 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-// char 	*g_builtin[7] = {
-// 	"echo",
-// 	"cd",
-// 	"pwd",
-// 	"exit",
-// 	"env",
-// 	"unset",
-// 	"export"
-// };
 
 void	print_echo(t_list *args)
 {
@@ -157,7 +147,6 @@ int	export_replace(char *str, t_shell **ghost)
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
-	int flag = 0;
 	char *str;
 
 	i = 0;
@@ -172,8 +161,6 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	str = cmd->args->content;
 	while (str[i])
 	{
-		if (str[i] == '=')
-			flag = 1;
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
 		{
@@ -182,13 +169,6 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		}
 		i++;
 	}
-	// if (flag != 1)
-	// {
-	// 	if (cmd->args->next)
-	// 		cmd->args = cmd->args->next;
-	// 	cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
-	// 	return (1);
-	// }
 	if (export_replace(str, ghost))
 		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
 	return (1);
