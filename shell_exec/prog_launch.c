@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 14:21:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 14:27:34 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,6 @@ int	check_dir(t_cmd *cmd, t_shell **ghost)
 	}
 	return (1);
 }
-
-// void	free_path(t_shell **ghost)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	if ((*ghost)->path != 0)
-// 	{
-// 		while ((*ghost)->path[i])
-// 		{
-// 			free((*ghost)->path[i]);
-// 			i++;
-// 		}
-// 		free((*ghost)->path);
-// 	}
-// }
 
 void	free_arr(char **arr)
 {
@@ -109,14 +93,12 @@ void	path_launch(t_cmd *cmd, t_shell **ghost)
 		else
 		{
 			free(fucker);
+			free(fucker->content);
 			args = (char **)malloc(sizeof(char *) * 2);
 			args[0] = ft_strdup(cmd->type);
 			args[1] = NULL;
 		}
 		execve(cmd->type, args, (*ghost)->env);
-		// for (int i = 0; args[i]; i++)
-		// 	free(args[i]);
-		// free(args);
 		cmd_notfound(cmd, 0, ghost, 0);
 	}
 }
@@ -126,23 +108,10 @@ void	get_args(t_cmd *cmd, t_shell **ghost)
 	t_list *command;
 
 	command = ft_lstnew(ft_strdup(cmd->type));
-	// char	**args;
-	// (void)ghost;
-
-	// if ((*ghost)->args)
-	// {
-	// 	// ft_putstr_fd("In here?\n", 1);
-	// 	for (int i = 0; (*ghost)->args[i]; i++)
-	// 		free((*ghost)->args[i]);
-	// 	free((*ghost)->args);
-	// 	// (*ghost)->args = NULL;
-	// }
 	if (cmd->args)
 	{
 		ft_lstadd_front(&cmd->args, command);
 		(*ghost)->args = list_to_arr(cmd->args);
-		// for (int i = 0; (*ghost)->args[i]; i++)
-		// 	ft_putstr_fd((*ghost)->args[i], 1);
 	}
 	else
 	{
@@ -150,7 +119,6 @@ void	get_args(t_cmd *cmd, t_shell **ghost)
 		free(command->content);
 		free(command);
 	}
-	// return (args);
 }
 
 int	prog_launch(t_cmd *cmd, t_shell **ghost)
@@ -158,10 +126,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	int		w_status;
 	int		k;
 	int		i;
-	// t_list	*fucker;
-	// char	**temp;
 
-	// fucker = ft_lstnew(ft_strdup(cmd->type));
 	i = 0;
 	k = 0;
 	(*ghost)->path = get_path(cmd, ghost);
@@ -173,38 +138,11 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 			return (1);
 		i++;
 	}
-	// if ((*ghost)->args)
-	// {
-	// 	for (int i = 0; (*ghost)->args[i]; i++)
-	// 		free((*ghost)->args[i]);
-	// 	free((*ghost)->args);
-	// }
 	free_arr((*ghost)->args);
 	get_args(cmd, ghost);
-	// while (1) {}
-	// temp = (*ghost)->args;
-	// if (cmd->args)
-	// {
-	// 	ft_lstadd_front(&cmd->args, fucker);
-	// 	args = list_to_arr(cmd->args);
-	// 	// for (int i = 0; (*ghost)->args[i]; i++)
-	// 	// 	ft_putstr_fd((*ghost)->args[i], 1);
-	// }
-	// else
-	// {
-	// 	args = (char **)malloc(sizeof(char *) * 2);
-	// 	args[0] = ft_strdup(cmd->type);
-	// 	args[1] = NULL;
-	// }
-	// for (int i = 0; (*ghost)->args[i]; i++)
-	// {
-	// 	ft_putstr_fd((*ghost)->args[i], 1);
-	// 	ft_putstr_fd("\n", 1);
-	// }
-	// while (1) {}
 	(*ghost)->pid = fork();
-	// signal(SIGINT, ctrl_process);
-	// signal(SIGQUIT, ctrl_process);
+	signal(SIGINT, ctrl_process);
+	signal(SIGQUIT, ctrl_process);
 	if ((*ghost)->pid == 0)
 	{
 		if (cmd->redirection)
@@ -227,13 +165,6 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 					(*ghost)->ret_stat = 1;
 				k++;
 			}
-			// if ((*ghost)->args)
-			// {
-			// 	ft_putstr_fd("In here?\n", 1);
-			// 	for (int i = 0; (*ghost)->args[i]; i++)
-			// 		free((*ghost)->args[i]);
-			// 	free((*ghost)->args);
-			// }
 			cmd_notfound(cmd, 0, ghost, 0);
 			exit(127);
 		}
@@ -242,19 +173,11 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 		strerror(errno);
 	else
 	{
-		// while (1) {}
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
 		if (WIFSIGNALED(w_status))
 			(*ghost)->ret_stat = WTERMSIG(w_status);
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
-		// free_arr((*ghost)->args);
-		// if ((*ghost)->args)
-		// {
-		// 	for (int i = 0; (*ghost)->args[i]; i++)
-		// 		free((*ghost)->args[i]);
-		// 	free((*ghost)->args);
-		// }
 	}
 	return (1);
 }

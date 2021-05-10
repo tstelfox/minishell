@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/10 14:22:53 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 14:26:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	exec_shell(char *envp[])
 	init_reins(&ghost);
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
-		// signal(SIGINT, ctrl);
-		// signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, ctrl);
+		signal(SIGQUIT, SIG_IGN);
 		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
