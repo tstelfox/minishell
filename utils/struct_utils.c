@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/10 11:47:52 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 13:43:54 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void	restart_shell(t_shell **ghost)
 	(*ghost)->tokens = NULL;
 	(*ghost)->status = PARSE;
 	(*ghost)->error = 0;
+	// free_arr((*ghost)->args);
 }
 
 t_shell	*init_shell(char **env)
@@ -184,7 +185,7 @@ t_shell	*init_shell(char **env)
 	new_shell->current = new_shell->history;
 	new_shell->env = get_envp(env);
 	// new_shell->path = 0;
-	// new_shell->args = NULL;
+	new_shell->args = NULL;
 	new_shell->status = 0;
 	new_shell->out = -42;
 	new_shell->pipefd[0] = -69;
