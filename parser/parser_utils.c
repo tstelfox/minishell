@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/05 13:52:47 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/08 21:45:06 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,16 @@ int		handle_seperator(t_shell **ghost, t_cmd **command)
 	if (!ft_strcmp((*ghost)->tokens->content, "|"))
 	{
 		(*command)->seprator_type = PIPE;
-		if (!ft_strcmp((*ghost)->tokens->next->content, "|"))
-			error_handler(ghost, PARSE_ERROR, "ghostshell does not support double pipes", NULL);
+		if ((*ghost)->tokens->next)
+		{
+			if (!ft_strcmp((*ghost)->tokens->next->content, "|"))
+				error_handler(ghost, PARSE_ERROR, \
+				"ghostshell does not support double pipes", NULL);	
+		}
 		return (1);
 	}
+	if (!ft_strcmp((*ghost)->tokens->content, ";"))
+		return (1);	
 	return (0);
 }
 
@@ -139,11 +145,11 @@ void	remove_quotes(t_shell **ghost, t_list **list)
 	t_list	*temp;
 
 	temp = NULL;
-	if ((*ghost)->error)
+	if ((*ghost)->error || !list || !*list)
 		return ;
 	if (*list)
 		temp = *list;
-	ft_putchar_fd('\n', STDOUT_FILENO);
+	// ft_putchar_fd('\n', STDOUT_FILENO);
 	while (temp)
 	{
 		str = temp->content;
