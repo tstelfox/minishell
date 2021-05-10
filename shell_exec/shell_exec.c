@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 14:54:41 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 16:33:32 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,11 @@ int	run_env(t_cmd *cmd, t_shell **ghost)
 		return (1);
 	while ((*ghost)->env[i])
 	{
-		ft_putstr_fd((*ghost)->env[i], STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		if (ft_strchr((*ghost)->env[i], '='))
+		{
+			ft_putstr_fd((*ghost)->env[i], STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 		i++;
 	}
 	return (1);
@@ -144,6 +147,38 @@ int	export_replace(char *str, t_shell **ghost)
 	return (1);
 }
 
+void	print_export(t_shell **ghost)
+{
+	int i;
+	int k;
+
+	i = 0;
+	k = 0;
+	while ((*ghost)->env[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		while ((*ghost)->env[i][k] != '"')
+		{
+			ft_putchar_fd((*ghost)->env[i][k], 1);
+			k++;
+			if ((*ghost)->env[i][k] == '=')
+			{
+				ft_putstr_fd("=\"", 1);
+				k++;
+				while ((*ghost)->env[i][k])
+				{
+					ft_putchar_fd((*ghost)->env[i][k], 1);
+					k++;
+				}
+				ft_putstr_fd("\"\n", 1);
+				k = 0;
+				i++;
+				break;
+			}
+		}
+	}
+}
+
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
@@ -151,13 +186,33 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 
 	i = 0;
 	if (!cmd->args)
+	{
+		print_export(ghost);
 		return (1); //Actually here it needs to print the whole fuckin thing
+	}
 	// if (cmd->args->next)
 	// {
 	// 	cmd->args = cmd->args->next;
 	// 	cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 	// 	return(1);
 	// }
+	while (cmd->args->next)
+	{
+		str = cmd->args->content;
+		while (str[i])
+		{
+			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+				&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
+			{
+				cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+				return (1);
+			}
+			i++;
+		}
+		if (export_replace(str, ghost))
+			(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
+		cmd->args = cmd->args->next;
+	}
 	str = cmd->args->content;
 	while (str[i])
 	{
