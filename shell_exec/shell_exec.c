@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 16:33:32 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/10 16:51:42 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,11 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	while (cmd->args->next)
 	{
 		str = cmd->args->content;
+		if (str[0] == '=')
+		{
+			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+			return (1);
+		}
 		while (str[i])
 		{
 			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
@@ -214,6 +219,11 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		cmd->args = cmd->args->next;
 	}
 	str = cmd->args->content;
+	if (str[0] == '=')
+	{
+		cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+		return (1);
+	}
 	while (str[i])
 	{
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
