@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 14:27:34 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/11 15:32:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	free_arr(char **arr)
 	{
 		while (arr[i])
 		{
-			ft_putstr_fd(arr[i], 1);
-			ft_putstr_fd("\n", 1);
+			// ft_putstr_fd(arr[i], 1);
+			// ft_putstr_fd("\n", 1);
 			free(arr[i]);
 			i++;
 		}
