@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/08 21:05:13 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/11 20:58:27 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	ctrl(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\b \b", 1);
-		ft_putstr_fd("\b \b", 1);
-		// reins_input_clear(line)
-		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		// ft_putstr_fd("\b \b", 1);
+		// ft_putstr_fd("\b \b", 1);
+		// // reins_input_clear(line)
+		// ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 	}
 	if (sig == SIGQUIT)
 	{
@@ -47,8 +47,9 @@ void	exec_shell(char *envp[])
 	if (!ghost)
 		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
-	signal(SIGINT, ctrl);
-	signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
+	// signal(SIGINT, ctrl);
+	// signal(SIGINT, SIG_IGN);
+	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
 		// print_env(ghost->env);
@@ -69,9 +70,9 @@ void	exec_shell(char *envp[])
 			if (!ghost->commands)
 				break ;
 			// printf("LOOOOOOL\n");
-			// if (ghost->commands && !ghost->error)
-			// 	if (shell_exec(ghost->commands, &ghost) == 0)
-			// 		return ;
+			if (ghost->commands && !ghost->error)
+				if (shell_exec(ghost->commands, &ghost) == 0)
+					return ;
 			ghost->error = 0;
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			ft_cmd_lstiter(ghost->commands, print_cmd);

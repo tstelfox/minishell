@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/08 20:32:34 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/11 20:50:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int		count_quotes(char *str);
 char	*read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
+int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
 
 //lexer.c
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);

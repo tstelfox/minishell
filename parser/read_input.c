@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/08 21:24:39 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/11 21:08:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,27 @@ int		down_function(t_input *line, char *buf, t_hook *hook)
 	return (RD_IDLE);
 }
 
+int		ctrl_d_function(t_input *line, char *buf, t_hook *hook)
+{
+	t_shell **ghost;
+	t_dlist *node;
+
+	ghost = hook->param;
+	node = (*ghost)->current;
+	(void)buf;
+	// printf("YAHHH\n");
+	if (!reins_input_clear(line))
+		return (1);
+	return (RD_SEND);
+}
+
 char	*read_line(t_shell **ghost)
 {
 	int		ret;
 	char	*input;
+	// char *input = NULL;
 
+	// ret = reins_print_keycodes((*ghost)->reins);
 	ret = reins_get_input((*ghost)->reins, &input);
 	// printf("\ninput[%s]\n", input);
 	if (ret == 0)
