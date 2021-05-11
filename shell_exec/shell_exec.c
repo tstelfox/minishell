@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/10 16:51:42 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/11 20:24:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	if (!cmd->args)
 	{
 		print_export(ghost);
-		return (1); //Actually here it needs to print the whole fuckin thing
+		return (1);
 	}
 	// if (cmd->args->next)
 	// {
