@@ -6,31 +6,11 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/26 15:21:02 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/11 20:24:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-char	*g_builtin[7] = {
-		"echo",
-		"cd",
-		"pwd",
-		"exit",
-		"env",
-		"unset",
-		"export"
-};
-
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost) = {
-		&run_echo,
-		&run_cd,
-		&run_pwd,
-		&run_exit,
-		&run_env,
-		&run_unset,
-		&run_export
-};
 
 void	print_echo(t_list *args)
 {
@@ -70,6 +50,11 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 	int i = 0;
 	if (cmd->args == NULL)
 		return (1);
+	if (ft_strcmp(cmd->args->content, "-") == 0)
+	{
+		ft_putstr_fd("The ghostshell does not support this variable expansion\n", 1);
+		return (1);
+	}
 	else if ((ft_strcmp(cmd->args->content, "~") == 0)) // || (ft_strcmp(cmd->args->content, "-") == 0))
 	{
 		while ((*ghost)->env[i])
@@ -80,27 +65,9 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 				if (chdir(&(*ghost)->env[i][5]) != 0)
 					strerror(errno);
 			}
-			// if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD"))
-			// 	!= 0 && (ft_strcmp(cmd->args->content, "-") == 0))
-			// {
-			// 	if (chdir(&(*ghost)->env[i][7]) != 0)
-			// 		strerror(errno);
-			// }
 			i++;
 		}
 	}
-	// else if (ft_strcmp(cmd->args->content, "-") == 0)
-	// {
-	// 	while ((*ghost)->env[i])
-	// 	{
-	// 		if (ft_strnstr((*ghost)->env[i], "OLDPWD", ft_strlen("OLDPWD")) != 0)
-	// 		{
-	// 			if (chdir(&(*ghost)->env[i][7]) != 0)
-	// 				strerror(errno);
-	// 		}
-	// 		i++;
-	// 	}
-	// }
 	else
 	{
 		if (chdir(cmd->args->content) != 0)
@@ -138,8 +105,11 @@ int	run_env(t_cmd *cmd, t_shell **ghost)
 		return (1);
 	while ((*ghost)->env[i])
 	{
-		ft_putstr_fd((*ghost)->env[i], STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		if (ft_strchr((*ghost)->env[i], '='))
+		{
+			ft_putstr_fd((*ghost)->env[i], STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 		i++;
 	}
 	return (1);
@@ -177,25 +147,93 @@ int	export_replace(char *str, t_shell **ghost)
 	return (1);
 }
 
+void	print_export(t_shell **ghost)
+{
+	int i;
+	int k;
+
+	i = 0;
+	k = 0;
+	while ((*ghost)->env[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		while ((*ghost)->env[i][k] != '"')
+		{
+			ft_putchar_fd((*ghost)->env[i][k], 1);
+			k++;
+			if ((*ghost)->env[i][k] == '=')
+			{
+				ft_putstr_fd("=\"", 1);
+				k++;
+				while ((*ghost)->env[i][k])
+				{
+					ft_putchar_fd((*ghost)->env[i][k], 1);
+					k++;
+				}
+				ft_putstr_fd("\"\n", 1);
+				k = 0;
+				i++;
+				break;
+			}
+		}
+	}
+}
+
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int i;
 	char *str;
 
 	i = 0;
+	if (!cmd->args)
+	{
+		print_export(ghost);
+		return (1);
+	}
+	// if (cmd->args->next)
+	// {
+	// 	cmd->args = cmd->args->next;
+	// 	cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+	// 	return(1);
+	// }
+	while (cmd->args->next)
+	{
+		str = cmd->args->content;
+		if (str[0] == '=')
+		{
+			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+			return (1);
+		}
+		while (str[i])
+		{
+			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+				&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
+			{
+				cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+				return (1);
+			}
+			i++;
+		}
+		if (export_replace(str, ghost))
+			(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
+		cmd->args = cmd->args->next;
+	}
 	str = cmd->args->content;
+	if (str[0] == '=')
+	{
+		cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
+		return (1);
+	}
 	while (str[i])
 	{
 		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-			&& str[i] != '=' && str[i] != '/' && str[i] != '"')) || str[0] == '=')
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 			return (1);
 		}
 		i++;
 	}
-	if (!cmd->args)
-		return (1);
 	if (export_replace(str, ghost))
 		(*ghost)->env = arr_addback((*ghost)->env, cmd->args->content);
 	return (1);
@@ -231,7 +269,7 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	}
 	temp[j] = 0;
 	free((*ghost)->env);
-	(*ghost)->env = (char**)malloc(sizeof(*temp));
+	// (*ghost)->env = (char**)malloc(sizeof(*temp));
 	(*ghost)->env = temp;
 	return(1);
 }
@@ -259,10 +297,14 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 		}
 		else
 		{
-			ft_putstr_fd("ghostshell: ", 1);
-			ft_putstr_fd(exit_code, 1);
-			ft_putstr_fd(": numeric argument reguired\n", 1);
-			exit(0);
+			if (cmd->seprator_type == PIPE)
+				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, ERR_PIPE);
+			else
+				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
+			exit(255);
+			// ft_putstr_fd("ghostshell: ", 1);
+			// ft_putstr_fd(exit_code, 1);
+			// ft_putstr_fd(": numeric argument reguired\n", 1);
 		}
 	}
 	(void)ghost;
@@ -293,20 +335,21 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		while (i < 7)
 		{
-			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			// ft_putstr_fd((*ghost)->built_in[i], 1);
+			// ft_putstr_fd("\n", 1);
+			// ft_putnbr_fd(i, 1);
+			// ft_putstr_fd("\n", 1);
+			if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 			{
 				if (cmd->redirection)
 					(*ghost)->out = redirect(cmd, ghost);
 				if ((*ghost)->out == -1)
 					return(1);
-				(*g_builtin_f[i])(cmd, ghost);
+				(*ghost)->g_builtin_f[i](cmd, ghost);
+				(*ghost)->ret_stat = 0;
 				if ((*ghost)->out != -42)
 				{
-					// if ((*ghost)->out == 0)
-					// 	dup2((*ghost)->out, STDIN_FILENO);
-					// else
 					dup2((*ghost)->out, STDOUT_FILENO);
-					// ft_putstr_fd("In here?", 1);
 				}
 				if (!command->next)
 				{
@@ -320,11 +363,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
 		{
-			// if ((*ghost)->out == 0)
-			// 	dup2((*ghost)->out, STDIN_FILENO);
-			// else
 			dup2((*ghost)->out, STDOUT_FILENO);
-			// ft_putstr_fd("In here?", 1);
 		}
 		if (!command->next)
 		{

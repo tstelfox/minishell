@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/11 20:58:27 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/12 15:06:59 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,28 @@ void	ctrl(int sig)
 {
 	if (sig == SIGINT)
 	{
+		// ft_putstr_fd("IN HEREEE\n", 1);
 		// ft_putstr_fd("\b \b", 1);
 		// ft_putstr_fd("\b \b", 1);
-		// // reins_input_clear(line)
-		// ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
 	}
 	if (sig == SIGQUIT)
 	{
 		// ft_putstr_fd("\b \b", 1);
 		// ft_putstr_fd("\b \b", 1);
+	}
+}
+
+void	ctrl_process(int sig)
+{
+	if (sig == SIGINT)
+	{
+		// ft_putstr_fd("In here pls\n", 1);
+		ft_putstr_fd("\n", 1);
+	}
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: 3\n", 1);
 	}
 }
 
@@ -47,11 +60,10 @@ void	exec_shell(char *envp[])
 	if (!ghost)
 		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
 	init_reins(&ghost);
-	// signal(SIGINT, ctrl);
-	// signal(SIGINT, SIG_IGN);
-	// signal(SIGQUIT, ctrl); // I need this to be able to quite sometimes lol
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
+		signal(SIGINT, ctrl);
+		signal(SIGQUIT, SIG_IGN);
 		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
 		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
@@ -74,8 +86,8 @@ void	exec_shell(char *envp[])
 				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
 			ghost->error = 0;
-			ft_putchar_fd('\n', STDOUT_FILENO);
-			ft_cmd_lstiter(ghost->commands, print_cmd);
+			// ft_putchar_fd('\n', STDOUT_FILENO);
+			// ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");
@@ -87,7 +99,7 @@ void	exec_shell(char *envp[])
 		ghost->tokens = head;
 		// ft_lstiter(ghost->tokens, print_data);
 		restart_shell(&ghost);
-		printf("RESET\n");
+		// printf("RESET\n");
 	}
 	reins_destroy(ghost->reins);
 }

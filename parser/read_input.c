@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/11 21:08:58 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/12 14:54:58 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ char	*read_line(t_shell **ghost)
 	ret = reins_get_input((*ghost)->reins, &input);
 	// printf("\ninput[%s]\n", input);
 	if (ret == 0)
+	{
+		ft_putstr_fd("exit\n", 1);
 		exit(0);
+	}
 	if (ret < 0)
 	{
 		free(input);

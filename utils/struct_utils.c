@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/08 21:18:43 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/10 14:51:51 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,13 +183,28 @@ t_shell	*init_shell(char **env)
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
 	new_shell->env = get_envp(env);
+	// new_shell->path = 0;
+	new_shell->args = NULL;
 	new_shell->status = 0;
 	new_shell->out = -42;
 	new_shell->pipefd[0] = -69;
 	new_shell->pipefd[1] = -47;
-	// new_shell->error = -46;
 	new_shell->error = 0;
 	new_shell->ret_stat = 0;
 	new_shell->pid = -99;
+	new_shell->built_in[0] = "echo";
+	new_shell->built_in[1] = "cd";
+	new_shell->built_in[2] = "pwd";
+	new_shell->built_in[3] = "exit";
+	new_shell->built_in[4] = "env";
+	new_shell->built_in[5] = "unset";
+	new_shell->built_in[6] = "export";
+	new_shell->g_builtin_f[0] = &run_echo;
+	new_shell->g_builtin_f[1] = &run_cd;
+	new_shell->g_builtin_f[2] = &run_pwd;
+	new_shell->g_builtin_f[3] = &run_exit;
+	new_shell->g_builtin_f[4] = &run_env;
+	new_shell->g_builtin_f[5] = &run_unset;
+	new_shell->g_builtin_f[6] = &run_export;
 	return (new_shell);
 }

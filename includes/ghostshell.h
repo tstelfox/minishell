@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/11 20:50:58 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/12 14:54:49 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ enum	e_types
 	DIRECTORY = 3,
 	EXPRT_FAIL = 4,
 	ERR_PIPE = 5,
-	NO_FILE = 6
+	NO_FILE = 6,
+	BAD_ARG_EXIT = 7,
+	NO_ACCESS = 8
 };
 
 enum	e_return
@@ -97,14 +99,17 @@ typedef struct		s_shell
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
+	char	**args;
 	char	**path;
 	char	**env;
 	int		status;
-	int		ret_stat; // This is the $? or last exit value.
+	int		ret_stat;
 	int		out;
 	int		pipefd[2];
 	int		out_pipe;
 	int		error;
+	char	*built_in[7];
+	int		(*g_builtin_f[7])(t_cmd *cmd, struct s_shell **ghost);
 }					t_shell;
 
 //---------------------------------shell_exec---------------------------------//
@@ -120,7 +125,6 @@ void	print_echo(t_list *args);
 
 //globals
 char	*g_builtin[7];
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost);
 
 // Programs
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
@@ -134,7 +138,14 @@ int		redir_muti(void *file_struct);
 
 // Piping
 int		pipe_exec(t_list *command, t_shell **ghost);
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num);
+void	path_launch(t_cmd *cmd, t_shell **ghost);
+
+// Signals
+void	ctrl_process(int sig);
+
+// Freeing
+void	free_arr(char **arr);
 
 //-----------------------------------error------------------------------------//
 //error.c
