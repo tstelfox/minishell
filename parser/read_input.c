@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/12 14:54:58 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/12 21:15:54 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*read_line(t_shell **ghost)
 	// printf("\ninput[%s]\n", input);
 	if (ret == 0)
 	{
-		ft_putstr_fd("exit\n", 1);
+		// ft_putstr_fd("exit\n", 1);
 		exit(0);
 	}
 	if (ret < 0)

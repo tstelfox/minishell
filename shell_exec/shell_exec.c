@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/11 20:24:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/12 21:15:44 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ int	run_exit(t_cmd *cmd, t_shell **ghost)
 	// ft_putnbr_fd((*ghost)->pid, 1);
 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
 	{
-		ft_putstr_fd("exit", 1);
+		// ft_putstr_fd("exit", 1);
 		ft_putstr_fd("\n", 1);
 		// free_all(ghost);
 	}
