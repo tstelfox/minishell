@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 13:20:02 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 14:15:21 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,39 +298,50 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 
 int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
-	char *exit_code;
+	char	*exit_code;
+	int		i;
+	int		k;
 
-	// ft_putnbr_fd((*ghost)->pid, 1);
+	i = 0;
+	k = 0;
+	if (cmd->seprator_type == PIPE)
+		k = ERR_PIPE;
 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
 	{
 		ft_putstr_fd("exit", 1);
 		ft_putstr_fd("\n", 1);
-		// free_all(ghost);
 	}
-	// system("leaks ghostshell");
 	if (!cmd->args)
 		exit(0);
 	else
 	{
 		exit_code = cmd->args->content;
-		if (ft_isdigit(exit_code[0])) // Need to perfect this tbh
+		while (exit_code[i])
 		{
-			exit(ft_atoi(exit_code));
+			if (!ft_isdigit(exit_code[i]) && exit_code[i] != '-')
+				break;
+			if (i != 0 && !ft_isdigit(exit_code[i]))
+				break;
+			if (cmd->args->next)
+			{
+				cmd_notfound(cmd, TOO_MANY_ARGS, ghost, k);
+				(*ghost)->ret_stat = 1;
+				return(1);
+			}
+			i++;
+			if(!exit_code[i])
+			{
+				i = ft_atoi(exit_code);
+				while (i > 255)
+					i -= 256;
+				while (i < 0)
+					i += 256;
+				exit(i);
+			}
 		}
-		else
-		{
-			if (cmd->seprator_type == PIPE)
-				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, ERR_PIPE);
-			else
-				cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
-			exit(255);
-			// ft_putstr_fd("ghostshell: ", 1);
-			// ft_putstr_fd(exit_code, 1);
-			// ft_putstr_fd(": numeric argument reguired\n", 1);
-		}
+		cmd_notfound(cmd, BAD_ARG_EXIT, ghost, k);
+		exit(255);
 	}
-	(void)ghost;
-	// system ("leaks ghostshell");
 }
 
 int	shell_exec(t_list *command, t_shell **ghost)

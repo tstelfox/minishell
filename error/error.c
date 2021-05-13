@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/13 12:43:32 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 14:16:46 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		ft_putstr_fd(": '", output);
 		ft_putstr_fd(cmd->args->content, output);
 		ft_putstr_fd("': not a valid identifier\n", output);
+	}
+	else if (flag == TOO_MANY_ARGS)
+	{
+		ft_putstr_fd("exit: too many arguments\n", output);
 	}
 	else if (flag == BAD_ARG_EXIT)
 	{
