@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/11 20:24:31 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 11:52:21 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,12 @@ int	run_cd(t_cmd *cmd, t_shell **ghost)
 	else
 	{
 		if (chdir(cmd->args->content) != 0)
-			strerror(errno);
+		{
+			if (cmd->seprator_type == PIPE)
+				cmd_notfound(cmd, NO_FILE, ghost, ERR_PIPE);
+			else
+				cmd_notfound(cmd, NO_FILE, ghost, 0);
+		}
 	}
 	return (1);
 }
@@ -345,8 +350,8 @@ int	shell_exec(t_list *command, t_shell **ghost)
 					(*ghost)->out = redirect(cmd, ghost);
 				if ((*ghost)->out == -1)
 					return(1);
-				(*ghost)->g_builtin_f[i](cmd, ghost);
 				(*ghost)->ret_stat = 0;
+				(*ghost)->g_builtin_f[i](cmd, ghost);
 				if ((*ghost)->out != -42)
 				{
 					dup2((*ghost)->out, STDOUT_FILENO);
