@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/06 17:13:36 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 16:38:03 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
-	char **path;
-	char **args;
-	int k;
+	char	**path;
+	char	**args;
+	t_list	*prog;
+	int		k;
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
@@ -24,7 +25,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	k = 0;
 	if (cmd->args)
 	{
-		t_list *prog = ft_lstnew(ft_strdup(cmd->type));
+		prog = ft_lstnew(ft_strdup(cmd->type));
 		ft_lstadd_front(&cmd->args, prog);
 		args = list_to_arr(cmd->args);
 	}
