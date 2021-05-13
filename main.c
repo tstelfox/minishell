@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/10 14:26:06 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/12 16:09:44 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ctrl(int sig)
 		// ft_putstr_fd("IN HEREEE\n", 1);
 		// ft_putstr_fd("\b \b", 1);
 		// ft_putstr_fd("\b \b", 1);
-		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDERR_FILENO);
 	}
 	if (sig == SIGQUIT)
 	{
@@ -66,7 +66,7 @@ void	exec_shell(char *envp[])
 		signal(SIGQUIT, SIG_IGN);
 		// print_env(ghost->env);
 		ghost->first_command = TRUE;// for storing the first command in history;
-		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDOUT_FILENO);
+		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDERR_FILENO);
 		line = read_line(&ghost);
 		// printf("BEFO\n");
 		ghost->tokens = lexer(&ghost, line, " ><|;");
