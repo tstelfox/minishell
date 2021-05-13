@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:14:11 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/13 12:23:57 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 12:43:32 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 		(*ghost)->ret_stat = EXEC_FAIL;
 		ft_putstr_fd(cmd->type, output);
 		ft_putstr_fd(": is a directory\n", output);
-		// ft_putstr_fd(strerror(errno), output);
 	}
 	else if (flag == EXPRT_FAIL)
 	{
 		(*ghost)->ret_stat = ERR;
-		// ft_putnbr_fd((*ghost)->ret_stat, 1);
 		ft_putstr_fd(cmd->type, output);
 		ft_putstr_fd(": '", output);
 		ft_putstr_fd(cmd->args->content, output);
@@ -60,15 +58,13 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 	}
 	else if (flag == BAD_ARG_EXIT)
 	{
-		// ft_putstr_fd("ghostshell: ", output);
 		ft_putstr_fd(cmd->type, output);
 		ft_putstr_fd(": ", output);
-		ft_putstr_fd((char*)cmd->args->content, output);
+		ft_putstr_fd(cmd->args->content, output);
 		ft_putstr_fd(": numeric argument reguired\n", output);
 	}
 	else if (flag == NO_FILE)
 	{
-		// ft_putstr_fd("bruh in here?\n", output);
 		if (cmd->redirection)
 		{
 			file = (t_redir *)cmd->redirection->content;
@@ -81,7 +77,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 			ft_putstr_fd(cmd->args->content, output);
 		}
 		ft_putstr_fd(": No such file or directory\n", output);
-		// ft_putstr_fd(strerror(errno), output);
 	}
 	else if (!cmd->redirection)
 	{
@@ -97,10 +92,7 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe)
 			ft_putstr_fd(strerror(errno), output);
 		}
 		else
-		{
-			// ft_putstr_fd("fucking\n", 1);
 			ft_putstr_fd(" command not found", output);
-		}
 		ft_putstr_fd("\n", output);
 	}
 }
