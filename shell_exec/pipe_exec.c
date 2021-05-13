@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 16:38:03 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 17:33:03 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, (*ghost)->error, ghost, ERR_PIPE); // This might need some work. maybe exit
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	k = 0;
 	if (cmd->args)
 	{
@@ -35,7 +35,6 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		args[0] = ft_strdup(cmd->type);
 		args[1] = NULL;
 	}
-	// close(fd_in);
 	if (ft_strchr(cmd->type, '/'))
 	{
 		path_launch(cmd, ghost);
@@ -48,16 +47,11 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 		while (path[k])
 		{
 			if (execve(path[k], args, (*ghost)->env) == -1)
-			{
-				// ft_putnbr_fd(errno, 1);
 				(*ghost)->ret_stat = 1;
-			}
 			k++;
 		}
 	}
-	// close((*ghost)->pipefd[0]);
-	// pipe_err_message(cmd, ghost)
-	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
+	cmd_notfound(cmd, 0, ghost, 0);
 	exit(127);
 }
 
