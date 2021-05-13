@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 17:34:47 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 17:48:00 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	run_echo(t_cmd *cmd, t_shell **ghost)
 	{
 		cmd->args = cmd->args->next;
 		print_echo(cmd->args);
-			// ft_putstr_fd(cmd->args->content, STDOUT_FILENO);
 	}
 	else
 	{
@@ -47,19 +46,21 @@ int	run_echo(t_cmd *cmd, t_shell **ghost)
 
 int	run_cd(t_cmd *cmd, t_shell **ghost)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (cmd->args == NULL)
 		return (1);
 	if (ft_strcmp(cmd->args->content, "-") == 0)
 	{
-		ft_putstr_fd("The ghostshell does not support this variable expansion\n", 1);
+		ft_putstr_fd("Ghostshell does not support this var expansion\n", 1);
 		return (1);
 	}
 	else if ((ft_strcmp(cmd->args->content, "~") == 0))
 	{
 		while ((*ghost)->env[i])
 		{
-			if (ft_strnstr((*ghost)->env[i], "HOME", ft_strlen("HOME")) 
+			if (ft_strnstr((*ghost)->env[i], "HOME", ft_strlen("HOME"))
 				!= 0 && (ft_strcmp(cmd->args->content, "~") == 0))
 			{
 				if (chdir(&(*ghost)->env[i][5]) != 0)
@@ -98,9 +99,9 @@ int	run_pwd(t_cmd *cmd, t_shell **ghost)
 
 int	run_env(t_cmd *cmd, t_shell **ghost)
 {
-	int i = 0;
+	int	i;
 
-
+	i = 0;
 	if (cmd->args != NULL)
 		return (1);
 	while ((*ghost)->env[i])
@@ -117,17 +118,17 @@ int	run_env(t_cmd *cmd, t_shell **ghost)
 
 int	export_replace(char *str, t_shell **ghost)
 {
-	int i;
-	char *var;
+	int		i;
+	char	*var;
 
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '=')
-			break;
+			break ;
 		i++;
 	}
-	var = (char*)malloc(sizeof(char) * (i + 1));
+	var = (char *)malloc(sizeof(char) * (i + 1));
 	ft_strlcpy(var, str, i + 1);
 	i = 0;
 	while ((*ghost)->env[i])
@@ -150,8 +151,8 @@ int	export_replace(char *str, t_shell **ghost)
 
 void	print_export(t_shell **ghost)
 {
-	int i;
-	int k;
+	int	i;
+	int	k;
 
 	i = 0;
 	k = 0;
@@ -176,7 +177,7 @@ void	print_export(t_shell **ghost)
 					ft_putstr_fd("\"\n", 1);
 					k = 0;
 					i++;
-					break;
+					break ;
 				}
 			}
 		}
@@ -191,8 +192,8 @@ void	print_export(t_shell **ghost)
 
 int	run_export(t_cmd *cmd, t_shell **ghost)
 {
-	int i;
-	char *str;
+	int		i;
+	char	*str;
 
 	i = 0;
 	if (!cmd->args)
@@ -211,7 +212,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		while (str[i])
 		{
 			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
-				&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=') // Think about spaces between quotes.
+			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=')
 			{
 				cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
 				return (1);

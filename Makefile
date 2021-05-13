@@ -6,13 +6,14 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/10 13:07:21 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/13 17:40:51 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
 
-ERR = error/error.c
+ERR = error/error.c \
+		error/err_msg.c
 
 UTIL = struct_utils.c \
 		dlist.c \
