@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/17 19:03:59 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/11 21:00:51 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/13 16:25:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	init_reins(t_shell **ghost)
 		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
 	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, ghost))
 		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
-	if (!reins_key((*ghost)->reins, KEY_CNTRL_C, ctrl_d_function))
-		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
-	if (!reins_hook((*ghost)->reins, KEY_CNTRL_C, &pass_param, ghost))
-		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
+	// if (!reins_key((*ghost)->reins, KEY_CNTRL_C, ctrl_d_function))
+	// 	error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
+	// if (!reins_hook((*ghost)->reins, KEY_CNTRL_C, &pass_param, ghost))
+	// 	error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
 }

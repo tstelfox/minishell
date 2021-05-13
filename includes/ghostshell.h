@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 16:16:21 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/13 16:21:55 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ typedef struct 		s_cmd
 	t_list			*redirection;
 	int				seprator_type;
 }					t_cmd;
-
 
 typedef struct		s_shell
 {
