@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/12 16:09:44 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/13 11:57:46 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	exec_shell(char *envp[])
 	ghost = init_shell(envp);
 	if (!ghost)
 		error_handler(&ghost, INIT_ERROR, "failed to initialize structs", NULL);
-	init_reins(&ghost);
+	// init_reins(&ghost);
 	while (ghost->status != INTERNAL_ERROR) // check for errors
 	{
 		signal(SIGINT, ctrl);
@@ -101,7 +101,7 @@ void	exec_shell(char *envp[])
 		restart_shell(&ghost);
 		// printf("RESET\n");
 	}
-	reins_destroy(ghost->reins);
+	// reins_destroy(ghost->reins);
 }
 
 int	main(int argc, char *args[], char *envp[])
