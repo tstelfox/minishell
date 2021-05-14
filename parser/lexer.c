@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/03 13:36:49 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/14 19:20:20 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
 	ft_lstadd_back(ret, new);
 }
 
-int		tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)
+int	tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)
 {
 	int len;
 	
 	len = i - start;
-	if (i == start) // if nothing before seperator
+	if (i == start)
 		len = 1;
-	if (str[start] != ' ') // ignore spaces
-		add_tkn(ghost, ret, str, start, len); // if input before separator or esparator, tokenize it
-	if (i != start && str[i] != ' ') // if input before separator, tokenize seperator
+	if (str[start] != ' ')
+		add_tkn(ghost, ret, str, start, len);
+	if (i != start && str[i] != ' ')
 		add_tkn(ghost, ret, str, i, 1);
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 17:43:06 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/14 19:18:29 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ char	**get_envp(char **envp)
 	return (env);
 }
 
-char		*find_env_val(t_shell **ghost, char *str)
+char	*find_env_val(t_shell **ghost, char *str)
 {
 	char	**envs;
-	int 	j;
+	int		j;
 	int		i;
 
 	j = 0;
@@ -52,27 +52,35 @@ char		*find_env_val(t_shell **ghost, char *str)
 		while (envs[j][i] != '=')
 			i++;
 		if (!ft_strncmp(envs[j], str, ft_strlen(str)))
-			return (ft_strdup(envs[j] + i + 1));	
+			return (ft_strdup(envs[j] + i + 1));
 		j++;
 	}
 	return (NULL);
 }
 
-int		replace_env(t_shell **ghost, char **input, int i)
+int	get_len(char **input, int i)
 {
-	char	*temp;
-	char 	*ret;
-	char	*env;
-	int		len;
-	int		taillen;
+	int	len;
 
 	len = 0;
 	while (ft_isalnum((*input)[i + len]) || (*input)[i + len] == '_')
 		len++;
-	if ( (*input)[i + len] == '?' && (!ft_isalnum((*input)[i + len + 1]) \
+	if ((*input)[i + len] == '?' && (!ft_isalnum((*input)[i + len + 1]) \
 											|| (*input)[i + len + 1] != '_'))
 		len++;
-	if (len == 0 && (*input)[len + 1] != '\''&& (*input)[len + 1] != '"')
+	return (len);
+}
+
+int	replace_env(t_shell **ghost, char **input, int i)
+{
+	char	*temp;
+	char	*ret;
+	char	*env;
+	int		len;
+	int		taillen;
+
+	len = get_len(input, i);
+	if (len == 0 && (*input)[len + 1] != '\'' && (*input)[len + 1] != '"')
 		return (1);
 	temp = ft_substr((*input), i, len);
 	env = find_env_val(ghost, temp);
@@ -108,46 +116,42 @@ char	*find_env(t_shell **ghost, char *str)
 		if (!(check % 2))
 			type = 0;
 		if (temp[i] == '$' && type != '\'')
-		{
 			i += replace_env(ghost, &temp, i + 1) - 1;
-		}
-			
 		i++;
 	}
-	// printf("check[%i]\n", check);
 	if (check % 2)
-		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL); // doesnt free input
+		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
 	return (temp);
+}
+
+void	handle_expnd(t_shell **ghost, t_list **lst, t_list **head)
+{
+	t_list	*temp;
+	char	*tmp;
+
+	temp = NULL;
+	tmp = NULL;
+	tmp = find_env(ghost, (*lst)->content);
+	temp = lexer(ghost, tmp, " ");
+	free(tmp);
+	ft_lstadd_back(head, ft_lstmap(temp, copy_data, del_content));
+	ft_lstclear(&temp, del_content);
+	free(temp);
+	(*lst) = (*lst)->next;
 }
 
 void	expand_env(t_shell **ghost, t_list **lst)
 {
-	t_list	*head = NULL;
-	t_list	*temp = NULL;
-	t_list	*og = NULL;
-	char	*tmp = NULL;
-	
+	t_list	*head;
+	t_list	*og;
+
+	head = NULL;
 	if ((*ghost)->error || !lst || !*lst)
 		return ;
 	og = *lst;
-	// printf("LOL\n");
-	tmp = find_env(ghost, (*lst)->content);
-	temp = lexer(ghost, tmp, " ");
-	free(tmp);
-	ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
-	ft_lstclear(&temp, del_content);
-	free(temp);
-	(*lst) = (*lst)->next;
+	handle_expnd(ghost, lst, &head);
 	while ((*lst))
-	{
-		tmp = find_env(ghost, (*lst)->content);
-		temp = lexer(ghost, tmp, " ");
-		free(tmp);
-		ft_lstadd_back(&head, ft_lstmap(temp, copy_data, del_content));
-		ft_lstclear(&temp, del_content);
-		free(temp);
-		(*lst) = (*lst)->next;
-	}
+		handle_expnd(ghost, lst, &head);
 	if ((*ghost)->error)
 	{
 		ft_lstclear(&head, del_content);
