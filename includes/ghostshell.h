@@ -130,6 +130,7 @@ char	*g_builtin[7];
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
+void	get_args(t_cmd *cmd, t_shell **ghost);
 
 // Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);

@@ -15,26 +15,13 @@
 void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
 	char	**path;
-	char	**args;
-	t_list	*prog;
 	int		k;
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	k = 0;
-	if (cmd->args)
-	{
-		prog = ft_lstnew(ft_strdup(cmd->type));
-		ft_lstadd_front(&cmd->args, prog);
-		args = list_to_arr(cmd->args);
-	}
-	else
-	{
-		args = (char**)malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(cmd->type);
-		args[1] = NULL;
-	}
+	get_args(cmd, ghost);
 	if (ft_strchr(cmd->type, '/'))
 	{
 		path_launch(cmd, ghost);
@@ -46,7 +33,7 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	{
 		while (path[k])
 		{
-			if (execve(path[k], args, (*ghost)->env) == -1)
+			if (execve(path[k], (*ghost)->args, (*ghost)->env) == -1)
 				(*ghost)->ret_stat = 1;
 			k++;
 		}

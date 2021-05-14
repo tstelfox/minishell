@@ -74,29 +74,36 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 
 void	path_launch(t_cmd *cmd, t_shell **ghost)
 {
-	char	**args;
-	t_list	*fucker;
+	// char	**args;
+	// t_list	*fucker;
 
-	fucker = ft_lstnew(ft_strdup(cmd->type));
+	// fucker = ft_lstnew(ft_strdup(cmd->type));
 	if (!check_dir(cmd, ghost))
 	{
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 		return ;
 	}
-	if (cmd->args)
-	{
-		ft_lstadd_front(&cmd->args, fucker);
-		args = list_to_arr(cmd->args);
-	}
-	else
-	{
-		free(fucker);
-		free(fucker->content);
-		args = (char **)malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(cmd->type);
-		args[1] = NULL;
-	}
-	execve(cmd->type, args, (*ghost)->env);
+	// if (cmd->args)
+	// {
+	// 	ft_lstadd_front(&cmd->args, fucker);
+	// 	args = list_to_arr(cmd->args);
+	// }
+	// else
+	// {
+	// 	free(fucker);
+	// 	free(fucker->content);
+	// 	args = (char **)malloc(sizeof(char *) * 2);
+	// 	args[0] = ft_strdup(cmd->type);
+	// 	args[1] = NULL;
+	// }
+	// for (int i = 0; args[i]; i++)
+	// {
+	// 	ft_putstr_fd("Behold: ", 1);
+	// 	ft_putnbr_fd(i, 1);
+	// 	ft_putstr_fd(args[i], 1);
+	// 	ft_putstr_fd("\n", 1);
+	// }
+	execve(cmd->type, (*ghost)->args, (*ghost)->env);
 	cmd_notfound(cmd, 0, ghost, 0);
 }
 
@@ -104,6 +111,7 @@ void	get_args(t_cmd *cmd, t_shell **ghost)
 {
 	t_list *command;
 
+	free_arr((*ghost)->args);
 	command = ft_lstnew(ft_strdup(cmd->type));
 	if (cmd->args)
 	{
@@ -135,7 +143,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 			return (1);
 		i++;
 	}
-	free_arr((*ghost)->args);
+	// free_arr((*ghost)->args);
 	get_args(cmd, ghost);
 	(*ghost)->pid = fork();
 	signal(SIGINT, ctrl_process);
