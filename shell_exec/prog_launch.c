@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 21:59:10 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/11 15:32:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**get_path(t_cmd *cmd, t_shell **ghost)
 
 	i = 0;
 	k = 0;
-	command = ft_strjoin("", cmd->type);
+	command = ft_strjoin("/", cmd->type);
 	free_arr((*ghost)->path);
 	while ((*ghost)->env[i])
 	{
