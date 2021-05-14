@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/08 18:10:34 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/13 22:01:58 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ void	expand_env(t_shell **ghost, t_list **lst)
 	}
 	if ((*ghost)->error)
 	{
-		printf("hier\n");
 		ft_lstclear(&head, del_content);
 		free(head);
 		ft_lstclear(&og, del_content);

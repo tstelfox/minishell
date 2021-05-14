@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/08 21:49:58 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/13 16:54:40 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,14 @@ int		check_syntax(t_shell **ghost, t_list *lst)
 					error_handler(ghost, SYNTAX_ERROR, \
 					"syntax error near unexpected token", temp->next->content);
 			}
+			if ((!ft_strcmp(temp->content, ">") || !ft_strcmp(temp->next->content, ">")) && !temp->next->next)
+				error_handler(ghost, SYNTAX_ERROR, \
+					"syntax error near unexpected token", "newline");
 				
 		}
+		else if (!ft_strcmp(temp->content, ">") || !ft_strcmp(temp->content, "<"))
+				error_handler(ghost, SYNTAX_ERROR, \
+					"syntax error near unexpected token", "newline");
 		if ((*ghost)->error == SYNTAX_ERROR)
 			return (1);
 		temp = temp->next;

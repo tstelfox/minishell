@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/13 11:55:29 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/13 22:02:05 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,6 @@ t_shell	*init_shell(char **env)
 	new_shell = malloc(sizeof(t_shell));
 	if (!new_shell)
 	{
-		printf("OFHIER\n");
 		return (NULL);
 	}
 		
