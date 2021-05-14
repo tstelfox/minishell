@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/13 11:57:02 by zenotan       ########   odam.nl          #
+#    Updated: 2021/05/13 17:40:51 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,31 +60,36 @@ CC = gcc
 
 INCLUDES = -Iincludes
 
-# REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
 
-LIBFT = -Ilft/ -Ignl/
+LIBFT = -Ilft/
 
 LEAKS = -fsanitize=leak
 
-# TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
+TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@make -C gnl/
+		@make -C reins_termcap/
 		@make bonus -C lft/
-		@$(CC) $(FLAGS) $(OBJ)  $(INCLUDES) $(LIBFT) -lft -Llft -lgnl -Lgnl -g -o $(NAME)
+		@$(CC) $(FLAGS) $(OBJ)  $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft -lreins -Lreins_termcap $(TAIL) -g -o $(NAME)
+		
+test: $(OBJ)
+		@make -C reins_termcap/
+		@make bonus -C lft/
+		@$(CC) $(FLAGS) $(LEAKS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft -lreins -Lreins_termcap $(TAIL) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
-		@make clean -C gnl/
+		@make clean -C reins_termcap/
 		@make clean -C lft/
 		rm -f $(OBJ)
 
 fclean: clean
-		@make fclean -C gnl/
+		@make fclean -C reins_termcap/
 		@make fclean -C lft/
 		rm -f $(NAME)
 

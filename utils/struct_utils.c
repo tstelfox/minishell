@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/13 22:02:05 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/12 16:26:33 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ void		del_ghost(t_shell **ghost)
 		}
 		if ((*ghost)->env)
 			del_darray((*ghost)->env);
-		// if ((*ghost)->reins)
-		// 	reins_destroy((*ghost)->reins);
+		if ((*ghost)->reins)
+			reins_destroy((*ghost)->reins);
 		free(*ghost);
 	}
 }
@@ -173,17 +173,18 @@ t_shell	*init_shell(char **env)
 	new_shell = malloc(sizeof(t_shell));
 	if (!new_shell)
 	{
+		printf("OFHIER\n");
 		return (NULL);
 	}
 		
 	ft_bzero(new_shell, sizeof(t_shell));
-	// new_shell->reins = reins_init();
-	// if (!new_shell->reins)
-	// {
-	// 	printf("HIER\n");
-	// 	free(new_shell);
-	// 	return (NULL);
-	// }
+	new_shell->reins = reins_init();
+	if (!new_shell->reins)
+	{
+		printf("HIER\n");
+		free(new_shell);
+		return (NULL);
+	}
 	new_shell->first_command = TRUE;
 	new_shell->current = new_shell->history;
 	new_shell->env = get_envp(env);
