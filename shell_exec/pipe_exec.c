@@ -14,27 +14,14 @@
 
 void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
-	char **path;
-	char **args;
-	int k;
+	char	**path;
+	int		k;
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, (*ghost)->error, ghost, ERR_PIPE); // This might need some work. maybe exit
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	k = 0;
-	if (cmd->args)
-	{
-		t_list *prog = ft_lstnew(ft_strdup(cmd->type));
-		ft_lstadd_front(&cmd->args, prog);
-		args = list_to_arr(cmd->args);
-	}
-	else
-	{
-		args = (char**)malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(cmd->type);
-		args[1] = NULL;
-	}
-	// close(fd_in);
+	get_args(cmd, ghost);
 	if (ft_strchr(cmd->type, '/'))
 	{
 		path_launch(cmd, ghost);
@@ -46,17 +33,12 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	{
 		while (path[k])
 		{
-			if (execve(path[k], args, (*ghost)->env) == -1)
-			{
-				// ft_putnbr_fd(errno, 1);
+			if (execve(path[k], (*ghost)->args, (*ghost)->env) == -1)
 				(*ghost)->ret_stat = 1;
-			}
 			k++;
 		}
 	}
-	// close((*ghost)->pipefd[0]);
-	// pipe_err_message(cmd, ghost)
-	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
+	cmd_notfound(cmd, 0, ghost, 0);
 	exit(127);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/21 22:30:58 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/26 11:23:02 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/13 17:02:46 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	free_all(t_shell **ghost)
 
 char	**arr_addback(char **arr, char *str)
 {
-	int i;
-	int k;
-	char **temp;
+	int		i;
+	int		k;
+	char	**temp;
 
 	i = 0;
 	k = 0;
@@ -44,13 +44,11 @@ char	**arr_addback(char **arr, char *str)
 	}
 	temp[i] = ft_strdup(str);
 	temp[i + 1] = 0;
-	for (int i = 0; arr[i]; i++)
-		free(arr[i]);
-	free(arr);
+	free_arr(arr);
 	return (temp);
 }
 
-char		*ft_strjoinfree(char *s1, char const *s2)
+char	*ft_strjoinfree(char *s1, char const *s2)
 {
 	size_t	s1len;
 	size_t	s2len;

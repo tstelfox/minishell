@@ -24,30 +24,15 @@ void print_env(char **str)
 void	ctrl(int sig)
 {
 	if (sig == SIGINT)
-	{
-		// ft_putstr_fd("IN HEREEE\n", 1);
-		// ft_putstr_fd("\b \b", 1);
-		// ft_putstr_fd("\b \b", 1);
 		ft_putstr_fd("\n\e[1;34mghostshell$> \e[0m", STDERR_FILENO);
-	}
-	if (sig == SIGQUIT)
-	{
-		// ft_putstr_fd("\b \b", 1);
-		// ft_putstr_fd("\b \b", 1);
-	}
 }
 
 void	ctrl_process(int sig)
 {
 	if (sig == SIGINT)
-	{
-		// ft_putstr_fd("In here pls\n", 1);
 		ft_putstr_fd("\n", 1);
-	}
 	if (sig == SIGQUIT)
-	{
 		ft_putstr_fd("Quit: 3\n", 1);
-	}
 }
 
 void	exec_shell(char *envp[])
@@ -87,7 +72,7 @@ void	exec_shell(char *envp[])
 					return ;
 			ghost->error = 0;
 			// ft_putchar_fd('\n', STDOUT_FILENO);
-			// ft_cmd_lstiter(ghost->commands, print_cmd);
+			ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");
@@ -108,9 +93,7 @@ int	main(int argc, char *args[], char *envp[])
 {
 	(void)argc;
 	(void)args;
-
 	exec_shell(envp);
-
 	// test();
 	// (void)envp;
 	return (0);

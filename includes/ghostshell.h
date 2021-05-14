@@ -6,7 +6,11 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
+<<<<<<< HEAD
+/*   Updated: 2021/05/13 16:21:55 by tmullan       ########   odam.nl         */
+=======
 /*   Updated: 2021/05/13 11:54:54 by zenotan       ########   odam.nl         */
+>>>>>>> 5d2faf081d533d9fa1cb684c96c099eed0c53858
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +61,8 @@ enum	e_types
 	ERR_PIPE = 5,
 	NO_FILE = 6,
 	BAD_ARG_EXIT = 7,
-	NO_ACCESS = 8
+	NO_ACCESS = 8,
+	TOO_MANY_ARGS = 9
 };
 
 enum	e_return
@@ -88,7 +93,6 @@ typedef struct 		s_cmd
 	t_list			*redirection;
 	int				seprator_type;
 }					t_cmd;
-
 
 typedef struct		s_shell
 {
@@ -130,6 +134,7 @@ char	*g_builtin[7];
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
+void	get_args(t_cmd *cmd, t_shell **ghost);
 
 // Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);

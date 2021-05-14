@@ -12,7 +12,8 @@
 
 NAME = ghostshell
 
-ERR = error/error.c
+ERR = error/error.c \
+		error/err_msg.c
 
 UTIL = struct_utils.c \
 		dlist.c \
