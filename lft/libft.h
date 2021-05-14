@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/15 19:51:04 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/17 15:08:09 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/15 00:45:59 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;

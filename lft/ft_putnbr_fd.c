@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:23:00 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:23 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:44:21 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	int int_min;
+	int	int_min;
 
 	int_min = -2147483648;
 	if (n == int_min)

@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 11:36:00 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:03 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:47:19 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	const unsigned char *str;
+	const unsigned char	*str;
 	size_t				i;
 
 	str = s;

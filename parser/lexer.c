@@ -6,18 +6,18 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 19:20:20 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/14 23:52:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
+void	add_tkn(t_shell **ghost, t_list **ret, char *input, int len)
 {
 	char	*result;
 	t_list	*new;
 
-	result = ft_substr(input, start, len);
+	result = ft_substr(input, 0, len);
 	new = ft_lstnew(result);
 	if (!new)
 		error_handler(ghost, INTERNAL_ERROR, \
@@ -25,18 +25,32 @@ void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
 	ft_lstadd_back(ret, new);
 }
 
-int	tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)
+int	tknise_sep(t_shell **ghost, t_list **ret, char *str, int len)
 {
-	int len;
-	
-	len = i - start;
-	if (i == start)
+	if (len == 0)
 		len = 1;
-	if (str[start] != ' ')
-		add_tkn(ghost, ret, str, start, len);
-	if (i != start && str[i] != ' ')
-		add_tkn(ghost, ret, str, i, 1);
-	return (i);
+	if (*str != ' ')
+		add_tkn(ghost, ret, str, len);
+	if (len == 1 && *str != ' ')
+		add_tkn(ghost, ret, str, 1);
+	return (1);
+}
+
+int	skip_quotes(char *str, int i)
+{
+	int	inc;
+	int	type;
+
+	inc = 0;
+	type = 0;
+	if (str[i] == '\"' || str[i] == '\'')
+	{
+		type = str[i];
+		inc++;
+		while (str[i + inc] != type && str[i + inc])
+			inc++;
+	}
+	return (inc);
 }
 
 t_list	*lexer(t_shell **ghost, char *input, char *seperators)
@@ -44,35 +58,24 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	int		i;
 	int		start;
 	char	*str;
-	int		type;
 	t_list	*ret;
 
 	i = 0;
 	start = 0;
-	type = 0;
 	ret = NULL;
 	if (!input)
 		return (NULL);
 	str = input;
 	while (str[i])
 	{
-		if (str[i] == '\"' || str[i] == '\'')
-		{
-			type = str[i];
-			i++;
-			while (str[i] != type && str[i])
-				i++;
-			if (!str[i])
-				break ;
-		}
+		i += skip_quotes(str, i);
+		if (!str[i])
+			break ;
 		if (ft_strchr(seperators, str[i]))
-		{
-			i = tknise_sep(ghost, &ret, str, start, i);
-			start = i + 1;
-		}
+			start = i + tknise_sep(ghost, &ret, str + start, i - start);
 		i++;
 	}
 	if (i != start)
-		add_tkn(ghost, &ret, str, start, i - start);
+		add_tkn(ghost, &ret, str + start, i - start);
 	return (ret);
 }

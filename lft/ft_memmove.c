@@ -6,13 +6,13 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 10:21:08 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:10 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:58:30 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		*ft_memmove(void *dst, const void *src, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t n)
 {
 	size_t	i;
 

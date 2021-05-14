@@ -6,41 +6,49 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 18:27:06 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:41:03 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-int		check_syntax(t_shell **ghost, t_list *lst)
+void	check_seperator(t_shell **ghost, t_list *tokens)
 {
-	t_list *temp;
+	if (!ft_strcmp(tokens->content, "|"))
+		if (!ft_strcmp(tokens->next->content, ";"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
+	if (!ft_strcmp(tokens->content, ";"))
+	{
+		if (!ft_strcmp(tokens->next->content, "|"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
+		if (!ft_strcmp(tokens->next->content, ";"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
+	}
+}
+
+int	check_syntax(t_shell **ghost, t_list *lst)
+{
+	t_list	*temp;
 
 	temp = lst;
 	while (temp)
 	{
 		if (temp->next)
 		{
-			if (!ft_strcmp(temp->content, "|"))
-				if (!ft_strcmp(temp->next->content, ";"))
-					error_handler(ghost, SYNTAX_ERROR, \
-					"syntax error near unexpected token", temp->next->content);
-			if (!ft_strcmp(temp->content, ";"))
-			{
-				if (!ft_strcmp(temp->next->content, "|"))
-					error_handler(ghost, SYNTAX_ERROR, \
-					"syntax error near unexpected token", temp->next->content);
-				if (!ft_strcmp(temp->next->content, ";"))
-					error_handler(ghost, SYNTAX_ERROR, \
-					"syntax error near unexpected token", temp->next->content);
-			}
-			if ((!ft_strcmp(temp->content, ">") || !ft_strcmp(temp->next->content, ">")) && !temp->next->next)
-				error_handler(ghost, SYNTAX_ERROR, \
-					"syntax error near unexpected token", "newline");
+			check_seperator(ghost, temp);
+			if ((!ft_strcmp(temp->content, ">")
+					 || !ft_strcmp(temp->next->content, ">"))
+				 	 && !temp->next->next)
+				error_handler(ghost, SYNTAX_ERROR,
+					 "syntax error near unexpected token", "newline");
 		}
-		else if (!ft_strcmp(temp->content, ">") || !ft_strcmp(temp->content, "<"))
-				error_handler(ghost, SYNTAX_ERROR, \
-					"syntax error near unexpected token", "newline");
+		else if (!ft_strcmp(temp->content, ">")
+			 || !ft_strcmp(temp->content, "<"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", "newline");
 		if ((*ghost)->error == SYNTAX_ERROR)
 			return (1);
 		temp = temp->next;
@@ -57,10 +65,10 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 		ft_lstadd_back(&new_lst, \
 		ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 	(*ghost)->tokens = (*ghost)->tokens->next;
-	while ((*ghost)->tokens) //parse command
+	while ((*ghost)->tokens)
 	{
 		if (handle_seperator(ghost, cmd) && !(*ghost)->error)
-			break ;	
+			break ;
 		if (!handle_redir(ghost, cmd) && !(*ghost)->error)
 			ft_lstadd_back(&new_lst, \
 			ft_lstnew(ft_strdup((*ghost)->tokens->content)));
@@ -73,7 +81,7 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 	return (new_lst);
 }
 
-int		parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
+int	parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
 {
 	if ((!*new_lst && !(*command)->redirection))
 	{
@@ -93,7 +101,7 @@ int		parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
 	return (0);
 }
 
-int		parser_next_token(t_shell **ghost)
+int	parser_next_token(t_shell **ghost)
 {
 	if ((*ghost)->tokens)
 	{
