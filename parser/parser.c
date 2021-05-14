@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 15:06:32 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/14 18:23:16 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,16 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 
 	new_lst = NULL;
 	if (!handle_redir(ghost, cmd) && !(*ghost)->error)
-		ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
+		ft_lstadd_back(&new_lst, \
+		t_lstnew(ft_strdup((*ghost)->tokens->content)));
 	(*ghost)->tokens = (*ghost)->tokens->next;
 	while ((*ghost)->tokens) //parse command
 	{
 		if (handle_seperator(ghost, cmd) && !(*ghost)->error)
 			break ;	
 		if (!handle_redir(ghost, cmd) && !(*ghost)->error)
-			ft_lstadd_back(&new_lst, ft_lstnew(ft_strdup((*ghost)->tokens->content)));
+			ft_lstadd_back(&new_lst, \
+			ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 		if (!(*ghost)->tokens)
 			break ;
 		(*ghost)->tokens = (*ghost)->tokens->next;
@@ -69,6 +71,37 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 	expand_env(ghost, &new_lst);
 	remove_quotes(ghost, &new_lst);
 	return (new_lst);
+}
+
+int		parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
+{
+	if ((!*new_lst && !(*command)->redirection))
+	{
+		del_commands(*command);
+		return (1);
+	}
+	if (new_lst)
+	{
+		(*command)->type = ft_strdup((*new_lst)->content);
+		if ((*new_lst)->next)
+			(*command)->args = ft_lstmap((*new_lst)->next, \
+									copy_data, del_content);
+		ft_lstclear(new_lst, del_content);
+	}
+	ft_lstadd_back(lst, ft_lstnew(*command));
+	new_lst = NULL;
+	return (0);
+}
+
+int		parser_next_token(t_shell **ghost)
+{
+	if ((*ghost)->tokens)
+	{
+		(*ghost)->tokens = (*ghost)->tokens->next;
+		if ((*ghost)->tokens->content)
+			return (1);
+	}
+	return (0);
 }
 
 t_list	*parser(t_shell **ghost)
@@ -83,35 +116,17 @@ t_list	*parser(t_shell **ghost)
 		free_list(&((*ghost)->commands), del_commands);
 	if (check_syntax(ghost, (*ghost)->tokens))
 		return (NULL);
-	// make new command
-	// inc ghost->tokens untill ; or end
-	// store items in new list en command
 	while ((*ghost)->tokens)
 	{
 		command = new_command();
 		if (!command)
-			return (error_handler(ghost, INTERNAL_ERROR, "Failed to init command", NULL));
+			return (error_handler(ghost, INTERNAL_ERROR, \
+							"Failed to init command", NULL));
 		new_lst = parse_command(ghost, &command);
-		if ((!new_lst && !command->redirection))
-		{
-			del_commands(command);
+		if (parser_add_command(&command, &new_lst, &lst))
 			return (NULL);
-		}
-		if (new_lst)
-		{
-			command->type = ft_strdup(new_lst->content);
-			if (new_lst->next)
-				command->args = ft_lstmap(new_lst->next, copy_data, del_content);
-			ft_lstclear(&new_lst, del_content);
-		}
-		ft_lstadd_back(&lst, ft_lstnew(command));
-		new_lst = NULL;
-		if ((*ghost)->tokens)
-		{
-			(*ghost)->tokens = (*ghost)->tokens->next;
-			if ((*ghost)->tokens->content)
-				break ;
-		}
+		if (parser_next_token(ghost))
+			break ;
 	}
 	return (lst);
 }
