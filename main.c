@@ -72,7 +72,7 @@ void	exec_shell(char *envp[])
 					return ;
 			ghost->error = 0;
 			// ft_putchar_fd('\n', STDOUT_FILENO);
-			// ft_cmd_lstiter(ghost->commands, print_cmd);
+			ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");

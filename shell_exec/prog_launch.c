@@ -83,24 +83,21 @@ void	path_launch(t_cmd *cmd, t_shell **ghost)
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 		return ;
 	}
-	if (cmd->type[0] == '.' && cmd->type[1] == '/')
+	if (cmd->args)
 	{
-		if (cmd->args)
-		{
-			ft_lstadd_front(&cmd->args, fucker);
-			args = list_to_arr(cmd->args);
-		}
-		else
-		{
-			free(fucker);
-			free(fucker->content);
-			args = (char **)malloc(sizeof(char *) * 2);
-			args[0] = ft_strdup(cmd->type);
-			args[1] = NULL;
-		}
-		execve(cmd->type, args, (*ghost)->env);
-		cmd_notfound(cmd, 0, ghost, 0);
+		ft_lstadd_front(&cmd->args, fucker);
+		args = list_to_arr(cmd->args);
 	}
+	else
+	{
+		free(fucker);
+		free(fucker->content);
+		args = (char **)malloc(sizeof(char *) * 2);
+		args[0] = ft_strdup(cmd->type);
+		args[1] = NULL;
+	}
+	execve(cmd->type, args, (*ghost)->env);
+	cmd_notfound(cmd, 0, ghost, 0);
 }
 
 void	get_args(t_cmd *cmd, t_shell **ghost)
