@@ -6,7 +6,11 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2021/05/13 16:21:55 by tmullan       ########   odam.nl         */
+=======
+/*   Updated: 2021/05/13 11:54:54 by zenotan       ########   odam.nl         */
+>>>>>>> 5d2faf081d533d9fa1cb684c96c099eed0c53858
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +28,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft.h"
-# include "reins.h"
+# include "get_next_line.h"
 
 enum	e_status
 {
@@ -97,7 +101,7 @@ typedef struct		s_shell
 	int		first_command;
 	t_list	*commands;
 	t_list	*tokens;
-	t_reins	*reins;
+	// t_reins	*reins;
 	pid_t	pid;
 	char	**args;
 	char	**path;
@@ -168,9 +172,9 @@ int		count_quotes(char *str);
 
 //read_input.c
 char	*read_line(t_shell **ghost);
-int		up_function(t_input *line, char *buf, t_hook *hook);
-int		down_function(t_input *line, char *buf, t_hook *hook);
-int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
+// int		up_function(t_input *line, char *buf, t_hook *hook);
+// int		down_function(t_input *line, char *buf, t_hook *hook);
+// int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
 
 //lexer.c
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);
