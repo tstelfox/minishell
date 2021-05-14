@@ -91,7 +91,7 @@ char	*read_line(t_shell **ghost)
 	// printf("\ninput[%s]\n", input);
 	if (ret == 0)
 	{
-		// ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", 1);
 		exit(0);
 	}
 	if (ret < 0)
