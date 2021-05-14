@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 18:23:16 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/14 18:27:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 	new_lst = NULL;
 	if (!handle_redir(ghost, cmd) && !(*ghost)->error)
 		ft_lstadd_back(&new_lst, \
-		t_lstnew(ft_strdup((*ghost)->tokens->content)));
+		ft_lstnew(ft_strdup((*ghost)->tokens->content)));
 	(*ghost)->tokens = (*ghost)->tokens->next;
 	while ((*ghost)->tokens) //parse command
 	{

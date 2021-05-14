@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/13 11:57:46 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/14 18:27:38 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	exec_shell(char *envp[])
 					return ;
 			ghost->error = 0;
 			// ft_putchar_fd('\n', STDOUT_FILENO);
-			ft_cmd_lstiter(ghost->commands, print_cmd);
+			// ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");
