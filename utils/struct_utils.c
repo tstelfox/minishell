@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/16 14:12:56 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/16 15:22:16 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	del_content(void *content)
 
 void	del_redir(void *list)
 {
-	t_redir *redir;
+	t_redir	*redir;
 
 	redir = list;
 	free(redir->file);
@@ -110,7 +110,7 @@ t_cmd	*new_command()
 	return (new_command);
 }
 
-void		del_ghost(t_shell **ghost)
+void	del_ghost(t_shell **ghost)
 {
 	if (*ghost)
 	{

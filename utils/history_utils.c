@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/17 19:03:59 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/16 14:17:28 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/16 15:20:42 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	pass_param(void *param)
 void	edit_content(t_dlist **node, char *line, int size)
 {
 	char	*temp;
-	
+
 	free((*node)->content);
 	(*node)->content = NULL;
 	(*node)->content = malloc(sizeof(char) * (size + 1));
@@ -31,12 +31,11 @@ void	edit_content(t_dlist **node, char *line, int size)
 
 int	delete_row(t_input *input, char *buf, t_hook *hook)
 {
-	(void)buf;
-	(void)hook;
 	size_t	columns;
 
+	(void)buf;
+	(void)hook;
 	columns = input->max_col - (!input->shell_cursor.row * input->prompt_size);
-
 	return (reins_input_del(input, columns));
 }
 
