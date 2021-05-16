@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 19:18:29 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/16 13:59:50 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	get_len(char **input, int i)
 	while (ft_isalnum((*input)[i + len]) || (*input)[i + len] == '_')
 		len++;
 	if ((*input)[i + len] == '?' && (!ft_isalnum((*input)[i + len + 1]) \
-											|| (*input)[i + len + 1] != '_'))
+											 || (*input)[i + len + 1] != '_'))
 		len++;
 	return (len);
 }

@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/05 00:23:05 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/16 14:06:27 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_list(t_list **lst, void (*del)(void *))
 
 void	*copy_data(void	*data)
 {
-	char *str;
+	char	*str;
 
 	str = data;
 	return (ft_strdup(str));
@@ -28,7 +28,7 @@ void	*copy_data(void	*data)
 
 int		ft_lstredir(t_list *lst, int (*f)(void *))
 {
-	t_list *temp;
+	t_list	*temp;
 	int		fd;
 
 	if (!lst)

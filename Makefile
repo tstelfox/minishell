@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/13 11:57:02 by zenotan       ########   odam.nl          #
+#    Updated: 2021/05/16 14:16:34 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,43 +48,44 @@ SRC = main.c \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		debug/printlists.c \
-		# $(TEST) \
-		# $(LFT_PREFIX)
 
 OBJ = $(SRC:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
-# CC = clang++
 
 INCLUDES = -Iincludes
 
-# REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
 
-LIBFT = -Ilft/ -Ignl/
+LIBFT = -Ilft/
+
+# GNL = -Ignl/
+
+# GNL_TAIL = -lgnl -Lgnl
 
 LEAKS = -fsanitize=leak
 
-# TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
+TAIL	=	-lreins -Lreins_termcap -Lreins_termcap/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@make -C gnl/
+		@make -C reins_termcap/
 		@make bonus -C lft/
-		@$(CC) $(FLAGS) $(OBJ)  $(INCLUDES) $(LIBFT) -lft -Llft -lgnl -Lgnl -g -o $(NAME)
+		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
-		@make clean -C gnl/
+		@make clean -C reins_termcap/
 		@make clean -C lft/
 		rm -f $(OBJ)
 
 fclean: clean
-		@make fclean -C gnl/
+		@make fclean -C reins_termcap/
 		@make fclean -C lft/
 		rm -f $(NAME)
 

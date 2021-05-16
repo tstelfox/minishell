@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/14 18:26:20 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/16 14:13:09 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft.h"
-# include "get_next_line.h"
+# include "reins.h"
+
+// # include "get_next_line.h"
 
 enum	e_status
 {
@@ -97,7 +99,7 @@ typedef struct		s_shell
 	int		first_command;
 	t_list	*commands;
 	t_list	*tokens;
-	// t_reins	*reins;
+	t_reins	*reins;
 	pid_t	pid;
 	char	**args;
 	char	**path;
@@ -168,9 +170,9 @@ int		count_quotes(char *str);
 
 //read_input.c
 char	*read_line(t_shell **ghost);
-// int		up_function(t_input *line, char *buf, t_hook *hook);
-// int		down_function(t_input *line, char *buf, t_hook *hook);
-// int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
+int		up_function(t_input *line, char *buf, t_hook *hook);
+int		down_function(t_input *line, char *buf, t_hook *hook);
+int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
 
 //lexer.c
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);
@@ -206,14 +208,9 @@ void	edit_content(t_dlist **node, char *line, int size);
 t_dlist	*ft_dlstnew(void *content);
 void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
 void	ft_dlstclear(t_dlist **lst, void (*del)(void *));
-int		ft_dlstgetpos(t_dlist *lst);
-t_dlist *ft_dlstlast(t_dlist *lst);
 void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *));
-void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *));
-void	ft_dlsreversetiter(t_dlist *lst, void (*f)(void *));
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
-void	ft_dlstiter(t_dlist *lst, void (*f)(void *));
 void	del_ghost(t_shell **ghost);
 t_dlist	*ft_dlstfirst(t_dlist *lst);
 
