@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:09:19 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 15:33:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,11 @@ void	get_args(t_cmd *cmd, t_shell **ghost);
 // Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
-int		redir_muti(void *file_struct);
+int		open_multi(void *file_struct);
 
 // Piping
 int		pipe_exec(t_list *command, t_shell **ghost);
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num);
+int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
 
 // Signals
