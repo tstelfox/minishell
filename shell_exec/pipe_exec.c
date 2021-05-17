@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 17:33:03 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:27:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,9 @@ int		pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
 	int		i;
-	// int		pipe_old[2];
 
 	fd_in = 0;
 	i = 0;
-	// // Execute first in a fork()
 	while (command)
 	{
 		pipe((*ghost)->pipefd);
@@ -118,12 +116,5 @@ int		pipe_exec(t_list *command, t_shell **ghost)
 		command = command->next;
 		i++;
 	}
-	// // Close write pipe
-	// close(ghost->pipefd[1]);
-	// dup2(ghost->pipefd[0], STDIN_FILENO);
-	
-	// // Execute second command (Always in a fork or only for exec?)
-
-	// // Return to main loop
 	return (1);
 }

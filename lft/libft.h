@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/15 19:51:04 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/17 15:08:09 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 09:24:40 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,18 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_dlist
+{
+	void			*content;
+	struct s_dlist	*prev;
+	struct s_dlist	*next;
+}					t_dlist;
 
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
@@ -69,5 +76,12 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), \
 								void (*del)(void *));
 t_list				*ft_lstlast(t_list *lst);
-
+t_dlist				*ft_dlstnew(void *content);
+void				ft_dlstclear(t_dlist **lst, void (*del)(void *));
+void				ft_dlstdelone(t_dlist **lst, \
+								int position, void (*del)(void *));
+void				ft_dlstadd_front(t_dlist **alst, t_dlist *new);
+void				ft_dlstadd_back(t_dlist **alst, t_dlist *new);
+t_dlist				*ft_dlstlast(t_dlist *lst);
+int					ft_dlstsize(t_dlist *lst);
 #endif

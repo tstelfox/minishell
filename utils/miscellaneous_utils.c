@@ -1,18 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strjoin.c                                       :+:    :+:            */
+/*   miscellaneous_utils.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <marvin@codam.nl>                       +#+                     */
+/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/03 15:51:49 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/19 17:03:22 by tmullan       ########   odam.nl         */
+/*   Created: 2021/04/21 22:30:58 by zenotan       #+#    #+#                 */
+/*   Updated: 2021/05/17 09:49:07 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-char		*ft_strjoin(char *s1, char const *s2)
+void	free_all(t_shell **ghost)
+{
+	int	i;
+
+	i = 0;
+	while ((*ghost)->env[i])
+	{
+		free((*ghost)->env[i]);
+		i++;
+	}
+	free((*ghost)->env);
+}
+
+char	**arr_addback(char **arr, char *str)
+{
+	int		i;
+	int		k;
+	char	**temp;
+
+	i = 0;
+	k = 0;
+	while (arr[i])
+		i++;
+	temp = (char **)malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (arr[i])
+	{
+		temp[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	temp[i] = ft_strdup(str);
+	temp[i + 1] = 0;
+	free_arr(arr);
+	return (temp);
+}
+
+char	*ft_strjoinfree(char *s1, char const *s2)
 {
 	size_t	s1len;
 	size_t	s2len;
@@ -27,6 +63,6 @@ char		*ft_strjoin(char *s1, char const *s2)
 		return (NULL);
 	ft_memcpy(ret, s1, s1len);
 	ft_strlcpy(ret + s1len, s2, s2len + 1);
-	// free(s1);
+	free(s1);
 	return (ret);
 }

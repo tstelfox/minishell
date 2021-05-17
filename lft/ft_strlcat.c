@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/29 15:40:39 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:37 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:59:06 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t dlen;
-	size_t slen;
+	size_t	dlen;
+	size_t	slen;
 
 	dlen = ft_strlen(dst);
 	slen = ft_strlen(src);

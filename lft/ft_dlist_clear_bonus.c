@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstlast_bonus.c                                 :+:    :+:            */
+/*   ft_dlist_clear.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 11:18:22 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/17 17:39:37 by zenotan       ########   odam.nl         */
+/*   Created: 2021/05/17 09:16:37 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:16:50 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
+void	ft_dlstclear(t_dlist **lst, void (*del)(void *))
 {
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
+	int	len;
+
+	if (!lst || !*lst)
+		return ;
+	len = ft_dlstsize(*lst);
+	while (--len >= 0)
+		ft_dlstdelone(lst, 1, del);
 }

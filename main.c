@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:05:09 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:09:55 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,14 @@ void	exec_shell(char *envp[])
 		line = read_line(&ghost);
 		// printf("BEFO\n");
 		ghost->tokens = lexer(&ghost, line, " ><|;");
+		ft_lstiter(ghost->tokens, print_data);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		head = ghost->tokens;
 		free(line);
-		// printf("DEBUG\n");
-		// ft_lstiter(ghost->tokens, print_data);
-		// ft_putchar_fd('\n', STDOUT_FILENO);
-		// printf("LEXED\n");
 		while (ghost->tokens)
 		{
 			ghost->commands = parser(&ghost);
+			ft_cmd_lstiter(ghost->commands, print_cmd);
 			if (!ghost->commands)
 				break ;
 			// printf("LOOOOOOL\n");
@@ -71,8 +70,6 @@ void	exec_shell(char *envp[])
 				if (shell_exec(ghost->commands, &ghost) == 0)
 					return ;
 			ghost->error = 0;
-			// ft_putchar_fd('\n', STDOUT_FILENO);
-			// ft_cmd_lstiter(ghost->commands, print_cmd);
 			// if (ghost->commands)
 			// {
 			// 	printf("DEUG\n");

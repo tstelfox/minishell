@@ -6,47 +6,44 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/12 21:15:54 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 12:08:52 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-// void	assign_parameters(t_shell **node)
-
-int		up_function(t_input *line, char *buf, t_hook *hook)
+int	up_function(t_input *line, char *buf, t_hook *hook)
 {
-	t_shell **ghost;
-	t_dlist *node;
+	t_shell	**ghost;
 
 	ghost = hook->param;
-	node = (*ghost)->current;
 	(void)buf;
-	if (!node || !node->next)
+	if (!(*ghost)->current)
 		return (RD_IDLE);
 	if ((*ghost)->first_command)
 	{
 		ft_dlstadd_front(&(*ghost)->history, ft_dlstnew(ft_strdup("")));
 		(*ghost)->first_command = FALSE;
-		node = node->prev;
+		(*ghost)->current = (*ghost)->current->prev;
 	}
 	if (line->line.size)
-		edit_content(&node, line->line.store, line->line.size);
+		edit_content(&(*ghost)->current, line->line.store, line->line.size);
 	else
-		edit_content(&node, "", 1);
+		edit_content(&(*ghost)->current, "", 1);
 	if (!reins_input_clear(line))
 		return (1);
-	node = node->next;
-	if (ft_strcmp(node->content, ""))
-		reins_input_add(line, node->content, ft_strlen(node->content));
-	(*ghost)->current = node;
+	if ((*ghost)->current->next)
+		(*ghost)->current = (*ghost)->current->next;
+	if (ft_strcmp((*ghost)->current->content, ""))
+		reins_input_add(line, (*ghost)->current->content,
+			 ft_strlen((*ghost)->current->content));
 	return (RD_IDLE);
 }
 
-int		down_function(t_input *line, char *buf, t_hook *hook)
+int	down_function(t_input *line, char *buf, t_hook *hook)
 {
-	t_shell **ghost;
-	t_dlist *node;
+	t_shell	**ghost;
+	t_dlist	*node;
 
 	ghost = hook->param;
 	node = (*ghost)->current;
@@ -66,15 +63,14 @@ int		down_function(t_input *line, char *buf, t_hook *hook)
 	return (RD_IDLE);
 }
 
-int		ctrl_d_function(t_input *line, char *buf, t_hook *hook)
+int	ctrl_d_function(t_input *line, char *buf, t_hook *hook)
 {
-	t_shell **ghost;
-	t_dlist *node;
+	t_shell	**ghost;
+	t_dlist	*node;
 
 	ghost = hook->param;
 	node = (*ghost)->current;
 	(void)buf;
-	// printf("YAHHH\n");
 	if (!reins_input_clear(line))
 		return (1);
 	return (RD_SEND);
@@ -84,14 +80,12 @@ char	*read_line(t_shell **ghost)
 {
 	int		ret;
 	char	*input;
-	// char *input = NULL;
 
-	// ret = reins_print_keycodes((*ghost)->reins);
+	input = NULL;
 	ret = reins_get_input((*ghost)->reins, &input);
-	// printf("\ninput[%s]\n", input);
 	if (ret == 0)
 	{
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 		exit(0);
 	}
 	if (ret < 0)
