@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 17:48:00 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:04:23 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,8 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		}
 		while (str[i])
 		{
+			if (str[i] == '=')
+				break ;
 			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=')
 			{
@@ -252,6 +254,33 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	i = 0;
 	if (!cmd->args)
 		return (1);
+	while (cmd->args->next)
+	{
+		int len = ft_strlen(cmd->args->content);
+		while ((*ghost)->env[i])
+		{
+			if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
+				k = i;
+			i++;
+		}
+		char **temp;
+		temp = (char**)malloc(sizeof(char*) * (i));
+		int j = 0;
+		for (int i = 0; (*ghost)->env[i]; i++)
+		{
+			if (i != k)
+			{
+				temp[j] = (*ghost)->env[i];
+				j++;
+			}
+			else
+				free((*ghost)->env[i]);
+		}
+		temp[j] = 0;
+		free((*ghost)->env);
+		(*ghost)->env = temp;
+		cmd->args = cmd->args->next;
+	}
 	int len = ft_strlen(cmd->args->content);
 	while ((*ghost)->env[i])
 	{
