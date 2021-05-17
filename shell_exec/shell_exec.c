@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:18:18 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 16:37:28 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int	export_replace(char *str, t_shell **ghost)
 			break ;
 		i++;
 	}
-	var = (char *)malloc(sizeof(char) * (i + 1));
+	var = (char *)malloc(sizeof(char) * (i + 1)); //Protect the mallocs
 	ft_strlcpy(var, str, i + 1);
 	i = 0;
 	while ((*ghost)->env[i])

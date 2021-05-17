@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/13 17:39:38 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/13 17:40:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 17:03:09 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int output)
 	}
 	else if (flag == NO_FILE)
 		file_error(cmd, output, ghost);
-	else if (!cmd->redirection)
+	else
 		generic_error(cmd, output, ghost);
 }

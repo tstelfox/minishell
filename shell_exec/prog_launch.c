@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 16:27:02 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 17:03:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	prog_child(t_cmd *cmd, t_shell **ghost)
 
 	k = 0;
 	if (cmd->redirection && redirect(cmd, ghost) == -1)
-		exit(1); // Check that this actually works with redirections
+		exit(1);
 	if (ft_strchr(cmd->type, '/'))
 	{
 		path_launch(cmd, ghost);

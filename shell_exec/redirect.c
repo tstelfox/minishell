@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 16:10:52 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 17:29:27 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	open_multi(void *file_struct)
 		fd = open(filename->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
 	else
 		fd = open(filename->file, O_CREAT | O_APPEND | O_RDWR, 0666);
+	// else
+	// 	fd = open(filename->file, O_APPEND | O_RDWR, 0666);
 	return (fd);
 }
 
@@ -51,15 +53,9 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 			cmd->redirection = cmd->redirection->next;
 			next_op = (t_redir *)cmd->redirection->content;
 			if (next_op->type == 0)
-			{
 				fd2 = open(next_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
-				// dup2(fd2, STDOUT_FILENO);
-				// close(fd2);
-			}
 			else if (next_op->type == 2)
-			{
 				fd2 = open(next_op->file, O_CREAT | O_APPEND | O_RDWR, 0666);
-			}
 			dup2(fd2, STDOUT_FILENO);
 			close(fd2);
 		}
@@ -68,6 +64,13 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 	{
 		// if (file_struct->type == 0)
 		fd = ft_lstredir(cmd->redirection, &open_multi);
+		// if (fd == -1)
+		// {
+		// 	while (cmd->redirection->next)
+		// 		cmd->redirection = cmd->redirection->next;
+		// 	cmd_notfound(cmd, NO_FILE, ghost, 0);
+		// 	// return (-1);
+		// }
 		// else
 		// 	fd = open(file_struct->file, O_CREAT | O_APPEND | O_RDWR, 0666);
 		original = dup(STDOUT_FILENO);
