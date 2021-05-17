@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 09:33:36 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/17 09:35:47 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 11:21:03 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,27 @@ int	handle_redir(t_shell **ghost, t_cmd **command)
 char	*handle_quotes(t_shell **ghost, char *str, int len)
 {
 	char	*ret;
-	int		i;
 	int		j;
 	int		type;
 
-	i = 0;
 	j = 0;
 	type = 0;
 	ret = malloc(sizeof(char) * (len + 1));
 	if (!ret)
 		return (error_handler(ghost, INTERNAL_ERROR, "failed malloc", NULL));
-	while (str[i])
+	while (*str)
 	{
-		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
-			type = str[i];
-		if (type != str[i] || type == 0)
-			ret[j++] = str[i];
-		i++;
-		if (type == str[i])
+		if ((*str == '\"' || *str == '\'') && type == 0)
+			type = *str;
+		if (type != *str || type == 0)
+			ret[j++] = *str;
+		str++;
+		if (type == *str && type != 0)
+		{
 			type = 0;
+			if (str + 1)
+				str++;
+		}
 	}
 	ret[j++] = '\0';
 	return (ret);

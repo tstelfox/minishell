@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/14 23:52:48 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 11:36:31 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ void	add_tkn(t_shell **ghost, t_list **ret, char *input, int len)
 
 int	tknise_sep(t_shell **ghost, t_list **ret, char *str, int len)
 {
+	int	i;
+
+	i = len;
 	if (len == 0)
-		len = 1;
+		i = 1;
 	if (*str != ' ')
-		add_tkn(ghost, ret, str, len);
-	if (len == 1 && *str != ' ')
-		add_tkn(ghost, ret, str, 1);
+		add_tkn(ghost, ret, str, i);
+	if (len != 0 && str[len] != ' ')
+		add_tkn(ghost, ret, str + len, 1);
 	return (1);
 }
 
@@ -72,7 +75,7 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 		if (!str[i])
 			break ;
 		if (ft_strchr(seperators, str[i]))
-			start = i + tknise_sep(ghost, &ret, str + start, i - start);
+			start = i + tknise_sep(ghost, &ret, str + start, i - start);	
 		i++;
 	}
 	if (i != start)
