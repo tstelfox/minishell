@@ -1,0 +1,4 @@
+known issues:
+
+- wrap_around isn't working for big insertions
+- cursor position isn't updated properly, after inserting a lot of characters, 

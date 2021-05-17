@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 15:33:05 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 16:30:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ char	*find_env(t_shell **ghost, char *str);
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
 char 	*handle_quotes(t_shell **ghost, char *str, int len);
-int		handle_syntax(t_shell **ghost, t_list *lst);
 
 //------------------------------------utils-----------------------------------//
 //parser_utils.c
@@ -177,6 +176,9 @@ void	remove_quotes(t_shell **ghost, t_list **list);
 int		check_meta(char *str);
 int		check_redir(char *str);
 int		count_quotes(char *str);
+
+//handle_utils.c
+int		handle_syntax(t_shell **ghost, t_list *lst);
 
 //env_utils.c
 char	**get_envp(char **envp);
