@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:06:59 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:18:18 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		{
 			if (str[i] == '=')
 				break ;
-			if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+			if ((!ft_isalpha(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=')
 			{
 				cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
@@ -235,7 +235,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	{
 		if (str[i] == '=')
 			break ;
-		if ((!ft_isalnum(str[i]) && (str[i] != '_' && str[i] != '$'
+		if ((!ft_isalpha(str[i]) && (str[i] != '_' && str[i] != '$'
 			&& str[i] != '=' && str[i] != '/' && str[i] != '"' && str[i] != ' ')) || str[0] == '=')
 		{
 			cmd_notfound(cmd, EXPRT_FAIL, ghost, 0);
@@ -383,9 +383,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 				(*ghost)->ret_stat = 0;
 				(*ghost)->g_builtin_f[i](cmd, ghost);
 				if ((*ghost)->out != -42)
-				{
 					dup2((*ghost)->out, STDOUT_FILENO);
-				}
 				if (!command->next)
 				{
 					if ((*ghost)->pipefd[0] != -69)
@@ -397,9 +395,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		}
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
-		{
 			dup2((*ghost)->out, STDOUT_FILENO);
-		}
 		if (!command->next)
 		{
 			if ((*ghost)->pipefd[0] != -69)
