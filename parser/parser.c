@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 10:00:57 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 12:24:45 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
 	return (0);
 }
 
-int	parser_next_token(t_shell **ghost)
+int	parser_next_token(t_shell **ghost, t_cmd *command)
 {
 	if ((*ghost)->tokens)
 	{
 		(*ghost)->tokens = (*ghost)->tokens->next;
-		if ((*ghost)->tokens->content)
+		if ((*ghost)->tokens->content && command->seprator_type != PIPE)
 			return (1);
 	}
 	return (0);
@@ -89,7 +89,7 @@ t_list	*parser(t_shell **ghost)
 		new_lst = parse_command(ghost, &command);
 		if (parser_add_command(&command, &new_lst, &lst))
 			return (NULL);
-		if (parser_next_token(ghost))
+		if (parser_next_token(ghost, command))
 			break ;
 	}
 	return (lst);

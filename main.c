@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 11:41:25 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 12:09:55 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	exec_shell(char *envp[])
 		restart_shell(&ghost);
 		// printf("RESET\n");
 	}
-	// reins_destroy(ghost->reins);
+	reins_destroy(ghost->reins);
 }
 
 int	main(int argc, char *args[], char *envp[])
