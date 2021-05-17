@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 21:02:21 by ztan          #+#    #+#                 */
-/*   Updated: 2020/09/10 19:57:42 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/15 00:46:50 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static int	free_words(char **ret, int i)
 
 static int	word_num(char const *s, char c)
 {
-	int counter;
-	int i;
+	int	counter;
+	int	i;
 
 	counter = 0;
 	i = 0;
@@ -45,8 +45,8 @@ static int	word_num(char const *s, char c)
 
 static int	make_words(char const *s, char c, char **ret, int strnum)
 {
-	int array_i;
-	int wordlen;
+	int	array_i;
+	int	wordlen;
 
 	array_i = 0;
 	while (array_i != strnum)
@@ -70,7 +70,7 @@ static int	make_words(char const *s, char c, char **ret, int strnum)
 	return (0);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**ret;
 	int		strnum;

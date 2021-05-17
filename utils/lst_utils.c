@@ -6,23 +6,29 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 13:37:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/26 16:20:17 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/16 15:21:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
+void	free_list(t_list **lst, void (*del)(void *))
+{
+	ft_lstclear(lst, del);
+	free(*lst);
+}
+
 void	*copy_data(void	*data)
 {
-	char *str;
+	char	*str;
 
 	str = data;
 	return (ft_strdup(str));
 }
 
-int		ft_lstredir(t_list *lst, int (*f)(void *))
+int	ft_lstredir(t_list *lst, int (*f)(void *))
 {
-	t_list *temp;
+	t_list	*temp;
 	int		fd;
 
 	if (!lst)
@@ -45,7 +51,8 @@ char	**list_to_arr(t_list *tokens)
 	if (!tokens)
 		return (NULL);
 	temp = tokens;
-	if (!(ret = (char **)malloc(sizeof(char *) * ft_lstsize(tokens) + 1)))
+	ret = (char **)malloc(sizeof(char *) * ft_lstsize(tokens) + 1);
+	if (!ret)
 		error_handler(NULL, INTERNAL_ERROR, "malloc fail", NULL);
 	i = 0;
 	while (temp)

@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/22 16:10:54 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:27:40 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,35 @@
 
 void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
-	char **path;
-	char **args;
-	int k;
+	char	**path;
+	int		k;
 
 	path = get_path(cmd, ghost);
 	if (path == NULL)
-		cmd_notfound(cmd, (*ghost)->error, ghost, ERR_PIPE); // This might need some work. maybe exit
+		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	k = 0;
-	if (cmd->args)
+	get_args(cmd, ghost);
+	if (ft_strchr(cmd->type, '/'))
 	{
-		t_list *prog = ft_lstnew(ft_strdup(cmd->type));
-		ft_lstadd_front(&cmd->args, prog);
-		args = list_to_arr(cmd->args);
+		path_launch(cmd, ghost);
+		if ((*ghost)->error == DIRECTORY || errno == EACCES)
+			exit(126);
+		exit(127);
 	}
 	else
 	{
-		args = (char**)malloc(sizeof(char *) * 2);
-		args[0] = ft_strdup(cmd->type);
-		args[1] = NULL;
-	}
-	while (path[k])
-	{
-		if (execve(path[k], args, NULL) == -1)
+		while (path[k])
 		{
-			// ft_putnbr_fd(errno, 1);
-			(*ghost)->ret_stat = 1;
+			if (execve(path[k], (*ghost)->args, (*ghost)->env) == -1)
+				(*ghost)->ret_stat = 1;
+			k++;
 		}
-		k++;
 	}
-	// pipe_err_message(cmd, ghost)
-	cmd_notfound(cmd, 0, ghost, ERR_PIPE);
-	exit(0);
+	cmd_notfound(cmd, 0, ghost, 0);
+	exit(127);
 }
 
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num)
 {
 	int i;
 	t_cmd *cmd;
@@ -58,16 +52,26 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 	cmd = command->content;
 	if (pid == 0)
 	{
-		dup2(fd_in, 0);
+		if (cmd_num != 0)
+		{
+			dup2(fd_in, 0);
+			close(fd_in);
+		}
 		(*ghost)->out_pipe = dup(STDOUT_FILENO);
 		if (command->next != NULL)
+		{
 			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
+			close((*ghost)->pipefd[1]);
+		}
 		close((*ghost)->pipefd[0]);
+		if (cmd->redirection) // Here goes nothing
+			(*ghost)->out = redirect(cmd, ghost);
 		while (i < 7)
 		{
-			if (ft_strcmp(cmd->type, g_builtin[i]) == 0)
+			if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 			{
-				(*g_builtin_f[i])(cmd, ghost);
+				(*ghost)->g_builtin_f[i](cmd, ghost);
+				// close(fd_in);
 				exit(0);
 			}
 			i++;
@@ -78,12 +82,20 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 		strerror(errno);
 	else
 	{
-		waitpid(pid, &w_status, WUNTRACED);
-		if (WIFEXITED(w_status))
-			(*ghost)->ret_stat = WEXITSTATUS(w_status);
-		else if (WIFSIGNALED(w_status))
-			(*ghost)->ret_stat = WTERMSIG(w_status);
+		if (!command->next)
+		{
+			waitpid(pid, &w_status, WUNTRACED);
+			close((*ghost)->pipefd[0]);
+			if (WIFEXITED(w_status))
+				(*ghost)->ret_stat = WEXITSTATUS(w_status);
+			else if (WIFSIGNALED(w_status))
+				(*ghost)->ret_stat = WTERMSIG(w_status);
+		}
 		close((*ghost)->pipefd[1]);
+		if (cmd_num != 0)
+			close(fd_in);
+		// close((*ghost)->pipefd[0]);
+		// close(fd_in);
 		fd_in = (*ghost)->pipefd[0];
 	}
 	return (fd_in);
@@ -92,22 +104,17 @@ int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in)
 int		pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
+	int		i;
 
 	fd_in = 0;
-	// // Execute first in a fork()
+	i = 0;
 	while (command)
 	{
 		pipe((*ghost)->pipefd);
 		(*ghost)->pid = fork();
-		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in);
+		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in, i);
 		command = command->next;
+		i++;
 	}
-	// // Close write pipe
-	// close(ghost->pipefd[1]);
-	// dup2(ghost->pipefd[0], STDIN_FILENO);
-	
-	// // Execute second command (Always in a fork or only for exec?)
-
-	// // Return to main loop
 	return (1);
 }

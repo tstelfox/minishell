@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:19:08 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 12:09:19 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include "libft.h"
 # include "reins.h"
 
+// # include "get_next_line.h"
+
 enum	e_status
 {
 	PARSE = 0,
@@ -40,6 +42,7 @@ enum	e_errors
 	NO_MULTI_LINE = 1,
 	INVALID_ENV = 2,
 	PARSE_ERROR = 3,
+	SYNTAX_ERROR = 4,
 };
 
 enum	e_types
@@ -54,7 +57,10 @@ enum	e_types
 	DIRECTORY = 3,
 	EXPRT_FAIL = 4,
 	ERR_PIPE = 5,
-	NO_FILE = 6
+	NO_FILE = 6,
+	BAD_ARG_EXIT = 7,
+	NO_ACCESS = 8,
+	TOO_MANY_ARGS = 9
 };
 
 enum	e_return
@@ -64,13 +70,6 @@ enum	e_return
 	NOT_CMD = 127,
 	SYNTAX_ERR = 258
 };
-
-typedef struct		s_dlist
-{
-	void			*content;
-	struct s_dlist	*prev;
-	struct s_dlist	*next;
-}					t_dlist;
 
 typedef	struct 		s_redirection
 {
@@ -86,7 +85,6 @@ typedef struct 		s_cmd
 	int				seprator_type;
 }					t_cmd;
 
-
 typedef struct		s_shell
 {
 	t_dlist	*history;
@@ -96,15 +94,17 @@ typedef struct		s_shell
 	t_list	*tokens;
 	t_reins	*reins;
 	pid_t	pid;
+	char	**args;
 	char	**path;
 	char	**env;
-	char	*line;
 	int		status;
-	int		ret_stat; // This is the $? or last exit value.
+	int		ret_stat;
 	int		out;
 	int		pipefd[2];
 	int		out_pipe;
 	int		error;
+	char	*built_in[7];
+	int		(*g_builtin_f[7])(t_cmd *cmd, struct s_shell **ghost);
 }					t_shell;
 
 //---------------------------------shell_exec---------------------------------//
@@ -120,12 +120,12 @@ void	print_echo(t_list *args);
 
 //globals
 char	*g_builtin[7];
-int		(*g_builtin_f[7])(t_cmd *cmd, t_shell **ghost);
 
 // Programs
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
+void	get_args(t_cmd *cmd, t_shell **ghost);
 
 // Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);
@@ -134,7 +134,14 @@ int		redir_muti(void *file_struct);
 
 // Piping
 int		pipe_exec(t_list *command, t_shell **ghost);
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in);
+int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num);
+void	path_launch(t_cmd *cmd, t_shell **ghost);
+
+// Signals
+void	ctrl_process(int sig);
+
+// Freeing
+void	free_arr(char **arr);
 
 //-----------------------------------error------------------------------------//
 //error.c
@@ -143,42 +150,46 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
 //parser.c
-void	parser(t_shell **ghost);
-
-//parser_utils.c
-void	remove_quotes(t_shell **ghost, t_list **list);
-int		check_meta(char *str);
-int		check_redir(char *str);
-int		handle_seperator(t_shell **ghost, t_cmd **command);
-int		handle_redir(t_shell **ghost, t_cmd **command);
-char 	*handle_quotes(t_shell **ghost, char *str, int len);
-int		count_quotes(char *str);
+t_list	*parser(t_shell **ghost);
 
 //read_input.c
-void	read_line(t_shell **ghost);
+char	*read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
+int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
 
 //lexer.c
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);
 
 //handle_env.c
-char	**get_envp(char **envp);
-// int		replace_env(t_shell **ghost, char **input, int i); //TEST.C
 void	expand_env(t_shell **ghost, t_list **temp);
 char	*find_env(t_shell **ghost, char *str);
 
+//handle_funcs.c
+int		handle_seperator(t_shell **ghost, t_cmd **command);
+int		handle_redir(t_shell **ghost, t_cmd **command);
+char 	*handle_quotes(t_shell **ghost, char *str, int len);
+int		handle_syntax(t_shell **ghost, t_list *lst);
+
 //------------------------------------utils-----------------------------------//
+//parser_utils.c
+void	remove_quotes(t_shell **ghost, t_list **list);
+int		check_meta(char *str);
+int		check_redir(char *str);
+int		count_quotes(char *str);
+
+//env_utils.c
+char	**get_envp(char **envp);
+int		get_len(char **input, int i);
+
 //struct_utils.c
 t_shell	*init_shell(char **env);
 t_redir	*new_redir(t_shell **ghost, char *file, int type);
-t_cmd	*new_command();
+t_cmd	*new_command(void);
 void	restart_shell(t_shell **ghost);
-void	del_commands(void *list);
-void	del_content(void *content);
-void	del_darray(char **str);
 
 //lst_utils.c
+void	free_list(t_list **lst, void (*del)(void *));
 void	*copy_data(void	*data);
 char	**list_to_arr(t_list *tokens);
 
@@ -188,22 +199,14 @@ void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
 void	edit_content(t_dlist **node, char *line, int size);
 
-//dlist.c
-t_dlist	*ft_dlstnew(void *content);
-void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
-void	ft_dlstclear(t_dlist **lst, void (*del)(void *));
-int		ft_dlstgetpos(t_dlist *lst);
-t_dlist *ft_dlstlast(t_dlist *lst);
-void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *));
-void	dreplace(t_dlist **lst, t_dlist *insert, int pos, void (*del)(void *));
-void	ft_dlsreversetiter(t_dlist *lst, void (*f)(void *));
-int		ft_lstredir(t_list *lst, int (*f)(void *));
-void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
-void	ft_dlstiter(t_dlist *lst, void (*f)(void *));
+//del_utils.c
+void	del_content(void *content);
+void	del_redir(void *list);
+void	del_commands(void *list);
 void	del_ghost(t_shell **ghost);
-t_dlist	*ft_dlstfirst(t_dlist *lst);
+void	del_darray(char **str);
 
-//tur_utils.c
+//miscellaneous_utils.c
 void	free_all(t_shell **ghost);
 char	**arr_addback(char **arr, char *str);
 char	*ft_strjoinfree(char *s1, char const *s2);

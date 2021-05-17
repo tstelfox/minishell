@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 13:08:40 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:36:29 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:58:12 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*put_num(int n, int count, char *ret)
 	return (ret);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*ret;
 	int		temp;

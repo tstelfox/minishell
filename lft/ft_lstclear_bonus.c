@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/07 13:41:43 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:36:39 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:47:36 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!lst)
 		return ;

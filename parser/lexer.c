@@ -6,38 +6,54 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/04/29 18:56:01 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 11:59:28 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
 
-void	add_tkn(t_shell **ghost, t_list **ret, char *input, int start, int len)
+void	add_tkn(t_shell **ghost, t_list **ret, char *input, int len)
 {
 	char	*result;
 	t_list	*new;
 
-	result = ft_substr(input, start, len);
-	new = ft_lstnew(ft_strdup(result));
+	result = ft_substr(input, 0, len);
+	new = ft_lstnew(result);
 	if (!new)
 		error_handler(ghost, INTERNAL_ERROR, \
 		"something went wrong with tokenizing", NULL);
 	ft_lstadd_back(ret, new);
-	free(result);
 }
 
-int		tknise_sep(t_shell **ghost, t_list **ret, char *str, int start, int i)
+int	tknise_sep(t_shell **ghost, t_list **ret, char *str, int len)
 {
-	int len;
-	
-	len = i - start;
-	if (i == start) // if nothing before seperator
-		len = 1;
-	if (str[start] != ' ') // ignore spaces
-		add_tkn(ghost, ret, str, start, len); // if input before separator or esparator, tokenize it
-	if (i != start && str[i] != ' ') // if input before separator, tokenize seperator
-		add_tkn(ghost, ret, str, i, 1);
-	return (i);
+	int	i;
+
+	i = len;
+	if (len == 0)
+		i = 1;
+	if (*str != ' ')
+		add_tkn(ghost, ret, str, i);
+	if (len != 0 && str[len] != ' ')
+		add_tkn(ghost, ret, str + len, 1);
+	return (1);
+}
+
+int	skip_quotes(char *str, int i)
+{
+	int	inc;
+	int	type;
+
+	inc = 0;
+	type = 0;
+	if (str[i] == '\"' || str[i] == '\'')
+	{
+		type = str[i];
+		inc++;
+		while (str[i + inc] != type && str[i + inc])
+			inc++;
+	}
+	return (inc);
 }
 
 t_list	*lexer(t_shell **ghost, char *input, char *seperators)
@@ -45,35 +61,24 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	int		i;
 	int		start;
 	char	*str;
-	int		type;
 	t_list	*ret;
 
 	i = 0;
 	start = 0;
-	type = 0;
 	ret = NULL;
 	if (!input)
 		return (NULL);
 	str = input;
 	while (str[i])
 	{
-		if (str[i] == '\"' || str[i] == '\'')
-		{
-			type = str[i];
-			i++;
-			while (str[i] != type && str[i])
-				i++;
-			if (!str[i])
-				break ;
-		}
+		i += skip_quotes(str, i);
+		if (!str[i])
+			break ;
 		if (ft_strchr(seperators, str[i]))
-		{
-			i = tknise_sep(ghost, &ret, str, start, i);
-			start = i + 1;
-		}
+			start = i + tknise_sep(ghost, &ret, str + start, i - start);
 		i++;
 	}
 	if (i != start)
-		add_tkn(ghost, &ret, str, start, i - start);
+		add_tkn(ghost, &ret, str + start, i - start);
 	return (ret);
 }

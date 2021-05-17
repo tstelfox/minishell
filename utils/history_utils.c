@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/17 19:03:59 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/03/31 15:30:25 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 12:44:38 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	pass_param(void *param)
 
 void	edit_content(t_dlist **node, char *line, int size)
 {
-	char *temp;
-	
+	char	*temp;
+
 	free((*node)->content);
 	(*node)->content = NULL;
 	(*node)->content = malloc(sizeof(char) * (size + 1));
@@ -31,12 +31,11 @@ void	edit_content(t_dlist **node, char *line, int size)
 
 int	delete_row(t_input *input, char *buf, t_hook *hook)
 {
-	(void)buf;
-	(void)hook;
 	size_t	columns;
 
+	(void)buf;
+	(void)hook;
 	columns = input->max_col - (!input->shell_cursor.row * input->prompt_size);
-
 	return (reins_input_del(input, columns));
 }
 
@@ -60,5 +59,9 @@ void	init_reins(t_shell **ghost)
 	if (!reins_key((*ghost)->reins, KEY_ESC "[" KEY_DOWN, down_function))
 		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
 	if (!reins_hook((*ghost)->reins, KEY_ESC "[" KEY_DOWN, &pass_param, ghost))
+		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
+	if (!reins_key((*ghost)->reins, KEY_CNTRL_C, ctrl_d_function))
+		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
+	if (!reins_hook((*ghost)->reins, KEY_CNTRL_C, &pass_param, ghost))
 		error_handler(ghost, INIT_ERROR, "failed to bind key", NULL);
 }

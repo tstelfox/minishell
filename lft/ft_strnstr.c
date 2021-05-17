@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/30 15:06:04 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:51 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:42:22 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static size_t	ft_compare(const char *h, const char *n, size_t len)
 	return (1);
 }
 
-char			*ft_strnstr(const char *haystack, const char *needle, size_t l)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t l)
 {
 	size_t	i;
 

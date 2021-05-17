@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/30 13:08:42 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:36:03 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:57:51 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	ft_isspace(char c)
 	return (0);
 }
 
-int			ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int			i;
 	long int	sign;
@@ -38,8 +38,10 @@ int			ft_atoi(const char *str)
 	}
 	while (ft_isdigit(str[i]))
 	{
-		if (((str[i] - '0') + (res * 10)) < res)
-			return ((sign == 1) ? -1 : 0);
+		if (((str[i] - '0') + (res * 10)) < res && sign == 1)
+			return (-1);
+		if (((str[i] - '0') + (res * 10)) < res && sign != 1)
+			return (0);
 		res = (str[i] - '0') + (res * 10);
 		i++;
 	}

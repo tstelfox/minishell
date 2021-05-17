@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/07 15:40:50 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:36:49 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:44:11 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_list	*free_list(t_list *lst, t_list *data, void (*del)(void *))
 	return (NULL);
 }
 
-t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*new;
 	t_list	*temp;

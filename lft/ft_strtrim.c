@@ -6,7 +6,7 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 16:09:10 by ztan          #+#    #+#                 */
-/*   Updated: 2020/08/24 18:37:55 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:52:10 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	get_end_pos(const char *s1, const char *set)
 	return (i + 1);
 }
 
-char		*ft_strtrim(const char *s1, const char *set)
+char	*ft_strtrim(const char *s1, const char *set)
 {
 	int		start;
 	int		end;

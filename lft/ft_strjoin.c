@@ -6,13 +6,13 @@
 /*   By: ztan <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 15:51:49 by ztan          #+#    #+#                 */
-/*   Updated: 2021/04/19 16:15:02 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/15 00:44:48 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	s1len;
 	size_t	s2len;
@@ -30,7 +30,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (ret);
 }
 
-char		*ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	size_t	s1len;
 	size_t	s2len;

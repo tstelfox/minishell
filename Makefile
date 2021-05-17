@@ -6,22 +6,25 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/04/26 10:38:35 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/17 12:48:28 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
 
-ERR = error/error.c
+ERR = error/error.c \
+		error/err_msg.c
 
 UTIL = struct_utils.c \
-		dlist.c \
+		del_utils.c \
+		env_utils.c \
+		parser_utils.c \
 		lst_utils.c \
 		history_utils.c \
-		tur_utils.c
+		miscellaneous_utils.c
 
 PAR = parser.c \
-		parser_utils.c \
+		handle_funcs.c \
 		handle_env.c \
 		read_input.c \
 		lexer.c
@@ -47,46 +50,44 @@ SRC = main.c \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		debug/printlists.c \
-		# $(TEST) \
-		# $(LFT_PREFIX)
 
 OBJ = $(SRC:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
-# CC = clang
 
 INCLUDES = -Iincludes
 
-REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+REINS = -Itermcaps/incl -Itermcaps/lib/vector/incl
 
 LIBFT = -Ilft/
 
-TAIL	=	-Lreins_termcap/lib/vector/ -lvector -ltermcap
+# GNL = -Ignl/
+
+# GNL_TAIL = -lgnl -Lgnl
+
+LEAKS = -fsanitize=leak
+
+TAIL	=	-lreins -Ltermcaps -Ltermcaps/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@make -C reins_termcap/
+		@make -C termcaps/
 		@make bonus -C lft/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
-		
-test: $(OBJ)
-		@make -C reins_termcap/
-		@make bonus -C lft/
-		@gcc $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -Llft -lft -Lreins_termcap -lreins $(TAIL) -g -o $(NAME)
+		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
 %.o: %.c
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
-		@make clean -C reins_termcap/
+		@make clean -C termcaps/
 		@make clean -C lft/
 		rm -f $(OBJ)
 
 fclean: clean
-		@make fclean -C reins_termcap/
+		@make fclean -C termcaps/
 		@make fclean -C lft/
 		rm -f $(NAME)
 
