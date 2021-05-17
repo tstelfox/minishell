@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 09:36:38 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 11:59:53 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*find_env_val(t_shell **ghost, char *str)
 		i = 0;
 		while (envs[j][i] != '=')
 			i++;
+		if (!envs[j][i + 1])
+			return (NULL);
 		if (!ft_strncmp(envs[j], str, ft_strlen(str)))
 			return (ft_strdup(envs[j] + i + 1));
 		j++;

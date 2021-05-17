@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 11:36:31 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 11:59:28 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 		if (!str[i])
 			break ;
 		if (ft_strchr(seperators, str[i]))
-			start = i + tknise_sep(ghost, &ret, str + start, i - start);	
+			start = i + tknise_sep(ghost, &ret, str + start, i - start);
 		i++;
 	}
 	if (i != start)
