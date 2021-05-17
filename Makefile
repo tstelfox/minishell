@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/17 12:41:37 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/17 16:26:37 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ UTIL = struct_utils.c \
 		parser_utils.c \
 		lst_utils.c \
 		history_utils.c \
+		handle_utils.c \
 		miscellaneous_utils.c
 
 PAR = parser.c \
@@ -59,7 +60,7 @@ CC = gcc
 
 INCLUDES = -Iincludes
 
-REINS = -Ireins_termcap/incl -Ireins_termcap/lib/vector/incl
+REINS = -Ireins/incl -Ireins/lib/vector/incl
 
 LIBFT = -Ilft/
 
@@ -69,12 +70,12 @@ LIBFT = -Ilft/
 
 LEAKS = -fsanitize=leak
 
-TAIL	=	-lreins -Lreins_termcap -Lreins_termcap/lib/vector/ -lvector -ltermcap
+TAIL	=	-lreins -Lreins -Lreins/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-		@make -C reins_termcap/
+		@make -C reins/
 		@make bonus -C lft/
 		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
@@ -82,12 +83,12 @@ $(NAME): $(OBJ)
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
-		@make clean -C reins_termcap/
+		@make clean -C reins/
 		@make clean -C lft/
 		rm -f $(OBJ)
 
 fclean: clean
-		@make fclean -C reins_termcap/
+		@make fclean -C reins/
 		@make fclean -C lft/
 		rm -f $(NAME)
 

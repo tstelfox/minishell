@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:40:43 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/17 16:01:40 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char	*read_line(t_shell **ghost)
 
 	input = NULL;
 	ret = reins_get_input((*ghost)->reins, &input);
-	// ret = get_next_line(&input);
 	if (ret == 0)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
