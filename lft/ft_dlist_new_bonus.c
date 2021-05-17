@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstsize_bonus.c                                 :+:    :+:            */
+/*   ft_dlist_new_bonus.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 10:47:06 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/01 15:25:44 by ztan          ########   odam.nl         */
+/*   Created: 2021/05/17 09:14:56 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:16:53 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+t_dlist	*ft_dlstnew(void *content)
 {
-	int		count;
+	t_dlist	*new_node;
 
-	count = 0;
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return (count);
+	new_node = (t_dlist *)malloc(sizeof(t_dlist));
+	if (!new_node)
+		return (NULL);
+	new_node->content = content;
+	new_node->prev = NULL;
+	new_node->next = NULL;
+	return (new_node);
 }

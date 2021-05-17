@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_bzero.c                                         :+:    :+:            */
+/*   ft_dlist_size_bonus.c                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <marvin@codam.nl>                       +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/10/28 17:18:12 by ztan          #+#    #+#                 */
-/*   Updated: 2021/03/08 14:14:33 by ztan          ########   odam.nl         */
+/*   Created: 2021/05/17 09:23:20 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:23:30 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-void	ft_bzero(void *s, size_t n)
+int	ft_dlstsize(t_dlist *lst)
 {
-	size_t	i;
-	char	*str;
+	int	count;
 
-	i = 0;
-	str = (char *)s;
-	while (i < n)
+	count = 0;
+	while (lst)
 	{
-		str[i] = '\0';
-		i++;
+		count++;
+		lst = lst->next;
 	}
+	return (count);
 }

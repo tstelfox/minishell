@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   parser_utils.c                                     :+:    :+:            */
+/*   handle_funcs.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/04/20 19:23:12 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/15 00:24:22 by zenotan       ########   odam.nl         */
+/*   Created: 2021/05/17 09:33:36 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:35:47 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-int	check_redir(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i - 1] == '\'')
-			while (str[i] != '\'' && str[i])
-				i++;
-		if (str[i - 1] == '"')
-			while (str[i] != '"' && str[i])
-				i++;
-		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	check_meta(char *str)
-{
-	if (!ft_strcmp(str, ">") || !ft_strcmp(str, "<") || !ft_strcmp(str, "|"))
-		return (1);
-	return (0);
-}
 
 int	handle_seperator(t_shell **ghost, t_cmd **command)
 {
@@ -112,48 +85,46 @@ char	*handle_quotes(t_shell **ghost, char *str, int len)
 	return (ret);
 }
 
-int	count_quotes(char *str)
+void	check_seperator(t_shell **ghost, t_list *tokens)
 {
-	int	type;
-	int	check;
-	int	i;
-
-	i = 0;
-	type = 0;
-	check = 0;
-	while (str[i])
+	if (!ft_strcmp(tokens->content, "|"))
+		if (!ft_strcmp(tokens->next->content, ";"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
+	if (!ft_strcmp(tokens->content, ";"))
 	{
-		if ((str[i] == '\"' || str[i] == '\'') && type == 0)
-			type = str[i];
-		if (type != 0 && str[i] == type)
-			check++;
-		if (!(check % 2))
-			type = 0;
-		i++;
+		if (!ft_strcmp(tokens->next->content, "|"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
+		if (!ft_strcmp(tokens->next->content, ";"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", tokens->next->content);
 	}
-	return (check);
 }
 
-void	remove_quotes(t_shell **ghost, t_list **list)
+int	handle_syntax(t_shell **ghost, t_list *lst)
 {
-	char	*str;
-	int		qts;
 	t_list	*temp;
 
-	temp = NULL;
-	if ((*ghost)->error || !list || !*list)
-		return ;
-	if (*list)
-		temp = *list;
+	temp = lst;
 	while (temp)
 	{
-		str = temp->content;
-		qts = count_quotes(str);
-		if (qts)
+		if (temp->next)
 		{
-			free(temp->content);
-			temp->content = handle_quotes(ghost, str, ft_strlen(str) - qts);
+			check_seperator(ghost, temp);
+			if ((!ft_strcmp(temp->content, ">")
+					 || !ft_strcmp(temp->next->content, ">"))
+				 	 && !temp->next->next)
+				error_handler(ghost, SYNTAX_ERROR,
+					 "syntax error near unexpected token", "newline");
 		}
+		else if (!ft_strcmp(temp->content, ">")
+			 || !ft_strcmp(temp->content, "<"))
+			error_handler(ghost, SYNTAX_ERROR,
+				 "syntax error near unexpected token", "newline");
+		if ((*ghost)->error == SYNTAX_ERROR)
+			return (1);
 		temp = temp->next;
 	}
+	return (0);
 }

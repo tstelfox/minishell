@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_putchar_fd.c                                    :+:    :+:            */
+/*   ft_dlist_addfront_bonus.c                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: ztan <marvin@codam.nl>                       +#+                     */
+/*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/10/28 13:48:03 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/18 16:33:22 by zenotan       ########   odam.nl         */
+/*   Created: 2021/05/17 09:21:32 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:21:43 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_dlstadd_front(t_dlist **alst, t_dlist *new)
 {
-	write(fd, &c, 1);
+	if (!new || !alst)
+		return ;
+	new->next = *alst;
+	if (*alst)
+		(*alst)->prev = new;
+	*alst = new;
 }

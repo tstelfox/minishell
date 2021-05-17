@@ -6,55 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/15 00:41:03 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 09:35:43 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-void	check_seperator(t_shell **ghost, t_list *tokens)
-{
-	if (!ft_strcmp(tokens->content, "|"))
-		if (!ft_strcmp(tokens->next->content, ";"))
-			error_handler(ghost, SYNTAX_ERROR,
-				 "syntax error near unexpected token", tokens->next->content);
-	if (!ft_strcmp(tokens->content, ";"))
-	{
-		if (!ft_strcmp(tokens->next->content, "|"))
-			error_handler(ghost, SYNTAX_ERROR,
-				 "syntax error near unexpected token", tokens->next->content);
-		if (!ft_strcmp(tokens->next->content, ";"))
-			error_handler(ghost, SYNTAX_ERROR,
-				 "syntax error near unexpected token", tokens->next->content);
-	}
-}
-
-int	check_syntax(t_shell **ghost, t_list *lst)
-{
-	t_list	*temp;
-
-	temp = lst;
-	while (temp)
-	{
-		if (temp->next)
-		{
-			check_seperator(ghost, temp);
-			if ((!ft_strcmp(temp->content, ">")
-					 || !ft_strcmp(temp->next->content, ">"))
-				 	 && !temp->next->next)
-				error_handler(ghost, SYNTAX_ERROR,
-					 "syntax error near unexpected token", "newline");
-		}
-		else if (!ft_strcmp(temp->content, ">")
-			 || !ft_strcmp(temp->content, "<"))
-			error_handler(ghost, SYNTAX_ERROR,
-				 "syntax error near unexpected token", "newline");
-		if ((*ghost)->error == SYNTAX_ERROR)
-			return (1);
-		temp = temp->next;
-	}
-	return (0);
-}
 
 t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 {
@@ -122,7 +78,7 @@ t_list	*parser(t_shell **ghost)
 	lst = NULL;
 	if ((*ghost)->commands)
 		free_list(&((*ghost)->commands), del_commands);
-	if (check_syntax(ghost, (*ghost)->tokens))
+	if (handle_syntax(ghost, (*ghost)->tokens))
 		return (NULL);
 	while ((*ghost)->tokens)
 	{

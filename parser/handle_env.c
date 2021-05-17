@@ -6,33 +6,11 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/16 13:59:50 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 09:36:38 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-char	**get_envp(char **envp)
-{
-	char	**env;
-	int		i;
-	int		k;
-
-	i = 0;
-	k = 0;
-	while (envp[i])
-		i++;
-	env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!env)
-		return (NULL);
-	while (envp[k])
-	{
-		env[k] = ft_strdup(envp[k]);
-		k++;
-	}
-	env[k] = 0;
-	return (env);
-}
 
 char	*find_env_val(t_shell **ghost, char *str)
 {
@@ -56,19 +34,6 @@ char	*find_env_val(t_shell **ghost, char *str)
 		j++;
 	}
 	return (NULL);
-}
-
-int	get_len(char **input, int i)
-{
-	int	len;
-
-	len = 0;
-	while (ft_isalnum((*input)[i + len]) || (*input)[i + len] == '_')
-		len++;
-	if ((*input)[i + len] == '?' && (!ft_isalnum((*input)[i + len + 1]) \
-											 || (*input)[i + len + 1] != '_'))
-		len++;
-	return (len);
 }
 
 int	replace_env(t_shell **ghost, char **input, int i)

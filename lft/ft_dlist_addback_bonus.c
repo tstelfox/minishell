@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_lstclear_bonus.c                                :+:    :+:            */
+/*   ft_dlist_addback_bonus.c                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/07 13:41:43 by ztan          #+#    #+#                 */
-/*   Updated: 2021/02/17 17:39:48 by zenotan       ########   odam.nl         */
+/*   Created: 2021/05/17 09:21:07 by ztan          #+#    #+#                 */
+/*   Updated: 2021/05/17 09:21:24 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ghostshell.h"
+#include "libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_dlstadd_back(t_dlist **alst, t_dlist *new)
 {
-	t_list *temp;
+	t_dlist	*temp;
 
-	if (!lst)
+	if (!alst)
 		return ;
-	while (*lst)
+	temp = *alst;
+	if (!*alst)
+		*alst = new;
+	else
 	{
-		temp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = temp;
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->prev = temp;
 	}
 }

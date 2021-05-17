@@ -6,7 +6,7 @@
 #    By: ztan <ztan@student.codam.nl>                 +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/06 18:10:05 by ztan          #+#    #+#                  #
-#    Updated: 2021/05/03 11:05:32 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/17 09:27:33 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,9 +59,19 @@ BONUS = ft_lstnew_bonus.c \
 	ft_lstiter_bonus.c \
 	ft_lstmap_bonus.c
 
+BONUS2 = ft_dlist_addback_bonus.c \
+	ft_dlist_addfront_bonus.c \
+	ft_dlist_clear_bonus.c \
+	ft_dlist_delone_bonus.c \
+	ft_dlist_last_bonus.c \
+	ft_dlist_new_bonus.c \
+	ft_dlist_size_bonus.c \
+
 OBJ = $(SRC:%.c=%.o)
 
 OBJ2 = $(BONUS:%.c=%.o)
+
+OBJ3 = $(BONUS2:%.c=%.o)
 
 INCL = libft.h
 
@@ -75,11 +85,11 @@ $(NAME): $(OBJ)
 %.o: %.c
 	gcc $(FLAGS) -c $<
 
-bonus: $(NAME) $(OBJ2)
+bonus: $(NAME) $(OBJ2) $(OBJ3)
 	ar rcs $(NAME) $?
 
 clean:
-	/bin/rm -f $(OBJ) $(OBJ2)
+	/bin/rm -f $(OBJ) $(OBJ2) $(OBJ3)
 
 fclean: clean
 	/bin/rm -f $(NAME)

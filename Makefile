@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/16 14:16:34 by zenotan       ########   odam.nl          #
+#    Updated: 2021/05/17 09:40:33 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,15 @@ ERR = error/error.c \
 		error/err_msg.c
 
 UTIL = struct_utils.c \
-		dlist.c \
+		del_utils.c \
+		env_utils.c \
+		parser_utils.c \
 		lst_utils.c \
 		history_utils.c \
-		tur_utils.c
+		miscellaneous_utils.c
 
 PAR = parser.c \
-		parser_utils.c \
+		handle_funcs.c \
 		handle_env.c \
 		read_input.c \
 		lexer.c

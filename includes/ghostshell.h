@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/16 14:13:09 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/17 09:49:44 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,6 @@ enum	e_return
 	NOT_CMD = 127,
 	SYNTAX_ERR = 258
 };
-
-typedef struct		s_dlist
-{
-	void			*content;
-	struct s_dlist	*prev;
-	struct s_dlist	*next;
-}					t_dlist;
 
 typedef	struct 		s_redirection
 {
@@ -159,15 +152,6 @@ void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 //parser.c
 t_list	*parser(t_shell **ghost);
 
-//parser_utils.c
-void	remove_quotes(t_shell **ghost, t_list **list);
-int		check_meta(char *str);
-int		check_redir(char *str);
-int		handle_seperator(t_shell **ghost, t_cmd **command);
-int		handle_redir(t_shell **ghost, t_cmd **command);
-char 	*handle_quotes(t_shell **ghost, char *str, int len);
-int		count_quotes(char *str);
-
 //read_input.c
 char	*read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
@@ -178,20 +162,31 @@ int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);
 
 //handle_env.c
-char	**get_envp(char **envp);
-// int		replace_env(t_shell **ghost, char **input, int i); //TEST.C
 void	expand_env(t_shell **ghost, t_list **temp);
 char	*find_env(t_shell **ghost, char *str);
 
+//handle_funcs.c
+int		handle_seperator(t_shell **ghost, t_cmd **command);
+int		handle_redir(t_shell **ghost, t_cmd **command);
+char 	*handle_quotes(t_shell **ghost, char *str, int len);
+int		handle_syntax(t_shell **ghost, t_list *lst);
+
 //------------------------------------utils-----------------------------------//
+//parser_utils.c
+void	remove_quotes(t_shell **ghost, t_list **list);
+int		check_meta(char *str);
+int		check_redir(char *str);
+int		count_quotes(char *str);
+
+//env_utils.c
+char	**get_envp(char **envp);
+int		get_len(char **input, int i);
+
 //struct_utils.c
 t_shell	*init_shell(char **env);
 t_redir	*new_redir(t_shell **ghost, char *file, int type);
-t_cmd	*new_command();
+t_cmd	*new_command(void);
 void	restart_shell(t_shell **ghost);
-void	del_commands(void *list);
-void	del_content(void *content);
-void	del_darray(char **str);
 
 //lst_utils.c
 void	free_list(t_list **lst, void (*del)(void *));
@@ -204,17 +199,14 @@ void	init_reins(t_shell **ghost);
 void	pass_param(void *param);
 void	edit_content(t_dlist **node, char *line, int size);
 
-//dlist.c
-t_dlist	*ft_dlstnew(void *content);
-void	ft_dlstadd_front(t_dlist **alst, t_dlist *new);
-void	ft_dlstclear(t_dlist **lst, void (*del)(void *));
-void	ft_dlstdelone(t_dlist **lst, int position, void (*del)(void *));
-int		ft_lstredir(t_list *lst, int (*f)(void *));
-void	ft_dlstadd_back(t_dlist **alst, t_dlist *new);
+//del_utils.c
+void	del_content(void *content);
+void	del_redir(void *list);
+void	del_commands(void *list);
 void	del_ghost(t_shell **ghost);
-t_dlist	*ft_dlstfirst(t_dlist *lst);
+void	del_darray(char **str);
 
-//tur_utils.c
+//miscellaneous_utils.c
 void	free_all(t_shell **ghost);
 char	**arr_addback(char **arr, char *str);
 char	*ft_strjoinfree(char *s1, char const *s2);
