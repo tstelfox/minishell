@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 17:29:27 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 17:40:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,14 @@ int	open_multi(void *file_struct)
 	else
 		fd = open(filename->file, O_CREAT | O_APPEND | O_RDWR, 0666);
 	// else
+	// {
 	// 	fd = open(filename->file, O_APPEND | O_RDWR, 0666);
+	// 	if (fd == -1)
+	// 	{
+	// 		cmd_notfound(cmd, NO_FILE, ghost, 0);
+	// 		return (-1);
+	// 	}
+	// }
 	return (fd);
 }
 
