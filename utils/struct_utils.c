@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/17 12:09:10 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/20 15:14:28 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	assign_shell(t_shell **ghost, char **env)
 	(*ghost)->args = NULL;
 	(*ghost)->status = 0;
 	(*ghost)->out = -42;
+	(*ghost)->in = -42;
 	(*ghost)->pipefd[0] = -69;
 	(*ghost)->pipefd[1] = -47;
 	(*ghost)->error = 0;

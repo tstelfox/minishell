@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 14:13:29 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 15:47:35 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,17 +379,23 @@ int	shell_exec(t_list *command, t_shell **ghost)
 			if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 			{
 				if (cmd->redirection)
-					(*ghost)->out = redirect(cmd, ghost);
-				if ((*ghost)->out == -1 && cmd->redirection)
-					return(1);
-				// else if ((*ghost)->out == -1)
-				// 	(*ghost)->out = -42;
+				{
+					if (redirect(cmd, ghost) == -1)
+						return (1);
+				}
+				if ((*ghost)->in != -42)
+					dup2((*ghost)->in, STDIN_FILENO);
+				// ft_putnbr_fd((*ghost)->out, 1);
+				// (*ghost)->out = redirect(cmd, ghost);
+				// if ((*ghost)->out == -1 && cmd->redirection)
+				// if (redirect == -1)
+				// 	return(1);
 				(*ghost)->ret_stat = 0;
 				// ft_putstr_fd("In here?\n", 1);
 				// ft_putstr_fd((*ghost)->built_in[i], STDOUT_FILENO);
+				(*ghost)->g_builtin_f[i](cmd, ghost);
 				if ((*ghost)->out != -42)
 					dup2((*ghost)->out, STDOUT_FILENO);
-				(*ghost)->g_builtin_f[i](cmd, ghost);
 				if (!command->next)
 				{
 					if ((*ghost)->pipefd[0] != -69)

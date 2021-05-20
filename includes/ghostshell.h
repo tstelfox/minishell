@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 17:40:33 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 15:28:07 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct		s_shell
 	int		status;
 	int		ret_stat;
 	int		out;
+	int		in;
 	int		pipefd[2];
 	int		out_pipe;
 	int		error;
