@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/20 17:19:54 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/20 17:24:42 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SHEL = shell_exec.c \
 		pipe_exec.c \
 
 BUILT = export.c \
-		exit.c
+		exit.c \
+		unset.c
 
 TEST = test.c
 

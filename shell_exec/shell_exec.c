@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 17:16:19 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 17:24:35 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,106 +116,65 @@ int	run_env(t_cmd *cmd, t_shell **ghost)
 	return (1);
 }
 
-int	run_unset(t_cmd *cmd, t_shell **ghost)
-{
-	int i;
-	int k = 0;
-
-	i = 0;
-	if (!cmd->args)
-		return (1);
-	while (cmd->args->next)
-	{
-		int len = ft_strlen(cmd->args->content);
-		while ((*ghost)->env[i])
-		{
-			if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
-				k = i;
-			i++;
-		}
-		char **temp;
-		temp = (char**)malloc(sizeof(char*) * (i));
-		int j = 0;
-		for (int i = 0; (*ghost)->env[i]; i++)
-		{
-			if (i != k)
-			{
-				temp[j] = (*ghost)->env[i];
-				j++;
-			}
-			else
-				free((*ghost)->env[i]);
-		}
-		temp[j] = 0;
-		free((*ghost)->env);
-		(*ghost)->env = temp;
-		cmd->args = cmd->args->next;
-	}
-	int len = ft_strlen(cmd->args->content);
-	while ((*ghost)->env[i])
-	{
-		if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
-			k = i;
-		i++;
-	}
-	char **temp;
-	temp = (char**)malloc(sizeof(char*) * (i));
-	int j = 0;
-	for (int i = 0; (*ghost)->env[i]; i++)
-	{
-		if (i != k)
-		{
-			temp[j] = (*ghost)->env[i];
-			j++;
-		}
-		else
-			free((*ghost)->env[i]);
-	}
-	temp[j] = 0;
-	free((*ghost)->env);
-	(*ghost)->env = temp;
-	return(1);
-}
-
-// int	run_exit(t_cmd *cmd, t_shell **ghost)
+// int	run_unset(t_cmd *cmd, t_shell **ghost)
 // {
-// 	char	*exit_code;
-// 	int		i;
+// 	int i;
+// 	int k = 0;
 
 // 	i = 0;
-// 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
-// 		ft_putstr_fd("exit\n", 1);
 // 	if (!cmd->args)
-// 		exit(0);
-// 	else
+// 		return (1);
+// 	while (cmd->args->next)
 // 	{
-// 		exit_code = cmd->args->content;
-// 		while (exit_code[i])
+// 		int len = ft_strlen(cmd->args->content);
+// 		while ((*ghost)->env[i])
 // 		{
-// 			if (!ft_isdigit(exit_code[i]) && exit_code[i] != '-')
-// 				break;
-// 			if (i != 0 && !ft_isdigit(exit_code[i]))
-// 				break;
-// 			if (cmd->args->next)
-// 			{
-// 				cmd_notfound(cmd, TOO_MANY_ARGS, ghost, 0);
-// 				(*ghost)->ret_stat = 1;
-// 				return(1);
-// 			}
+// 			if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
+// 				k = i;
 // 			i++;
-// 			if(!exit_code[i])
-// 			{
-// 				i = ft_atoi(exit_code);
-// 				while (i > 255)
-// 					i -= 256;
-// 				while (i < 0)
-// 					i += 256;
-// 				exit(i);
-// 			}
 // 		}
-// 		cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
-// 		exit(255);
+// 		char **temp;
+// 		temp = (char**)malloc(sizeof(char*) * (i));
+// 		int j = 0;
+// 		for (int i = 0; (*ghost)->env[i]; i++)
+// 		{
+// 			if (i != k)
+// 			{
+// 				temp[j] = (*ghost)->env[i];
+// 				j++;
+// 			}
+// 			else
+// 				free((*ghost)->env[i]);
+// 		}
+// 		temp[j] = 0;
+// 		free((*ghost)->env);
+// 		(*ghost)->env = temp;
+// 		cmd->args = cmd->args->next;
 // 	}
+// 	int len = ft_strlen(cmd->args->content);
+// 	while ((*ghost)->env[i])
+// 	{
+// 		if (ft_strnstr((*ghost)->env[i], cmd->args->content, len))
+// 			k = i;
+// 		i++;
+// 	}
+// 	char **temp;
+// 	temp = (char**)malloc(sizeof(char*) * (i));
+// 	int j = 0;
+// 	for (int i = 0; (*ghost)->env[i]; i++)
+// 	{
+// 		if (i != k)
+// 		{
+// 			temp[j] = (*ghost)->env[i];
+// 			j++;
+// 		}
+// 		else
+// 			free((*ghost)->env[i]);
+// 	}
+// 	temp[j] = 0;
+// 	free((*ghost)->env);
+// 	(*ghost)->env = temp;
+// 	return(1);
 // }
 
 int	shell_exec(t_list *command, t_shell **ghost)
