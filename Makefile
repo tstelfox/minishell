@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/20 17:10:48 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/20 17:19:54 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,9 @@ SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
 		pipe_exec.c \
-		export.c
+
+BUILT = export.c \
+		exit.c
 
 TEST = test.c
 
@@ -45,6 +47,8 @@ UTIL_PREFIX = $(addprefix utils/, $(UTIL))
 
 SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 
+BUILT_PREFIX = $(addprefix built-ins/, $(BUILT))
+
 SRC = main.c \
 		$(GNL) \
 		$(ERR) \
@@ -52,6 +56,7 @@ SRC = main.c \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
+		$(BUILT_PREFIX) \
 		debug/printlists.c \
 
 OBJ = $(SRC:.c=.o)

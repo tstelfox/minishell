@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 16:40:50 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 17:16:19 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,46 +177,46 @@ int	run_unset(t_cmd *cmd, t_shell **ghost)
 	return(1);
 }
 
-int	run_exit(t_cmd *cmd, t_shell **ghost)
-{
-	char	*exit_code;
-	int		i;
+// int	run_exit(t_cmd *cmd, t_shell **ghost)
+// {
+// 	char	*exit_code;
+// 	int		i;
 
-	i = 0;
-	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
-		ft_putstr_fd("exit\n", 1);
-	if (!cmd->args)
-		exit(0);
-	else
-	{
-		exit_code = cmd->args->content;
-		while (exit_code[i])
-		{
-			if (!ft_isdigit(exit_code[i]) && exit_code[i] != '-')
-				break;
-			if (i != 0 && !ft_isdigit(exit_code[i]))
-				break;
-			if (cmd->args->next)
-			{
-				cmd_notfound(cmd, TOO_MANY_ARGS, ghost, 0);
-				(*ghost)->ret_stat = 1;
-				return(1);
-			}
-			i++;
-			if(!exit_code[i])
-			{
-				i = ft_atoi(exit_code);
-				while (i > 255)
-					i -= 256;
-				while (i < 0)
-					i += 256;
-				exit(i);
-			}
-		}
-		cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
-		exit(255);
-	}
-}
+// 	i = 0;
+// 	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
+// 		ft_putstr_fd("exit\n", 1);
+// 	if (!cmd->args)
+// 		exit(0);
+// 	else
+// 	{
+// 		exit_code = cmd->args->content;
+// 		while (exit_code[i])
+// 		{
+// 			if (!ft_isdigit(exit_code[i]) && exit_code[i] != '-')
+// 				break;
+// 			if (i != 0 && !ft_isdigit(exit_code[i]))
+// 				break;
+// 			if (cmd->args->next)
+// 			{
+// 				cmd_notfound(cmd, TOO_MANY_ARGS, ghost, 0);
+// 				(*ghost)->ret_stat = 1;
+// 				return(1);
+// 			}
+// 			i++;
+// 			if(!exit_code[i])
+// 			{
+// 				i = ft_atoi(exit_code);
+// 				while (i > 255)
+// 					i -= 256;
+// 				while (i < 0)
+// 					i += 256;
+// 				exit(i);
+// 			}
+// 		}
+// 		cmd_notfound(cmd, BAD_ARG_EXIT, ghost, 0);
+// 		exit(255);
+// 	}
+// }
 
 int	shell_exec(t_list *command, t_shell **ghost)
 {
