@@ -6,11 +6,40 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/04/21 22:30:58 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 09:49:07 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/20 16:37:06 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+
+int	check_dir(t_cmd *cmd, t_shell **ghost)
+{
+	struct stat	buf;
+
+	lstat(cmd->type, &buf);
+	if (S_ISDIR(buf.st_mode))
+	{
+		(*ghost)->error = DIRECTORY;
+		return (0);
+	}
+	return (1);
+}
+
+void	free_arr(char **arr)
+{
+	int		i;
+
+	i = 0;
+	if (arr != 0)
+	{
+		while (arr[i])
+		{
+			free(arr[i]);
+			i++;
+		}
+		free(arr);
+	}
+}
 
 void	free_all(t_shell **ghost)
 {

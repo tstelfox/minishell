@@ -6,40 +6,11 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 17:03:29 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 16:38:09 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
-
-int	check_dir(t_cmd *cmd, t_shell **ghost)
-{
-	struct stat	buf;
-
-	lstat(cmd->type, &buf);
-	if (S_ISDIR(buf.st_mode))
-	{
-		(*ghost)->error = DIRECTORY;
-		return (0);
-	}
-	return (1);
-}
-
-void	free_arr(char **arr)
-{
-	int		i;
-
-	i = 0;
-	if (arr != 0)
-	{
-		while (arr[i])
-		{
-			free(arr[i]);
-			i++;
-		}
-		free(arr);
-	}
-}
 
 char	**get_path(t_cmd *cmd, t_shell **ghost)
 {

@@ -6,14 +6,15 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/17 16:30:24 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/20 17:10:48 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
 
 ERR = error/error.c \
-		error/err_msg.c
+		error/err_msg.c \
+		error/norm_made_us_do_it.c
 
 UTIL = struct_utils.c \
 		del_utils.c \
@@ -33,7 +34,8 @@ PAR = parser.c \
 SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
-		pipe_exec.c
+		pipe_exec.c \
+		export.c
 
 TEST = test.c
 

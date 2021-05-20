@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 16:02:24 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/17 16:25:55 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/20 16:28:15 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*handle_bigger(t_list *lst)
 int	handle_syntax(t_shell **ghost, t_list *lst)
 {
 	char	*ret;
-	
+
 	ret = handle_bigger(lst);
 	if (ret)
 	{

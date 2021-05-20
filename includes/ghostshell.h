@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 15:28:07 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/20 17:11:27 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ enum	e_return
 	SYNTAX_ERR = 258
 };
 
-typedef	struct 		s_redirection
+typedef struct s_redirection
 {
 	char			*file;
 	int				type;
 }					t_redir;
 
-typedef struct 		s_cmd
+typedef struct s_cmd
 {
 	char			*type;
 	t_list			*args;
@@ -85,7 +85,7 @@ typedef struct 		s_cmd
 	int				seprator_type;
 }					t_cmd;
 
-typedef struct		s_shell
+typedef struct s_shell
 {
 	t_dlist	*history;
 	t_dlist	*current;
@@ -127,6 +127,7 @@ int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
 void	get_args(t_cmd *cmd, t_shell **ghost);
+int		check_dir(t_cmd *cmd, t_shell **ghost);
 
 // Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);
@@ -143,6 +144,9 @@ void	ctrl_process(int sig);
 
 // Freeing
 void	free_arr(char **arr);
+
+// Norm Abominations
+void	the_replacing(char *str, char *var, t_shell **ghost, int i);
 
 //-----------------------------------error------------------------------------//
 //error.c
@@ -169,7 +173,7 @@ char	*find_env(t_shell **ghost, char *str);
 //handle_funcs.c
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
-char 	*handle_quotes(t_shell **ghost, char *str, int len);
+char	*handle_quotes(t_shell **ghost, char *str, int len);
 
 //------------------------------------utils-----------------------------------//
 //parser_utils.c
@@ -219,6 +223,6 @@ void	print_data(void *data);
 void	print_cmd(t_cmd *data);
 void	ft_cmd_lstiter(t_list *lst, void (*f)(t_cmd *));
 void	debug_loop(t_shell **ghost);
-void	test();
+void	test(void);
 
 #endif
