@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/20 17:23:40 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 12:38:11 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/22 12:46:11 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	unset_arg(t_list *arg, t_shell **ghost, int i, int k)
 		i++;
 	}
 	temp = (char **)malloc(sizeof(char *) * (i));
+	if (!temp)
+		return ;
 	i = resize_arr(ghost, temp, k);
 	temp[i] = 0;
 	free((*ghost)->env);

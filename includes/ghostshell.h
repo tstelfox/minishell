@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 17:11:27 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/22 13:08:04 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	path_launch(t_cmd *cmd, t_shell **ghost);
 
 // Signals
 void	ctrl_process(int sig);
+void	ctrl(int sig);
 
 // Freeing
 void	free_arr(char **arr);

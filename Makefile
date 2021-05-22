@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/20 17:24:42 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/22 13:07:38 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,11 @@ SHEL = shell_exec.c \
 
 BUILT = export.c \
 		exit.c \
-		unset.c
+		unset.c \
+		cd.c \
+		echo.c \
+		env.c \
+		pwd.c
 
 TEST = test.c
 
@@ -59,6 +63,7 @@ SRC = main.c \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
 		debug/printlists.c \
+		signal/signals.c
 
 OBJ = $(SRC:.c=.o)
 
