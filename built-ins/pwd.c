@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/22 12:49:46 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 12:50:08 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/22 13:19:28 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ int	run_pwd(t_cmd *cmd, t_shell **ghost)
 	char	buff[1024];
 
 	(void)ghost;
-	if (cmd->args != NULL)
-		return (1);
+	(void)cmd;
 	if (getcwd(buff, sizeof(buff)) == NULL)
 		strerror(errno);
 	else
