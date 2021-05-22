@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/20 16:39:19 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 17:11:47 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/22 12:36:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 {
 	int		i;
 	int		k;
+	t_list	*head;
 	char	*str;
 
 	i = 0;
@@ -120,6 +121,7 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 		print_export(ghost, i, k);
 		return (1);
 	}
+	head = cmd->args;
 	while (cmd->args->next)
 	{
 		str = cmd->args->content;
@@ -130,5 +132,6 @@ int	run_export(t_cmd *cmd, t_shell **ghost)
 	str = cmd->args->content;
 	if (parse_export(cmd, ghost, str) == 1)
 		return (1);
+	cmd->args = head;
 	return (1);
 }
