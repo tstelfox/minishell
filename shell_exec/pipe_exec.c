@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:27:40 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/17 15:24:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 {
-	char	**path;
 	int		k;
 
-	path = get_path(cmd, ghost);
-	if (path == NULL)
+	(*ghost)->path = get_path(cmd, ghost);
+	if ((*ghost)->path == NULL)
 		cmd_notfound(cmd, (*ghost)->error, ghost, 0);
 	k = 0;
 	get_args(cmd, ghost);
@@ -31,9 +30,9 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	}
 	else
 	{
-		while (path[k])
+		while ((*ghost)->path[k])
 		{
-			if (execve(path[k], (*ghost)->args, (*ghost)->env) == -1)
+			if (execve((*ghost)->path[k], (*ghost)->args, (*ghost)->env) == -1)
 				(*ghost)->ret_stat = 1;
 			k++;
 		}
@@ -42,66 +41,77 @@ void	pipe_prog(t_cmd *cmd, t_shell **ghost)
 	exit(127);
 }
 
-int		first_cmd(pid_t pid, t_list *command, t_shell **ghost, int fd_in, int cmd_num)
+void	pipe_child(t_list *command, t_shell **ghost)
 {
-	int i;
-	t_cmd *cmd;
-	int w_status;
+	int		i;
+	t_cmd	*cmd;	
 
 	i = 0;
 	cmd = command->content;
-	if (pid == 0)
+	(*ghost)->out_pipe = dup(STDOUT_FILENO);
+	if (command->next != NULL)
 	{
-		if (cmd_num != 0)
+		dup2((*ghost)->pipefd[1], STDOUT_FILENO);
+		close((*ghost)->pipefd[1]);
+	}
+	close((*ghost)->pipefd[0]);
+	if (cmd->redirection)
+		(*ghost)->out = redirect(cmd, ghost);
+	while (i < 7)
+	{
+		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
+		{
+			(*ghost)->g_builtin_f[i](cmd, ghost);
+			exit(0);
+		}
+		i++;
+	}
+	pipe_prog(cmd, ghost);
+}
+
+void	pipe_parent(t_list *command, t_shell **ghost, int w_status)
+{
+	if (!command->next)
+	{
+		waitpid((*ghost)->pid, &w_status, WUNTRACED);
+		close((*ghost)->pipefd[0]);
+		if (WIFEXITED(w_status))
+			(*ghost)->ret_stat = WEXITSTATUS(w_status);
+		else if (WIFSIGNALED(w_status))
+			(*ghost)->ret_stat = WTERMSIG(w_status);
+	}
+	close((*ghost)->pipefd[1]);
+}
+
+int	pipe_loop(t_list *command, t_shell **ghost, int fd_in, int num)
+{
+	t_cmd	*cmd;
+	int		w_status;
+
+	w_status = 0;
+	cmd = command->content;
+	if ((*ghost)->pid == 0)
+	{
+		if (num != 0)
 		{
 			dup2(fd_in, 0);
 			close(fd_in);
 		}
-		(*ghost)->out_pipe = dup(STDOUT_FILENO);
-		if (command->next != NULL)
-		{
-			dup2((*ghost)->pipefd[1], STDOUT_FILENO);
-			close((*ghost)->pipefd[1]);
-		}
-		close((*ghost)->pipefd[0]);
-		if (cmd->redirection) // Here goes nothing
-			(*ghost)->out = redirect(cmd, ghost);
-		while (i < 7)
-		{
-			if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
-			{
-				(*ghost)->g_builtin_f[i](cmd, ghost);
-				// close(fd_in);
-				exit(0);
-			}
-			i++;
-		}
-		pipe_prog(cmd, ghost);
+		pipe_child(command, ghost);
 	}
-	else if (pid < 0)
+	else if ((*ghost)->pid < 0)
 		strerror(errno);
 	else
 	{
-		if (!command->next)
-		{
-			waitpid(pid, &w_status, WUNTRACED);
-			close((*ghost)->pipefd[0]);
-			if (WIFEXITED(w_status))
-				(*ghost)->ret_stat = WEXITSTATUS(w_status);
-			else if (WIFSIGNALED(w_status))
-				(*ghost)->ret_stat = WTERMSIG(w_status);
-		}
-		close((*ghost)->pipefd[1]);
-		if (cmd_num != 0)
+		pipe_parent(command, ghost, w_status);
+		if (num != 0)
 			close(fd_in);
-		// close((*ghost)->pipefd[0]);
-		// close(fd_in);
 		fd_in = (*ghost)->pipefd[0];
 	}
 	return (fd_in);
 }
 
-int		pipe_exec(t_list *command, t_shell **ghost)
+int	pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
 	int		i;
@@ -112,7 +122,7 @@ int		pipe_exec(t_list *command, t_shell **ghost)
 	{
 		pipe((*ghost)->pipefd);
 		(*ghost)->pid = fork();
-		fd_in = first_cmd((*ghost)->pid, command, ghost, fd_in, i);
+		fd_in = pipe_loop(command, ghost, fd_in, i);
 		command = command->next;
 		i++;
 	}
