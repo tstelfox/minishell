@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 16:01:23 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/23 15:10:07 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*find_env_val(t_shell **ghost, char *str)
 
 	j = 0;
 	envs = (*ghost)->env;
+	if (!ft_strcmp("", str))
+		return (ft_strdup(str));
 	if (!ft_strcmp("?", str))
 		return (ft_itoa((*ghost)->ret_stat));
 	while (envs[j])
@@ -45,7 +47,7 @@ int	replace_env(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = get_len(input, i);
-	if (len == 0 && (*input)[len + 1] != '\'' && (*input)[len + 1] != '"')
+	if (len == 0 && (*input)[i] != '\'' && (*input)[i] != '"')
 		return (1);
 	temp = ft_substr((*input), i, len);
 	env = find_env_val(ghost, temp);
