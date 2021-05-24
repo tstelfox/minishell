@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 12:59:51 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 15:54:10 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,10 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 {
 	while (i < 7)
 	{
+		if (redirection_handle(ghost, cmd))
+			return (1);
 		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 		{
-			if (cmd->redirection)
-			{
-				if (redirect(cmd, ghost) == -1)
-					return (1);
-			}
 			if ((*ghost)->in != -42)
 				dup2((*ghost)->in, STDIN_FILENO);
 			(*ghost)->ret_stat = 0;
@@ -63,9 +60,9 @@ int	shell_exec(t_list *command, t_shell **ghost)
 	t_cmd	*cmd;
 
 	i = 0;
-	cmd = command->content;
 	if (command->content == NULL)
 		return (0);
+	cmd = command->content;
 	while (1)
 	{
 		i = pipe_or_next(command, ghost, cmd, i);

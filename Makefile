@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/24 10:24:47 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/24 15:23:02 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,8 @@ SRC = main.c \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
-		signal/signals.c
+		signal/signals.c \
+		printlists.c
 
 OBJ = $(SRC:.c=.o)
 
