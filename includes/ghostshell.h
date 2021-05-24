@@ -6,13 +6,15 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 13:08:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 10:37:04 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GHOSTSHELL_H
 # define GHOSTSHELL_H
 
+/* Big thanks to Thijs (Tishj) and Victor (Vtenneke) for letting us use their
+ termcaps (https://github.com/Tishj/reins_termcap) wrapper. */
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -25,8 +27,6 @@
 # include <sys/wait.h>
 # include "libft.h"
 # include "reins.h"
-
-// # include "get_next_line.h"
 
 enum	e_status
 {
@@ -109,7 +109,7 @@ typedef struct s_shell
 }					t_shell;
 
 //---------------------------------shell_exec---------------------------------//
-// built-in functions
+//built-in functions
 int		run_echo(t_cmd *cmd, t_shell **ghost);
 int		run_cd(t_cmd *cmd, t_shell **ghost);
 int		run_pwd(t_cmd *cmd, t_shell **ghost);
@@ -122,14 +122,14 @@ void	print_echo(t_list *args);
 //globals
 char	*g_builtin[7];
 
-// Programs
+//Programs
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
 void	get_args(t_cmd *cmd, t_shell **ghost);
 int		check_dir(t_cmd *cmd, t_shell **ghost);
 
-// Redirection
+//Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		open_multi(void *file_struct);
@@ -139,19 +139,21 @@ int		pipe_exec(t_list *command, t_shell **ghost);
 int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
 
-// Signals
+//Signals
 void	ctrl_process(int sig);
 void	ctrl(int sig);
 
-// Freeing
+//Freeing
 void	free_arr(char **arr);
 
-// Norm Abominations
+//Norm Abominations
 void	the_replacing(char *str, char *var, t_shell **ghost, int i);
+void	twenty_five_lines_max_justifyer(t_shell **ghost);
 
 //-----------------------------------error------------------------------------//
 //error.c
-void	*error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
+void	*error_handler(t_shell **ghost, int error_code,
+			 char *error_message, char *arg);
 void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
@@ -189,6 +191,7 @@ int		handle_syntax(t_shell **ghost, t_list *lst);
 //env_utils.c
 char	**get_envp(char **envp);
 int		get_len(char **input, int i);
+int		compare_env(char *env, char *str, int len);
 
 //struct_utils.c
 t_shell	*init_shell(char **env);

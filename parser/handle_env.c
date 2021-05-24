@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 16:01:23 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 09:44:18 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*find_env_val(t_shell **ghost, char *str)
 
 	j = 0;
 	envs = (*ghost)->env;
+	if (!ft_strcmp("", str))
+		return (ft_strdup(str));
 	if (!ft_strcmp("?", str))
 		return (ft_itoa((*ghost)->ret_stat));
 	while (envs[j])
@@ -29,7 +31,7 @@ char	*find_env_val(t_shell **ghost, char *str)
 			i++;
 		if (!envs[j][i + 1])
 			return (NULL);
-		if (!ft_strncmp(envs[j], str, ft_strlen(str)))
+		if (!compare_env(envs[j], str, i))
 			return (ft_strdup(envs[j] + i + 1));
 		j++;
 	}
@@ -45,7 +47,9 @@ int	replace_env(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = get_len(input, i);
-	if (len == 0 && (*input)[len + 1] != '\'' && (*input)[len + 1] != '"')
+	if (len == 0 && (*input)[i] != '\0' && ft_strchr("@#_?!$ˆ^&*", (*input)[i]))
+		error_handler(ghost, NO_MULTI_LINE, "none of this @#_?!$ˆ&* pls", NULL);
+	if (len == 0 && (*input)[i] != '\'' && (*input)[i] != '"')
 		return (1);
 	temp = ft_substr((*input), i, len);
 	env = find_env_val(ghost, temp);
@@ -119,7 +123,6 @@ void	expand_env(t_shell **ghost, t_list **lst)
 		handle_expnd(ghost, lst, &head);
 	if ((*ghost)->error)
 	{
-		printf("hier\n");
 		ft_lstclear(&head, del_content);
 		free(head);
 		ft_lstclear(&og, del_content);

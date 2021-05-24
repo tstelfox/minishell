@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/22 13:07:38 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/24 10:24:47 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,6 @@ BUILT = export.c \
 		env.c \
 		pwd.c
 
-TEST = test.c
-
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
 UTIL_PREFIX = $(addprefix utils/, $(UTIL))
@@ -55,14 +53,12 @@ SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 BUILT_PREFIX = $(addprefix built-ins/, $(BUILT))
 
 SRC = main.c \
-		$(GNL) \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
-		debug/printlists.c \
 		signal/signals.c
 
 OBJ = $(SRC:.c=.o)
@@ -76,12 +72,6 @@ INCLUDES = -Iincludes
 REINS = -Ireins/incl -Ireins/lib/vector/incl
 
 LIBFT = -Ilft/
-
-# GNL = -Ignl/
-
-# GNL_TAIL = -lgnl -Lgnl
-
-LEAKS = -fsanitize=leak
 
 TAIL	=	-lreins -Lreins -Lreins/lib/vector/ -lvector -ltermcap
 
