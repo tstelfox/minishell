@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:28:10 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 11:59:28 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 14:12:21 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,7 @@ t_list	*lexer(t_shell **ghost, char *input, char *seperators)
 	}
 	if (i != start)
 		add_tkn(ghost, &ret, str + start, i - start);
+	if (handle_syntax(ghost, ret))
+		return (NULL);
 	return (ret);
 }

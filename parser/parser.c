@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 12:24:45 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 14:44:06 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ int	parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
 	}
 	if (new_lst)
 	{
-		(*command)->type = ft_strdup((*new_lst)->content);
-		if ((*new_lst)->next)
-			(*command)->args = ft_lstmap((*new_lst)->next, \
-									copy_data, del_content);
+		if ((*new_lst))
+			(*command)->type = ft_strdup((*new_lst)->content);
+		if ((*new_lst))
+			if ((*new_lst)->next)
+				(*command)->args = ft_lstmap((*new_lst)->next, \
+										copy_data, del_content);
 		ft_lstclear(new_lst, del_content);
 	}
 	ft_lstadd_back(lst, ft_lstnew(*command));
@@ -78,8 +80,6 @@ t_list	*parser(t_shell **ghost)
 	lst = NULL;
 	if ((*ghost)->commands)
 		free_list(&((*ghost)->commands), del_commands);
-	if (handle_syntax(ghost, (*ghost)->tokens))
-		return (NULL);
 	while ((*ghost)->tokens)
 	{
 		command = new_command();

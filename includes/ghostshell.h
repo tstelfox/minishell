@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 10:37:04 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 14:12:08 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ void	expand_env(t_shell **ghost, t_list **temp);
 char	*find_env(t_shell **ghost, char *str);
 
 //handle_funcs.c
+int		handle_syntax(t_shell **ghost, t_list *lst);
 int		handle_seperator(t_shell **ghost, t_cmd **command);
 int		handle_redir(t_shell **ghost, t_cmd **command);
 char	*handle_quotes(t_shell **ghost, char *str, int len);
@@ -186,7 +187,10 @@ int		check_redir(char *str);
 int		count_quotes(char *str);
 
 //handle_utils.c
-int		handle_syntax(t_shell **ghost, t_list *lst);
+int		check_seperator(t_shell **ghost, t_list *temp);
+char	*handle_bigger(t_list *lst);
+char	*handle_smaller(t_list *lst);
+
 
 //env_utils.c
 char	**get_envp(char **envp);
