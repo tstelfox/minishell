@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/24 15:23:02 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/24 16:06:01 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,8 +61,7 @@ SRC = main.c \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
-		signal/signals.c \
-		printlists.c
+		signal/signals.c
 
 OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 
