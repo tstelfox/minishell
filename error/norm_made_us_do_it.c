@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/20 17:10:18 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 10:27:22 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 15:52:47 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,22 @@ void	twenty_five_lines_max_justifyer(t_shell **ghost)
 {
 	(*ghost)->out = -42;
 	(*ghost)->in = -42;
+}
+
+int	redirection_handle(t_shell **ghost, t_cmd *cmd)
+{
+	if (cmd->redirection)
+	{
+		if (redirect(cmd, ghost) == -1)
+			return (1);
+		if (!cmd->type)
+		{
+			if ((*ghost)->in != -42)
+				dup2((*ghost)->in, STDIN_FILENO);
+			if ((*ghost)->out != -42)
+				dup2((*ghost)->out, STDOUT_FILENO);
+			return (1);
+		}
+	}
+	return (0);
 }
