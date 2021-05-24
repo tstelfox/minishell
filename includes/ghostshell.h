@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 14:12:08 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 15:50:54 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ int		count_quotes(char *str);
 int		check_seperator(t_shell **ghost, t_list *temp);
 char	*handle_bigger(t_list *lst);
 char	*handle_smaller(t_list *lst);
-
 
 //env_utils.c
 char	**get_envp(char **envp);
