@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 13:28:21 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 10:19:05 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	multi_redir(t_cmd *cmd, t_shell **ghost, t_redir *file_struct)
 			fd = open(file_struct->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
 		else
 			fd = open(file_struct->file, O_CREAT | O_APPEND | O_RDWR, 0666);
-		
 	}
 	close(fd);
 	return (0);

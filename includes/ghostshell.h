@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 09:18:00 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 10:18:38 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,8 @@ void	the_replacing(char *str, char *var, t_shell **ghost, int i);
 
 //-----------------------------------error------------------------------------//
 //error.c
-void	*error_handler(t_shell **ghost, int error_code, char *error_message, char *arg);
+void	*error_handler(t_shell **ghost, int error_code,
+			 char *error_message, char *arg);
 void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
