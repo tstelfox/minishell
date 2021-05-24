@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/22 13:08:04 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 09:18:00 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ int		handle_syntax(t_shell **ghost, t_list *lst);
 //env_utils.c
 char	**get_envp(char **envp);
 int		get_len(char **input, int i);
+int		compare_env(char *env, char *str, int len);
 
 //struct_utils.c
 t_shell	*init_shell(char **env);

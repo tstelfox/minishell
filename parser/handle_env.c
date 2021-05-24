@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/23 15:10:07 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 09:20:57 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*find_env_val(t_shell **ghost, char *str)
 			i++;
 		if (!envs[j][i + 1])
 			return (NULL);
-		if (!ft_strncmp(envs[j], str, ft_strlen(str)))
+		if (!compare_env(envs[j], str, i))
 			return (ft_strdup(envs[j] + i + 1));
 		j++;
 	}
@@ -121,7 +121,6 @@ void	expand_env(t_shell **ghost, t_list **lst)
 		handle_expnd(ghost, lst, &head);
 	if ((*ghost)->error)
 	{
-		printf("hier\n");
 		ft_lstclear(&head, del_content);
 		free(head);
 		ft_lstclear(&og, del_content);
