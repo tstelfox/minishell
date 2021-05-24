@@ -6,13 +6,15 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 10:28:48 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 10:37:04 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GHOSTSHELL_H
 # define GHOSTSHELL_H
 
+/* Big thanks to Thijs (Tishj) and Victor (Vtenneke) for letting us use their
+ termcaps (https://github.com/Tishj/reins_termcap) wrapper. */
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
