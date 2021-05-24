@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 09:36:07 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/24 09:19:51 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 09:23:14 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	compare_env(char *env, char *str, int len)
 {
-	// printf("strinlen[%s], len[%s]\n", str, (int)ft_strlen(str))
 	if (len != (int)ft_strlen(str))
 		return (1);
 	while (len != 0 && (*env != '\0' || *env != '\0'))

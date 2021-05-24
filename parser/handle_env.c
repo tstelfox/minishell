@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/24 09:20:57 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 09:44:18 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	replace_env(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = get_len(input, i);
+	if (len == 0 && (*input)[i] != '\0' && ft_strchr("@#_?!$ˆ^&*", (*input)[i]))
+		error_handler(ghost, NO_MULTI_LINE, "none of this @#_?!$ˆ&* pls", NULL);
 	if (len == 0 && (*input)[i] != '\'' && (*input)[i] != '"')
 		return (1);
 	temp = ft_substr((*input), i, len);
