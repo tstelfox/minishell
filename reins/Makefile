@@ -6,7 +6,7 @@
 #    By: tishj <tishj@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/03/03 12:48:38 by tishj         #+#    #+#                  #
-#    Updated: 2021/03/29 12:38:56 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/24 15:25:44 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,7 +102,7 @@ test: all
 clean:
 	@echo "Cleaning reins.."
 	@$(MAKE) -sC ./lib/vector/ clean
-	@rm -f $(OBJ)
+	@rm -rf $(OBJ)
 
 fclean: clean
 	@echo "Full cleaning reins.."
