@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/17 09:33:36 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/24 14:11:23 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 15:48:38 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,14 @@ int	handle_syntax(t_shell **ghost, t_list *lst)
 {
 	char	*ret;
 
+	if (!ft_strcmp(lst->content, "|"))
+	{
+		error_handler(ghost, NO_MULTI_LINE,
+			 "syntax error near unexpected token", "|");
+		return (1);
+	}
 	if (check_seperator(ghost, lst))
 		return (1);
-	// ret = check_seperator(ghost, lst);
-	// if (ret)
-	// {
-	// 	error_handler(ghost, NO_MULTI_LINE,
-	// 		 "syntax error near unexpected token", ret);
-	// 	return (1);
-	// }
 	ret = handle_bigger(lst);
 	if (ret)
 	{
