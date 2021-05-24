@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/24 16:06:01 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/24 18:59:21 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,37 +14,37 @@ NAME = ghostshell
 
 OBJ_DIR = ./obj
 
-ERR = error/error.c \
-		error/err_msg.c \
-		error/norm_made_us_do_it.c
+ERR = error/error.o \
+		error/err_msg.o \
+		error/norm_made_us_do_it.o
 
-UTIL = struct_utils.c \
-		del_utils.c \
-		env_utils.c \
-		parser_utils.c \
-		lst_utils.c \
-		history_utils.c \
-		handle_utils.c \
-		miscellaneous_utils.c
+UTIL = struct_utils.o \
+		del_utils.o \
+		env_utils.o \
+		parser_utils.o \
+		lst_utils.o \
+		history_utils.o \
+		handle_utils.o \
+		miscellaneous_utils.o
 
-PAR = parser.c \
-		handle_funcs.c \
-		handle_env.c \
-		read_input.c \
-		lexer.c
+PAR = parser.o \
+		handle_funcs.o \
+		handle_env.o \
+		read_input.o \
+		lexer.o
 
-SHEL = shell_exec.c \
-		prog_launch.c \
-		redirect.c \
-		pipe_exec.c \
+SHEL = shell_exec.o \
+		prog_launch.o \
+		redirect.o \
+		pipe_exec.o \
 
-BUILT = export.c \
-		exit.c \
-		unset.c \
-		cd.c \
-		echo.c \
-		env.c \
-		pwd.c
+BUILT = export.o \
+		exit.o \
+		unset.o \
+		cd.o \
+		echo.o \
+		env.o \
+		pwd.o
 
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
@@ -54,16 +54,16 @@ SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 
 BUILT_PREFIX = $(addprefix built-ins/, $(BUILT))
 
-SRC = main.c \
+SRC = main.o \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
-		signal/signals.c
+		signal/signals.o
 
-OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
+OBJ = $(SRC)
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -84,14 +84,14 @@ $(NAME): $(OBJ)
 		@make bonus -C lft/
 		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
-$(OBJ_DIR)/%.o: %.c
-		@mkdir -p $(@D)
+%.o: %.c
+		@mkdir -p $(OBJ_DIR)
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
 		@make clean -C reins/
 		@make clean -C lft/
-		rm -rf $(OBJ_DIR)
+		rm -rf $(OBJ)
 
 fclean: clean
 		@make fclean -C reins/
