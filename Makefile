@@ -6,11 +6,13 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/24 10:24:47 by ztan          ########   odam.nl          #
+#    Updated: 2021/05/24 15:21:53 by ztan          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ghostshell
+
+OBJ_DIR = ./obj
 
 ERR = error/error.c \
 		error/err_msg.c \
@@ -61,7 +63,7 @@ SRC = main.c \
 		$(BUILT_PREFIX) \
 		signal/signals.c
 
-OBJ = $(SRC:.c=.o)
+OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -73,7 +75,7 @@ REINS = -Ireins/incl -Ireins/lib/vector/incl
 
 LIBFT = -Ilft/
 
-TAIL	=	-lreins -Lreins -Lreins/lib/vector/ -lvector -ltermcap
+TAIL = -lreins -Lreins -Lreins/lib/vector/ -lvector -ltermcap
 
 all: $(NAME)
 
@@ -82,13 +84,14 @@ $(NAME): $(OBJ)
 		@make bonus -C lft/
 		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+		@mkdir -p $(@D)
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
 		@make clean -C reins/
 		@make clean -C lft/
-		rm -f $(OBJ)
+		rm -rf $(OBJ_DIR)
 
 fclean: clean
 		@make fclean -C reins/
