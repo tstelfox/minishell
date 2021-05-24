@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/17 15:24:29 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 16:57:31 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ int	pipe_exec(t_list *command, t_shell **ghost)
 	{
 		pipe((*ghost)->pipefd);
 		(*ghost)->pid = fork();
+		signal(SIGINT, ctrl_process);
+		signal(SIGQUIT, ctrl_process);
 		fd_in = pipe_loop(command, ghost, fd_in, i);
 		command = command->next;
 		i++;
