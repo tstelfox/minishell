@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 10:18:38 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/24 10:28:48 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include <sys/wait.h>
 # include "libft.h"
 # include "reins.h"
-
-// # include "get_next_line.h"
 
 enum	e_status
 {
@@ -109,7 +107,7 @@ typedef struct s_shell
 }					t_shell;
 
 //---------------------------------shell_exec---------------------------------//
-// built-in functions
+//built-in functions
 int		run_echo(t_cmd *cmd, t_shell **ghost);
 int		run_cd(t_cmd *cmd, t_shell **ghost);
 int		run_pwd(t_cmd *cmd, t_shell **ghost);
@@ -122,14 +120,14 @@ void	print_echo(t_list *args);
 //globals
 char	*g_builtin[7];
 
-// Programs
+//Programs
 int		prog_launch(t_cmd *cmd, t_shell **ghost);
 int		shell_exec(t_list *tokens, t_shell **ghost);
 char	**get_path(t_cmd *cmd, t_shell **ghost);
 void	get_args(t_cmd *cmd, t_shell **ghost);
 int		check_dir(t_cmd *cmd, t_shell **ghost);
 
-// Redirection
+//Redirection
 int		redirect(t_cmd *cmd, t_shell **ghost);
 int		ft_lstredir(t_list *lst, int (*f)(void *));
 int		open_multi(void *file_struct);
@@ -139,15 +137,16 @@ int		pipe_exec(t_list *command, t_shell **ghost);
 int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
 
-// Signals
+//Signals
 void	ctrl_process(int sig);
 void	ctrl(int sig);
 
-// Freeing
+//Freeing
 void	free_arr(char **arr);
 
-// Norm Abominations
+//Norm Abominations
 void	the_replacing(char *str, char *var, t_shell **ghost, int i);
+void	twenty_five_lines_max_justifyer(t_shell **ghost);
 
 //-----------------------------------error------------------------------------//
 //error.c

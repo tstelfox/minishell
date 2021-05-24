@@ -6,7 +6,7 @@
 /*   By: ztan <ztan@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/08 11:25:13 by ztan          #+#    #+#                 */
-/*   Updated: 2021/05/20 16:31:05 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/24 10:27:37 by ztan          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ void	assign_shell(t_shell **ghost, char **env)
 	(*ghost)->env = get_envp(env);
 	(*ghost)->args = NULL;
 	(*ghost)->status = 0;
-	(*ghost)->out = -42;
-	(*ghost)->in = -42;
+	twenty_five_lines_max_justifyer(ghost);
 	(*ghost)->pipefd[0] = -69;
 	(*ghost)->pipefd[1] = -47;
 	(*ghost)->error = 0;
