@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/25 14:24:29 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/25 15:33:26 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,19 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 {
 	if (redirection_handle(ghost, cmd))
 		return (1);
+	// if ((*ghost)->in != -42)
+	// 	dup2((*ghost)->in, STDIN_FILENO);
+	// while (1) {}
 	while (i < 7)
 	{
 		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 		{
-			if ((*ghost)->in != -42)
-				dup2((*ghost)->in, STDIN_FILENO);
 			(*ghost)->ret_stat = 0;
 			(*ghost)->g_builtin_f[i](cmd, ghost);
 			if ((*ghost)->out != -42)
 				dup2((*ghost)->out, STDOUT_FILENO);
+			if ((*ghost)->in != -42)
+				dup2((*ghost)->in, STDIN_FILENO);
 			if (!command->next)
 			{
 				if ((*ghost)->pipefd[0] != -69)
@@ -73,6 +76,8 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		prog_launch(cmd, ghost);
 		if ((*ghost)->out != -42)
 			dup2((*ghost)->out, STDOUT_FILENO);
+		if ((*ghost)->in != -42)
+			dup2((*ghost)->in, STDIN_FILENO);
 		if (!command->next)
 		{
 			if ((*ghost)->pipefd[0] != -69)
