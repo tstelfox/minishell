@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/24 15:54:10 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/25 14:24:29 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	pipe_or_next(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 
 int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 {
+	if (redirection_handle(ghost, cmd))
+		return (1);
 	while (i < 7)
 	{
-		if (redirection_handle(ghost, cmd))
-			return (1);
 		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 		{
 			if ((*ghost)->in != -42)
