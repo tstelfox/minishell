@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/25 18:09:20 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/25 18:14:13 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	open_fd(t_cmd *cmd, t_shell **ghost, t_redir *redir)
 	}
 	else
 	{
-		// ft_putnbr_fd(redir->type, 1);
-		// ft_putstr_fd("How many times?\n", 1);
 		if ((*ghost)->red_out > 0)
 		{
 			ft_putstr_fd("Closed the old output red\n", 1);
@@ -87,45 +85,3 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 	}
 	return (0);
 }
-
-// int	final_redir(t_cmd *cmd, t_shell **ghost, t_redir *redir)
-// {
-// 	int	fd;
-
-// 	if (redir->type == INPUT)
-// 	{
-// 		(*ghost)->error = NO_FILE;
-// 		fd = open(redir->file, O_APPEND | O_RDWR, 0666);
-// 		if (fd == -1)
-// 		{
-// 			cmd_notfound(cmd, NO_FILE, ghost, 0);
-// 			return (-1);
-// 		}
-// 		// if (last_op && last_op->type != INPUT)
-// 		// {
-// 		// 	close(fd);
-// 		// 	if (last_op->type == OUTPUT)
-// 		// 		fd = open(last_op->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
-// 		// 	else
-// 		// 		fd = open(last_op->file, O_CREAT | O_APPEND | O_RDWR, 0666);
-// 		// 	(*ghost)->out = dup(STDOUT_FILENO);
-// 		// 	dup2(fd, STDOUT_FILENO);
-// 		// }
-// 		// else
-// 		// {
-// 		(*ghost)->in = dup(STDIN_FILENO);
-// 		dup2(fd, STDIN_FILENO);
-// 		// }
-// 	}
-// 	else
-// 	{
-// 		if (redir->type == OUTPUT)
-// 			fd = open(redir->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
-// 		else
-// 			fd = open(redir->file, O_CREAT | O_APPEND | O_RDWR, 0666);
-// 		(*ghost)->out = dup(STDOUT_FILENO);
-// 		dup2(fd, STDOUT_FILENO);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
