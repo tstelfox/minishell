@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/11 12:45:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/25 17:57:46 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/25 18:09:20 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ int	open_fd(t_cmd *cmd, t_shell **ghost, t_redir *redir)
 	if (redir->type == INPUT)
 	{
 		(*ghost)->error = NO_FILE;
-		if ((*ghost)->red_in != -42)
+		if ((*ghost)->red_in > 0)
+		{
+			ft_putstr_fd("Closed the old input red\n", 1);
 			close((*ghost)->red_in);
+		}
 		(*ghost)->red_in = open(redir->file, O_APPEND | O_RDWR, 0666);
 		if ((*ghost)->red_in == -1)
 		{
@@ -30,8 +33,11 @@ int	open_fd(t_cmd *cmd, t_shell **ghost, t_redir *redir)
 	{
 		// ft_putnbr_fd(redir->type, 1);
 		// ft_putstr_fd("How many times?\n", 1);
-		if ((*ghost)->red_out != -42)
+		if ((*ghost)->red_out > 0)
+		{
+			ft_putstr_fd("Closed the old output red\n", 1);
 			close((*ghost)->red_out);
+		}
 		if (redir->type == OUTPUT)
 			(*ghost)->red_out = open(redir->file, O_CREAT | O_TRUNC | O_RDWR, 0666);
 		else
@@ -65,14 +71,15 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 	}
 	cmd->redirection = head;
 	ft_putnbr_fd((*ghost)->red_out, 1);
+	ft_putchar_fd('\n', 1);
 	ft_putnbr_fd((*ghost)->red_in, 1);
-	if ((*ghost)->red_in != -42)
+	if ((*ghost)->red_in > 0)
 	{
 		(*ghost)->in = dup(STDIN_FILENO);
 		dup2((*ghost)->red_in, STDIN_FILENO);
 		close((*ghost)->red_in);
 	}
-	if ((*ghost)->red_out != -42)
+	if ((*ghost)->red_out > 0)
 	{
 		(*ghost)->out = dup(STDOUT_FILENO);
 		dup2((*ghost)->red_out, STDOUT_FILENO);
