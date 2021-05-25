@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/24 18:59:21 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/25 17:30:36 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ SRC = main.o \
 
 OBJ = $(SRC)
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 
 CC = gcc
 
