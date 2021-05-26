@@ -68,9 +68,9 @@ int	redirect(t_cmd *cmd, t_shell **ghost)
 		return (-1);
 	}
 	cmd->redirection = head;
-	ft_putnbr_fd((*ghost)->red_out, 1);
-	ft_putchar_fd('\n', 1);
-	ft_putnbr_fd((*ghost)->red_in, 1);
+	// ft_putnbr_fd((*ghost)->red_out, 1);
+	// ft_putchar_fd('\n', 1);
+	// ft_putnbr_fd((*ghost)->red_in, 1);
 	if ((*ghost)->red_in > 0)
 	{
 		(*ghost)->in = dup(STDIN_FILENO);
