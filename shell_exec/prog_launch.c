@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/25 14:23:10 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/27 17:44:33 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
 		if (WIFSIGNALED(w_status))
-			(*ghost)->ret_stat = WTERMSIG(w_status);
+			(*ghost)->ret_stat = WTERMSIG(w_status) + 128;
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
 	}
