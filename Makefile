@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/31 15:38:45 by zenotan       ########   odam.nl          #
+#    Updated: 2021/05/31 15:54:33 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SHEL = shell_exec.c \
 		prog_launch.c \
 		redirect.c \
 		pipe_exec.c \
+		pipe_utils.c
 
 BUILT = export.c \
 		exit.c \
