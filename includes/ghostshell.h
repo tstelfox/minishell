@@ -105,6 +105,8 @@ typedef struct s_shell
 	int		red_out;
 	int		pipefd[2];
 	int		out_pipe;
+	int		pipenum;
+	int		*pipepid;
 	int		error;
 	char	*built_in[7];
 	int		(*g_builtin_f[7])(t_cmd *cmd, struct s_shell **ghost);
@@ -141,6 +143,8 @@ int		redirection_handle(t_shell **ghost, t_cmd *cmd);
 int		pipe_exec(t_list *command, t_shell **ghost);
 int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
+void	count_and_malloc(t_list *command, t_shell **ghost);
+void	where_the_kids_at(t_shell **ghost);
 
 //Signals
 void	ctrl_process(int sig);
