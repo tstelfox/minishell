@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:26:40 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/17 16:01:40 by ztan          ########   odam.nl         */
+/*   Updated: 2021/05/31 15:27:47 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	down_function(t_input *line, char *buf, t_hook *hook)
 	return (RD_IDLE);
 }
 
-int	ctrl_d_function(t_input *line, char *buf, t_hook *hook)
+int	ctrl_c_function(t_input *line, char *buf, t_hook *hook)
 {
 	t_shell	**ghost;
 	t_dlist	*node;
@@ -86,6 +86,8 @@ char	*read_line(t_shell **ghost)
 	if (ret == 0)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
+		reins_disable((*ghost)->reins);
+		del_ghost(ghost);
 		exit(0);
 	}
 	if (ret < 0)
