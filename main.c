@@ -6,11 +6,12 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/25 18:08:37 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/31 12:47:22 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ghostshell.h"
+#include <termcap.h>
 
 void	print_env(char **str)
 {
@@ -19,6 +20,12 @@ void	print_env(char **str)
 		printf("[%s]\n", *str);
 		str++;
 	}
+}
+
+static int	put_char(int c)
+{
+	write(1, &c, 1);
+	return (1);
 }
 
 void	exec_shell(t_shell **ghost, t_list *head, char *line)
@@ -46,6 +53,7 @@ void	exec_shell(t_shell **ghost, t_list *head, char *line)
 			(*ghost)->error = 0;
 		}
 		(*ghost)->tokens = head;
+		tputs(tgetstr("ke", NULL), 1, &put_char);
 		restart_shell(ghost);
 	}
 	reins_destroy((*ghost)->reins);
