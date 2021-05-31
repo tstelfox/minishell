@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/02 16:29:22 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 16:38:09 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/27 17:44:33 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	prog_child(t_cmd *cmd, t_shell **ghost)
 	int	k;
 
 	k = 0;
+	signal(SIGINT, ctrl_process);
+	signal(SIGQUIT, ctrl_process);
 	if (cmd->redirection && redirect(cmd, ghost) == -1)
 		exit(1);
 	if (ft_strchr(cmd->type, '/'))
@@ -117,7 +119,7 @@ int	prog_launch(t_cmd *cmd, t_shell **ghost)
 	{
 		waitpid((*ghost)->pid, &w_status, WUNTRACED);
 		if (WIFSIGNALED(w_status))
-			(*ghost)->ret_stat = WTERMSIG(w_status);
+			(*ghost)->ret_stat = WTERMSIG(w_status) + 128;
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
 	}
