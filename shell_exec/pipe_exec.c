@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/27 17:44:19 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/31 15:49:56 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,13 @@ void	pipe_child(t_list *command, t_shell **ghost)
 	pipe_prog(cmd, ghost);
 }
 
-void	pipe_parent(t_list *command, t_shell **ghost, int w_status)
+void	pipe_parent(t_list *command, t_shell **ghost, int w_status, pid_t pid)
 {
 	if (!command->next)
 	{
-		waitpid((*ghost)->pid, &w_status, WUNTRACED);
 		close((*ghost)->pipefd[0]);
+		where_the_kids_at(ghost);
+		waitpid(pid, &w_status, WUNTRACED);
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
 		else if (WIFSIGNALED(w_status))
@@ -90,7 +91,7 @@ int	pipe_loop(t_list *command, t_shell **ghost, int fd_in, int num)
 
 	w_status = 0;
 	cmd = command->content;
-	if ((*ghost)->pid == 0)
+	if ((*ghost)->pipepid[num] == 0)
 	{
 		if (num != 0)
 		{
@@ -99,11 +100,11 @@ int	pipe_loop(t_list *command, t_shell **ghost, int fd_in, int num)
 		}
 		pipe_child(command, ghost);
 	}
-	else if ((*ghost)->pid < 0)
+	else if ((*ghost)->pipepid[num] < 0)
 		strerror(errno);
 	else
 	{
-		pipe_parent(command, ghost, w_status);
+		pipe_parent(command, ghost, w_status, (*ghost)->pipepid[num]);
 		if (num != 0)
 			close(fd_in);
 		fd_in = (*ghost)->pipefd[0];
@@ -115,18 +116,25 @@ int	pipe_exec(t_list *command, t_shell **ghost)
 {
 	int		fd_in;
 	int		i;
+	t_list	*head;
 
 	fd_in = 0;
 	i = 0;
+	head = command;
+	count_and_malloc(command, ghost);
 	while (command)
 	{
 		pipe((*ghost)->pipefd);
-		(*ghost)->pid = fork();
+		(*ghost)->pipepid[i] = fork();
 		signal(SIGINT, ctrl_process);
 		signal(SIGQUIT, ctrl_process);
 		fd_in = pipe_loop(command, ghost, fd_in, i);
 		command = command->next;
 		i++;
 	}
+	head = command;
+	(*ghost)->pipenum = 0;
+	if ((*ghost)->pipepid != NULL)
+		free((*ghost)->pipepid);
 	return (1);
 }

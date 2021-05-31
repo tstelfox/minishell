@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/25 17:30:36 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/31 15:49:24 by tmullan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SHEL = shell_exec.o \
 		prog_launch.o \
 		redirect.o \
 		pipe_exec.o \
+		pipe_utils.o
 
 BUILT = export.o \
 		exit.o \

@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:18:46 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/31 12:47:22 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/31 15:29:58 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,21 @@ static int	put_char(int c)
 	return (1);
 }
 
+void	reset_prompt(t_shell **ghost)
+{
+	signal(SIGINT, ctrl);
+	signal(SIGQUIT, SIG_IGN);
+	(*ghost)->first_command = TRUE;
+	(*ghost)->red_in = -42;
+	(*ghost)->red_out = -42;
+	ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDERR_FILENO);
+}
+
 void	exec_shell(t_shell **ghost, t_list *head, char *line)
 {
 	while ((*ghost)->status != INTERNAL_ERROR)
 	{
-		signal(SIGINT, ctrl);
-		signal(SIGQUIT, SIG_IGN);
-		(*ghost)->first_command = TRUE;
-		(*ghost)->red_in = -42;
-		(*ghost)->red_out = -42;
-		ft_putstr_fd("\e[1;34mghostshell$> \e[0m", STDERR_FILENO);
+		reset_prompt(ghost);
 		line = read_line(ghost);
 		(*ghost)->tokens = lexer(ghost, line, " ><|;");
 		head = (*ghost)->tokens;

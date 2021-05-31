@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/25 15:33:26 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/31 15:47:36 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 {
 	if (redirection_handle(ghost, cmd))
 		return (1);
-	// if ((*ghost)->in != -42)
-	// 	dup2((*ghost)->in, STDIN_FILENO);
-	// while (1) {}
 	while (i < 7)
 	{
 		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
@@ -57,6 +54,14 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 	return (0);
 }
 
+void	reset_streams(t_shell **ghost)
+{
+	if ((*ghost)->out != -42)
+		dup2((*ghost)->out, STDOUT_FILENO);
+	if ((*ghost)->in != -42)
+		dup2((*ghost)->in, STDIN_FILENO);
+}
+
 int	shell_exec(t_list *command, t_shell **ghost)
 {
 	int		i;
@@ -74,10 +79,7 @@ int	shell_exec(t_list *command, t_shell **ghost)
 		if (launch_built_in(command, ghost, cmd, i))
 			return (1);
 		prog_launch(cmd, ghost);
-		if ((*ghost)->out != -42)
-			dup2((*ghost)->out, STDOUT_FILENO);
-		if ((*ghost)->in != -42)
-			dup2((*ghost)->in, STDIN_FILENO);
+		reset_streams(ghost);
 		if (!command->next)
 		{
 			if ((*ghost)->pipefd[0] != -69)
