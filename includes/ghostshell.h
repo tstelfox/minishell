@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:30:34 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/05/31 16:01:46 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	twenty_five_lines_max_justifyer(t_shell **ghost);
 //-----------------------------------error------------------------------------//
 //error.c
 void	*error_handler(t_shell **ghost, int error_code,
-			 char *error_message, char *arg);
+				 char *error_message, char *arg);
 void	cmd_notfound(t_cmd *cmd, int flag, t_shell **ghost, int pipe);
 
 //-----------------------------------parser-----------------------------------//
