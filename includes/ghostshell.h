@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:49:00 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/05/31 15:30:34 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ t_list	*parser(t_shell **ghost);
 char	*read_line(t_shell **ghost);
 int		up_function(t_input *line, char *buf, t_hook *hook);
 int		down_function(t_input *line, char *buf, t_hook *hook);
-int		ctrl_d_function(t_input *line, char *buf, t_hook *hook);
+int		ctrl_c_function(t_input *line, char *buf, t_hook *hook);
 
 //lexer.c
 t_list	*lexer(t_shell **ghost, char *input, char *seperators);

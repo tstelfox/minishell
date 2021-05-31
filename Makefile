@@ -6,7 +6,7 @@
 #    By: tmullan <tmullan@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/02/15 13:01:13 by tmullan       #+#    #+#                  #
-#    Updated: 2021/05/31 15:49:24 by tmullan       ########   odam.nl          #
+#    Updated: 2021/05/31 15:38:45 by zenotan       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,38 +14,37 @@ NAME = ghostshell
 
 OBJ_DIR = ./obj
 
-ERR = error/error.o \
-		error/err_msg.o \
-		error/norm_made_us_do_it.o
+ERR = error/error.c \
+		error/err_msg.c \
+		error/norm_made_us_do_it.c
 
-UTIL = struct_utils.o \
-		del_utils.o \
-		env_utils.o \
-		parser_utils.o \
-		lst_utils.o \
-		history_utils.o \
-		handle_utils.o \
-		miscellaneous_utils.o
+UTIL = struct_utils.c \
+		del_utils.c \
+		env_utils.c \
+		parser_utils.c \
+		lst_utils.c \
+		history_utils.c \
+		handle_utils.c \
+		miscellaneous_utils.c
 
-PAR = parser.o \
-		handle_funcs.o \
-		handle_env.o \
-		read_input.o \
-		lexer.o
+PAR = parser.c \
+		handle_funcs.c \
+		handle_env.c \
+		read_input.c \
+		lexer.c
 
-SHEL = shell_exec.o \
-		prog_launch.o \
-		redirect.o \
-		pipe_exec.o \
-		pipe_utils.o
+SHEL = shell_exec.c \
+		prog_launch.c \
+		redirect.c \
+		pipe_exec.c \
 
-BUILT = export.o \
-		exit.o \
-		unset.o \
-		cd.o \
-		echo.o \
-		env.o \
-		pwd.o
+BUILT = export.c \
+		exit.c \
+		unset.c \
+		cd.c \
+		echo.c \
+		env.c \
+		pwd.c
 
 PAR_PREFIX = $(addprefix parser/, $(PAR))
 
@@ -55,18 +54,18 @@ SHELL_PREFIX = $(addprefix shell_exec/, $(SHEL))
 
 BUILT_PREFIX = $(addprefix built-ins/, $(BUILT))
 
-SRC = main.o \
+SRC = main.c \
 		$(ERR) \
 		$(LEX_PREFIX) \
 		$(PAR_PREFIX) \
 		$(UTIL_PREFIX) \
 		$(SHELL_PREFIX) \
 		$(BUILT_PREFIX) \
-		signal/signals.o
+		signal/signals.c
 
-OBJ = $(SRC)
+OBJ := $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-FLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror
 
 CC = gcc
 
@@ -85,14 +84,14 @@ $(NAME): $(OBJ)
 		@make bonus -C lft/
 		@$(CC) $(FLAGS) $(OBJ) $(INCLUDES) $(REINS) $(LIBFT) -lft -Llft $(TAIL) -g -o $(NAME)
 
-%.o: %.c
-		@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c
+		@mkdir -p $(@D)
 		$(CC) $(FLAGS) $(INCLUDES) $(REINS) $(LIBFT) -g -c $< -o $@
 
 clean:
 		@make clean -C reins/
 		@make clean -C lft/
-		rm -rf $(OBJ)
+		rm -rf $(OBJ_DIR)
 
 fclean: clean
 		@make fclean -C reins/
