@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 13:04:04 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:30:34 by zenotan       ########   odam.nl         */
+/*   Updated: 2021/06/03 11:26:21 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int		pipe_exec(t_list *command, t_shell **ghost);
 int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
 void	count_and_malloc(t_list *command, t_shell **ghost);
-void	where_the_kids_at(t_shell **ghost);
+void	where_the_kids_at(t_shell **ghost, int w_status);
 
 //Signals
 void	ctrl_process(int sig);
