@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/31 15:48:13 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:50:12 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/06/03 12:01:05 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ void	count_and_malloc(t_list *command, t_shell **ghost)
 	(*ghost)->pipepid = (int *)malloc(sizeof(int) * (*ghost)->pipenum);
 }
 
-void	where_the_kids_at(t_shell **ghost)
+void	where_the_kids_at(t_shell **ghost, int w_status)
 {
 	int	i;
-	int	status;
 
 	i = 0;
-	while (i < (*ghost)->pipenum)
+	while (i < (*ghost)->pipenum - 1)
 	{
-		waitpid((*ghost)->pipepid[i], &status, 0);
+		waitpid((*ghost)->pipepid[i], &w_status, 0);
 		i++;
 	}
 }

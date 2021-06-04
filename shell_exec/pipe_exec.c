@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/18 14:07:07 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:49:56 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/06/03 11:34:42 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	pipe_child(t_list *command, t_shell **ghost)
 		if (ft_strcmp(cmd->type, (*ghost)->built_in[i]) == 0)
 		{
 			(*ghost)->g_builtin_f[i](cmd, ghost);
-			exit(0);
+			exit((*ghost)->ret_stat);
 		}
 		i++;
 	}
@@ -71,17 +71,17 @@ void	pipe_child(t_list *command, t_shell **ghost)
 
 void	pipe_parent(t_list *command, t_shell **ghost, int w_status, pid_t pid)
 {
+	close((*ghost)->pipefd[1]);
 	if (!command->next)
 	{
 		close((*ghost)->pipefd[0]);
-		where_the_kids_at(ghost);
+		where_the_kids_at(ghost, w_status);
 		waitpid(pid, &w_status, WUNTRACED);
 		if (WIFEXITED(w_status))
 			(*ghost)->ret_stat = WEXITSTATUS(w_status);
 		else if (WIFSIGNALED(w_status))
 			(*ghost)->ret_stat = WTERMSIG(w_status) + 128;
 	}
-	close((*ghost)->pipefd[1]);
 }
 
 int	pipe_loop(t_list *command, t_shell **ghost, int fd_in, int num)

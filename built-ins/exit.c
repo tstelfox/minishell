@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/20 17:15:49 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/20 17:22:24 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/06/03 11:52:39 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,14 @@ int	parse_exit(t_cmd *cmd, t_shell **ghost, char *exit_code, int i)
 int	run_exit(t_cmd *cmd, t_shell **ghost)
 {
 	char	*exit_code;
+	t_list	*commands;
+	t_cmd	*first_cmd;
 	int		i;
 
 	i = 0;
-	if ((*ghost)->pid != 0 && cmd->seprator_type != PIPE)
+	commands = (*ghost)->commands;
+	first_cmd = commands->content;
+	if (first_cmd->seprator_type != PIPE)
 		ft_putstr_fd("exit\n", 1);
 	if (!cmd->args)
 		exit(0);

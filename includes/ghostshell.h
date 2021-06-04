@@ -144,7 +144,7 @@ int		pipe_exec(t_list *command, t_shell **ghost);
 int		pipe_loop(t_list *command, t_shell **ghost, int fd_in, int cmd_num);
 void	path_launch(t_cmd *cmd, t_shell **ghost);
 void	count_and_malloc(t_list *command, t_shell **ghost);
-void	where_the_kids_at(t_shell **ghost);
+void	where_the_kids_at(t_shell **ghost, int w_status);
 
 //Signals
 void	ctrl_process(int sig);
