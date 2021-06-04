@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/15 19:14:32 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/24 16:23:25 by ztan          ########   odam.nl         */
+/*   Updated: 2021/06/04 10:03:11 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ t_list	*parse_command(t_shell **ghost, t_cmd **cmd)
 	return (new_lst);
 }
 
-int	parser_add_command(t_cmd **command, t_list **new_lst, t_list **lst)
+int	parser_add_command(t_shell **ghost, t_cmd **command,
+		 t_list **new_lst, t_list **lst)
 {
-	if ((!*new_lst && !(*command)->redirection))
+	if ((!*new_lst && !(*command)->redirection) || (*ghost)->error)
 	{
 		del_commands(*command);
 		return (1);
@@ -88,7 +89,7 @@ t_list	*parser(t_shell **ghost)
 			return (error_handler(ghost, INTERNAL_ERROR, \
 						"Failed to init command", NULL));
 		new_lst = parse_command(ghost, &command);
-		if (parser_add_command(&command, &new_lst, &lst))
+		if (parser_add_command(ghost, &command, &new_lst, &lst))
 			return (NULL);
 		if (parser_next_token(ghost, command))
 			break ;

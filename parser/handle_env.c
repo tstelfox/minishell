@@ -6,7 +6,7 @@
 /*   By: zenotan <zenotan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/03/24 15:14:27 by zenotan       #+#    #+#                 */
-/*   Updated: 2021/05/24 09:44:18 by ztan          ########   odam.nl         */
+/*   Updated: 2021/06/04 10:25:01 by zenotan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	replace_env(t_shell **ghost, char **input, int i)
 	int		taillen;
 
 	len = get_len(input, i);
-	if (len == 0 && (*input)[i] != '\0' && ft_strchr("@#_?!$ˆ^&*", (*input)[i]))
-		error_handler(ghost, NO_MULTI_LINE, "none of this @#_?!$ˆ&* pls", NULL);
+	if (len == 0 && (*input)[i] != '\0' && ft_strchr("@#_!$ˆ^&*", (*input)[i]))
+		error_handler(ghost, NO_MULTI_LINE, "none of this @#_!$ˆ&* pls", NULL);
 	if (len == 0 && (*input)[i] != '\'' && (*input)[i] != '"')
 		return (1);
 	temp = ft_substr((*input), i, len);
@@ -74,9 +74,9 @@ char	*find_env(t_shell **ghost, char *str)
 
 	type = 0;
 	check = 0;
-	i = 0;
+	i = -1;
 	temp = ft_strdup(str);
-	while (temp[i])
+	while (temp[++i])
 	{
 		if ((temp[i] == '\"' || temp[i] == '\'') && type == 0)
 			type = temp[i];
@@ -86,7 +86,8 @@ char	*find_env(t_shell **ghost, char *str)
 			type = 0;
 		if (temp[i] == '$' && type != '\'')
 			i += replace_env(ghost, &temp, i + 1) - 1;
-		i++;
+		if ((*ghost)->error)
+			return (temp);
 	}
 	if (check % 2)
 		error_handler(ghost, NO_MULTI_LINE, "no multiline", NULL);
@@ -101,6 +102,11 @@ void	handle_expnd(t_shell **ghost, t_list **lst, t_list **head)
 	temp = NULL;
 	tmp = NULL;
 	tmp = find_env(ghost, (*lst)->content);
+	if ((*ghost)->error)
+	{
+		free(tmp);
+		return ;
+	}
 	temp = lexer(ghost, tmp, " ");
 	free(tmp);
 	ft_lstadd_back(head, ft_lstmap(temp, copy_data, del_content));
@@ -119,7 +125,7 @@ void	expand_env(t_shell **ghost, t_list **lst)
 		return ;
 	og = *lst;
 	handle_expnd(ghost, lst, &head);
-	while ((*lst))
+	while ((*lst) && !(*ghost)->error)
 		handle_expnd(ghost, lst, &head);
 	if ((*ghost)->error)
 	{
