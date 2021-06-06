@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/02/16 13:33:57 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 15:47:36 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/06/06 18:53:27 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ int	pipe_or_next(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 	return (i);
 }
 
+void	reset_streams(t_shell **ghost)
+{
+	if ((*ghost)->out != -42)
+	{
+		dup2((*ghost)->out, STDOUT_FILENO);
+		close((*ghost)->out);
+		(*ghost)->out = -42;
+	}
+	if ((*ghost)->in != -42)
+	{
+		dup2((*ghost)->in, STDIN_FILENO);
+		close((*ghost)->in);
+		(*ghost)->in = -42;
+	}
+}
+
 int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 {
 	if (redirection_handle(ghost, cmd))
@@ -38,10 +54,7 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 		{
 			(*ghost)->ret_stat = 0;
 			(*ghost)->g_builtin_f[i](cmd, ghost);
-			if ((*ghost)->out != -42)
-				dup2((*ghost)->out, STDOUT_FILENO);
-			if ((*ghost)->in != -42)
-				dup2((*ghost)->in, STDIN_FILENO);
+			reset_streams(ghost);
 			if (!command->next)
 			{
 				if ((*ghost)->pipefd[0] != -69)
@@ -52,14 +65,6 @@ int	launch_built_in(t_list *command, t_shell **ghost, t_cmd *cmd, int i)
 		i++;
 	}
 	return (0);
-}
-
-void	reset_streams(t_shell **ghost)
-{
-	if ((*ghost)->out != -42)
-		dup2((*ghost)->out, STDOUT_FILENO);
-	if ((*ghost)->in != -42)
-		dup2((*ghost)->in, STDIN_FILENO);
 }
 
 int	shell_exec(t_list *command, t_shell **ghost)

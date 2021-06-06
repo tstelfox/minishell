@@ -6,7 +6,7 @@
 /*   By: tmullan <tmullan@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/05/20 17:10:18 by tmullan       #+#    #+#                 */
-/*   Updated: 2021/05/31 14:54:40 by tmullan       ########   odam.nl         */
+/*   Updated: 2021/06/06 18:44:52 by tmullan       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ int	redirection_handle(t_shell **ghost, t_cmd *cmd)
 		if (!cmd->type)
 		{
 			if ((*ghost)->in != -42)
+			{
 				dup2((*ghost)->in, STDIN_FILENO);
+				close((*ghost)->in);
+			}
 			if ((*ghost)->out != -42)
+			{
 				dup2((*ghost)->out, STDOUT_FILENO);
+				close((*ghost)->out);
+			}
 			return (1);
 		}
 	}
