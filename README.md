@@ -1,5 +1,4 @@
 # ghostshell
 Zeno and I makin ghosts
 
-
-OH JOhn fai make nella repo e poi ./ghostshell e via 
+![jaeskim's 42Project Score](https://badge42.herokuapp.com/api/project/tmullan/minishell)](https://github.com/JaeSeoKim/badge42)
